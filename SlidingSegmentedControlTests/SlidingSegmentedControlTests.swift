@@ -76,4 +76,14 @@ class SlidingSegmentedControlTests: XCTestCase {
         XCTAssertEqual(slidingSegmentedControl.buttons.count, numberOfButtons)
     }
 
+    // MARK: Selected segment
+
+    func testSelectedSegmentType() {
+        XCTAssert(slidingSegmentedControl.selectedSegment as Any is Int)
+    }
+
+    func testSelectedSegmentDefault() {
+        XCTAssertEqual(slidingSegmentedControl.selectedSegment, 0)
+    }
+
 }

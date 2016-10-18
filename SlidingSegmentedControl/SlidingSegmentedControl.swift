@@ -14,6 +14,8 @@ public class SlidingSegmentedControl: UIControl {
         return nil
     }
 
+    var selectedSegment = 0
+
     let stackView = UIStackView()
 
     private func initStackView() {
