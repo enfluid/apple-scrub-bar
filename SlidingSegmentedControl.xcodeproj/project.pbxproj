@@ -10,6 +10,8 @@
 		0FC1688E1DB5B2200090CB3A /* SlidingSegmentedControl.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0FC168841DB5B2200090CB3A /* SlidingSegmentedControl.framework */; };
 		0FC168931DB5B2200090CB3A /* SlidingSegmentedControlTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FC168921DB5B2200090CB3A /* SlidingSegmentedControlTests.swift */; };
 		0FC168951DB5B2200090CB3A /* SlidingSegmentedControl.h in Headers */ = {isa = PBXBuildFile; fileRef = 0FC168871DB5B2200090CB3A /* SlidingSegmentedControl.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0FC1689F1DB5B3510090CB3A /* SlidingSegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FC1689E1DB5B3510090CB3A /* SlidingSegmentedControl.swift */; };
+		0FC168A11DB5B4C50090CB3A /* NSCoder+Empty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FC168A01DB5B4C50090CB3A /* NSCoder+Empty.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -29,6 +31,8 @@
 		0FC1688D1DB5B2200090CB3A /* SlidingSegmentedControlTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SlidingSegmentedControlTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		0FC168921DB5B2200090CB3A /* SlidingSegmentedControlTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlidingSegmentedControlTests.swift; sourceTree = "<group>"; };
 		0FC168941DB5B2200090CB3A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		0FC1689E1DB5B3510090CB3A /* SlidingSegmentedControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SlidingSegmentedControl.swift; sourceTree = "<group>"; };
+		0FC168A01DB5B4C50090CB3A /* NSCoder+Empty.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSCoder+Empty.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -72,6 +76,7 @@
 			isa = PBXGroup;
 			children = (
 				0FC168871DB5B2200090CB3A /* SlidingSegmentedControl.h */,
+				0FC1689E1DB5B3510090CB3A /* SlidingSegmentedControl.swift */,
 				0FC168881DB5B2200090CB3A /* Info.plist */,
 			);
 			path = SlidingSegmentedControl;
@@ -81,6 +86,7 @@
 			isa = PBXGroup;
 			children = (
 				0FC168921DB5B2200090CB3A /* SlidingSegmentedControlTests.swift */,
+				0FC168A01DB5B4C50090CB3A /* NSCoder+Empty.swift */,
 				0FC168941DB5B2200090CB3A /* Info.plist */,
 			);
 			path = SlidingSegmentedControlTests;
@@ -148,6 +154,7 @@
 				TargetAttributes = {
 					0FC168831DB5B2200090CB3A = {
 						CreatedOnToolsVersion = 8.0;
+						LastSwiftMigration = 0800;
 						ProvisioningStyle = Automatic;
 					};
 					0FC1688C1DB5B2200090CB3A = {
@@ -196,6 +203,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0FC1689F1DB5B3510090CB3A /* SlidingSegmentedControl.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -203,6 +211,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0FC168A11DB5B4C50090CB3A /* NSCoder+Empty.swift in Sources */,
 				0FC168931DB5B2200090CB3A /* SlidingSegmentedControlTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -320,6 +329,7 @@
 		0FC168991DB5B2200090CB3A /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -331,6 +341,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = TBD.SlidingSegmentedControl;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
@@ -338,6 +349,7 @@
 		0FC1689A1DB5B2200090CB3A /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -356,6 +368,7 @@
 		0FC1689C1DB5B2200090CB3A /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				INFOPLIST_FILE = SlidingSegmentedControlTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = TBD.SlidingSegmentedControlTests;
@@ -367,6 +380,7 @@
 		0FC1689D1DB5B2200090CB3A /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				INFOPLIST_FILE = SlidingSegmentedControlTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = TBD.SlidingSegmentedControlTests;
