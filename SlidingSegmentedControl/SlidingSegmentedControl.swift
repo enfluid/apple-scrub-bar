@@ -1,9 +1,14 @@
-//
-//  SlidingSegmentedControl.swift
-//  SlidingSegmentedControl
-//
-//  Created by Ruslan Kamalov on 10/17/16.
-//  Copyright © 2016 Ruslan Kamalov. All rights reserved.
-//
+import UIKit
 
-import Foundation
+public class SlidingSegmentedControl: UIControl {
+
+    // MARK: Initialization
+
+    public init(numberOfItems: Int) {
+        super.init(frame: .zero)
+    }
+    
+    required public init?(coder aDecoder: NSCoder) {
+        return nil
+    }
+}
