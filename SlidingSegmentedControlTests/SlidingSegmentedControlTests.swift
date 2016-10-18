@@ -34,6 +34,30 @@ class SlidingSegmentedControlTests: XCTestCase {
         XCTAssertEqual(slidingSegmentedControl.stackView.arrangedSubviews, slidingSegmentedControl.buttons)
     }
 
+    func testStackViewIgnoresAutoresizingMask() {
+        XCTAssertFalse(slidingSegmentedControl.stackView.translatesAutoresizingMaskIntoConstraints)
+    }
+
+    func testStackViewTopConstraint() {
+        let expectedConstraint = slidingSegmentedControl.stackView.topAnchor.constraint(equalTo: slidingSegmentedControl.topAnchor)
+        XCTAssertConstraint(expectedConstraint, inView: slidingSegmentedControl)
+    }
+
+    func testStackViewLeadingConstraint() {
+        let expectedConstraint = slidingSegmentedControl.stackView.leadingAnchor.constraint(equalTo: slidingSegmentedControl.leadingAnchor)
+        XCTAssertConstraint(expectedConstraint, inView: slidingSegmentedControl)
+    }
+
+    func testStackViewBottomConstraint() {
+        let expectedConstraint = slidingSegmentedControl.stackView.bottomAnchor.constraint(equalTo: slidingSegmentedControl.bottomAnchor)
+        XCTAssertConstraint(expectedConstraint, inView: slidingSegmentedControl)
+    }
+
+    func testStackViewTrailingConstraint() {
+        let expectedConstraint = slidingSegmentedControl.stackView.trailingAnchor.constraint(equalTo: slidingSegmentedControl.trailingAnchor)
+        XCTAssertConstraint(expectedConstraint, inView: slidingSegmentedControl)
+    }
+
     // MARK: Buttons
 
     func testButtonsType() {

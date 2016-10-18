@@ -18,9 +18,19 @@ public class SlidingSegmentedControl: UIControl {
 
     private func initStackView() {
         addSubview(stackView)
+        stackView.translatesAutoresizingMaskIntoConstraints = false
         buttons.forEach { (button) in
             stackView.addArrangedSubview(button)
         }
+        NSLayoutConstraint.activate(stackViewConstraints)
+    }
+
+    private var stackViewConstraints: [NSLayoutConstraint] {
+        return [
+            stackView.topAnchor.constraint(equalTo: topAnchor),
+            stackView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            stackView.bottomAnchor.constraint(equalTo: bottomAnchor),
+            stackView.trailingAnchor.constraint(equalTo: trailingAnchor)]
     }
 
     var buttons: [UIButton] = []
