@@ -29,4 +29,23 @@ class SlidingSegmentedControlTests: XCTestCase {
     func testStackViewType() {
         XCTAssert(slidingSegmentedControl.stackView as Any is UIStackView)
     }
+
+    // MARK: Buttons
+
+    func testButtonsType() {
+        XCTAssert(slidingSegmentedControl.buttons as Any is [UIButton])
+    }
+
+    func testButtonsCount1() {
+        let numberOfButtons = 4
+        let slidingSegmentedControl = SlidingSegmentedControl(numberOfItems: numberOfButtons)
+        XCTAssertEqual(slidingSegmentedControl.buttons.count, numberOfButtons)
+    }
+
+    func testButtonsCount2() {
+        let numberOfButtons = 8
+        let slidingSegmentedControl = SlidingSegmentedControl(numberOfItems: numberOfButtons)
+        XCTAssertEqual(slidingSegmentedControl.buttons.count, numberOfButtons)
+    }
+
 }
