@@ -30,6 +30,10 @@ class SlidingSegmentedControlTests: XCTestCase {
         XCTAssert(slidingSegmentedControl.stackView as Any is UIStackView)
     }
 
+    func testStackViewArrangedSubviews() {
+        XCTAssertEqual(slidingSegmentedControl.stackView.arrangedSubviews, slidingSegmentedControl.buttons)
+    }
+
     // MARK: Buttons
 
     func testButtonsType() {

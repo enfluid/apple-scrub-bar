@@ -6,8 +6,8 @@ public class SlidingSegmentedControl: UIControl {
 
     public init(numberOfItems: Int) {
         super.init(frame: .zero)
-        initStackView()
         initButtons(number: numberOfItems)
+        initStackView()
     }
 
     required public init?(coder aDecoder: NSCoder) {
@@ -18,6 +18,9 @@ public class SlidingSegmentedControl: UIControl {
 
     private func initStackView() {
         addSubview(stackView)
+        buttons.forEach { (button) in
+            stackView.addArrangedSubview(button)
+        }
     }
 
     var buttons: [UIButton] = []
