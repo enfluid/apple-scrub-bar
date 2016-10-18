@@ -39,7 +39,17 @@ public class SlidingSegmentedControl: UIControl {
 
     private func initButtons(number: Int) {
         for _ in 0..<number {
-            buttons += [UIButton()]
+            let button = UIButton()
+            button.addTarget(self, action: #selector(buttonTapped(sender:)), for: UIControlEvents.touchUpInside)
+            buttons += [button]
         }
     }
+
+    func buttonTapped(sender: UIButton) {
+        guard let index = buttons.index(of: sender) else {
+            preconditionFailure()
+        }
+        selectedSegment = index
+    }
+
 }

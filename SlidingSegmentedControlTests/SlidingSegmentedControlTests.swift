@@ -76,6 +76,33 @@ class SlidingSegmentedControlTests: XCTestCase {
         XCTAssertEqual(slidingSegmentedControl.buttons.count, numberOfButtons)
     }
 
+    func testButtonTouchTarget1() {
+        let button = slidingSegmentedControl.buttons[1]
+        let actions = button.actions(forTarget: slidingSegmentedControl, forControlEvent: .touchUpInside) ?? []
+        let expectedAction = String(describing:  #selector(SlidingSegmentedControl.buttonTapped(sender:)))
+        XCTAssertEqual(actions, [expectedAction])
+    }
+    func testButtonTouchTarget2() {
+        let button = slidingSegmentedControl.buttons[2]
+        let actions = button.actions(forTarget: slidingSegmentedControl, forControlEvent: .touchUpInside) ?? []
+        let expectedAction = String(describing:  #selector(SlidingSegmentedControl.buttonTapped(sender:)))
+        XCTAssertEqual(actions, [expectedAction])
+    }
+
+    func testButtonAction1() {
+        let buttonIndex = 1
+        let button = slidingSegmentedControl.buttons[buttonIndex]
+        slidingSegmentedControl.buttonTapped(sender: button)
+        XCTAssertEqual(slidingSegmentedControl.selectedSegment, buttonIndex)
+    }
+
+    func testButtonAction2() {
+        let buttonIndex = 2
+        let button = slidingSegmentedControl.buttons[buttonIndex]
+        slidingSegmentedControl.buttonTapped(sender: button)
+        XCTAssertEqual(slidingSegmentedControl.selectedSegment, buttonIndex)
+    }
+
     // MARK: Selected segment
 
     func testSelectedSegmentType() {
