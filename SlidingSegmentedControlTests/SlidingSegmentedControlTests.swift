@@ -110,6 +110,19 @@ class SlidingSegmentedControlTests: XCTestCase {
         XCTAssertEqual(slidingSegmentedControl.selectedSegment, 0)
     }
 
+    func testSelectionViewType() {
+        XCTAssert(slidingSegmentedControl.selectionView as Any is UIView)
+    }
+
+    func testSelectionViewLayerMasksToBounds() {
+        XCTAssert(slidingSegmentedControl.selectionView.layer.masksToBounds)
+    }
+
+    func testSelectionViewLayerCornerRadius() {
+        let expectedCornerRadius = min(slidingSegmentedControl.stackView.bounds.width, slidingSegmentedControl.stackView.bounds.height)
+        XCTAssertEqual(slidingSegmentedControl.selectionView.layer.cornerRadius, expectedCornerRadius)
+    }
+
     // MARK: Set image for segment
 
     func testSetImageForSegment() {
@@ -128,6 +141,8 @@ class SlidingSegmentedControlTests: XCTestCase {
             let title = String(segmentIndex)
             slidingSegmentedControl.setTitle(title, forSegmentAt: segmentIndex)
             let button = slidingSegmentedControl.buttons[segmentIndex]
+            print(button.frame)
+            print(button.title(for: .normal))
             XCTAssertEqual(button.title(for: .normal), title)
         }
     }

@@ -8,6 +8,7 @@ public class SlidingSegmentedControl: UIControl {
         super.init(frame: .zero)
         initButtons(number: numberOfItems)
         initStackView()
+        initSelectionView()
     }
 
     required public init?(coder aDecoder: NSCoder) {
@@ -52,6 +53,15 @@ public class SlidingSegmentedControl: UIControl {
     func buttonTapped(sender: UIButton) {
         guard let index = buttons.index(of: sender) else { return }
         selectedSegment = index
+    }
+
+    // MARK: Selection view
+
+    let selectionView = UIView()
+
+    func initSelectionView() {
+        selectionView.layer.masksToBounds = true
+        selectionView.layer.cornerRadius = min(stackView.bounds.width, stackView.bounds.height)
     }
 
     // MARK: Set image for segment
