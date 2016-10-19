@@ -60,6 +60,7 @@ public class SlidingSegmentedControl: UIControl {
     let selectionView = UIView()
 
     func initSelectionView() {
+        insertSubview(selectionView, belowSubview: stackView)
         selectionView.layer.masksToBounds = true
         selectionView.layer.cornerRadius = min(stackView.bounds.width, stackView.bounds.height)
     }

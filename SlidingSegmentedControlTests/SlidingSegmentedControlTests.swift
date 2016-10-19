@@ -21,7 +21,7 @@ class SlidingSegmentedControlTests: XCTestCase {
     }
 
     func testSubviews() {
-        XCTAssertEqual(slidingSegmentedControl.subviews, [slidingSegmentedControl.stackView])
+        XCTAssertEqual(slidingSegmentedControl.subviews, [slidingSegmentedControl.selectionView, slidingSegmentedControl.stackView])
     }
 
     // MARK: Stack view
