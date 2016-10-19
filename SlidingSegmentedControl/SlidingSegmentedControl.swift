@@ -46,9 +46,7 @@ public class SlidingSegmentedControl: UIControl {
     }
 
     func buttonTapped(sender: UIButton) {
-        guard let index = buttons.index(of: sender) else {
-            preconditionFailure()
-        }
+        guard let index = buttons.index(of: sender) else { return }
         selectedSegment = index
     }
 

@@ -90,7 +90,14 @@ class SlidingSegmentedControlTests: XCTestCase {
             slidingSegmentedControl.buttonTapped(sender: button)
             XCTAssertEqual(slidingSegmentedControl.selectedSegment, index)
         }
+    }
 
+    func testNonexistentButtonAction() {
+        let selectedSegment = 2
+        slidingSegmentedControl.selectedSegment = selectedSegment
+        let button = UIButton()
+        slidingSegmentedControl.buttonTapped(sender: button)
+        XCTAssertEqual(slidingSegmentedControl.selectedSegment, selectedSegment)
     }
 
     // MARK: Selected segment
