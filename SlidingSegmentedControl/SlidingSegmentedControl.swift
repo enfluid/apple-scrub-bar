@@ -50,4 +50,8 @@ public class SlidingSegmentedControl: UIControl {
         selectedSegment = index
     }
 
+    func setImage(_ image: UIImage?, forSegmentAt segment: Int) {
+        buttons[segment].setImage(image, for: .normal)
+    }
+
 }
