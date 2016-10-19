@@ -16,6 +16,8 @@ public class SlidingSegmentedControl: UIControl {
 
     var selectedSegment = 0
 
+    // MARK: Stack view
+
     let stackView = UIStackView()
 
     private func initStackView() {
@@ -35,6 +37,8 @@ public class SlidingSegmentedControl: UIControl {
             stackView.trailingAnchor.constraint(equalTo: trailingAnchor)]
     }
 
+    // MARK: Buttons
+
     var buttons: [UIButton] = []
 
     private func initButtons(number: Int) {
@@ -50,9 +54,13 @@ public class SlidingSegmentedControl: UIControl {
         selectedSegment = index
     }
 
+    // MARK: Set image for segment
+
     func setImage(_ image: UIImage?, forSegmentAt index: Int) {
         buttons[index].setImage(image, for: .normal)
     }
+
+    // MARK: Set title for segment
 
     func setTitle(_ title: String, forSegmentAt index: Int) {
         buttons[index].setTitle(title, for: .normal)

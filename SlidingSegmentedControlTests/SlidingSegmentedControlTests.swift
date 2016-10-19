@@ -110,6 +110,8 @@ class SlidingSegmentedControlTests: XCTestCase {
         XCTAssertEqual(slidingSegmentedControl.selectedSegment, 0)
     }
 
+    // MARK: Set image for segment
+
     func testSetImageForSegment() {
         for segmentIndex in 0..<slidingSegmentedControl.buttons.count {
             let image = UIImage()
@@ -119,9 +121,11 @@ class SlidingSegmentedControlTests: XCTestCase {
         }
     }
 
+    // MARK: Set title for segment
+
     func testSetTitleForSegment() {
         for segmentIndex in 0..<slidingSegmentedControl.buttons.count {
-            let title = "\(segmentIndex)"
+            let title = String(segmentIndex)
             slidingSegmentedControl.setTitle(title, forSegmentAt: segmentIndex)
             let button = slidingSegmentedControl.buttons[segmentIndex]
             XCTAssertEqual(button.title(for: .normal), title)
