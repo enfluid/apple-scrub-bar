@@ -9,6 +9,7 @@ public class SlidingSegmentedControl: UIControl {
         initButtons(number: numberOfItems)
         initStackView()
         initSelectionView()
+        initPanGestureRecognizer()
     }
 
     required public init?(coder aDecoder: NSCoder) {
@@ -63,6 +64,17 @@ public class SlidingSegmentedControl: UIControl {
         insertSubview(selectionView, belowSubview: stackView)
         selectionView.layer.masksToBounds = true
         selectionView.layer.cornerRadius = min(stackView.bounds.width, stackView.bounds.height)
+    }
+
+    // MARK: Pan gesture recognizer
+
+    func initPanGestureRecognizer() {
+        let panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(didPan(panGesture:)))
+        addGestureRecognizer(panGestureRecognizer)
+    }
+
+    func didPan(panGesture: UIGestureRecognizer) {
+
     }
 
     // MARK: Set image for segment

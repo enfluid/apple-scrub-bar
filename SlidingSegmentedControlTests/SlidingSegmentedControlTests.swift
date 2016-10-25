@@ -137,6 +137,13 @@ class SlidingSegmentedControlTests: XCTestCase {
         XCTAssertEqual(slidingSegmentedControl.selectionView.frame, expectedFrame)
     }
 
+    // MARK: Pan gesture
+
+    func testPanGesture() {
+        let gestureRecognizers = slidingSegmentedControl.gestureRecognizers ?? []
+        XCTAssert(gestureRecognizers.first is UIPanGestureRecognizer)
+    }
+
     // MARK: Set image for segment
 
     func testSetImageForSegment() {
