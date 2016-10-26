@@ -19,7 +19,7 @@ public class SlidingSegmentedControl: UIControl {
 
     var selectedSegment = 0 {
         didSet {
-            addSelectionViewConstraints(to: buttons[selectedSegment])
+            updateLayoutConstraints()
         }
     }
 
@@ -33,6 +33,7 @@ public class SlidingSegmentedControl: UIControl {
     let stackView = UIStackView()
 
     private func initStackView() {
+        stackView.distribution = .fillEqually
         addSubview(stackView)
         stackView.translatesAutoresizingMaskIntoConstraints = false
         buttons.forEach { (button) in
@@ -74,19 +75,29 @@ public class SlidingSegmentedControl: UIControl {
         insertSubview(selectionView, belowSubview: stackView)
         selectionView.layer.masksToBounds = true
         selectionView.translatesAutoresizingMaskIntoConstraints = false
-        addSelectionViewConstraints(to: buttons[0])
+        let constraints = [
+            selectionView.topAnchor.constraint(equalTo: stackView.topAnchor),
+            selectionView.bottomAnchor.constraint(equalTo: stackView.bottomAnchor),
+            selectionView.widthAnchor.constraint(equalTo: buttons[0].widthAnchor)
+        ]
+        NSLayoutConstraint.activate(constraints)
+        updateLayoutConstraints()
     }
 
-    private var selectionViewConstraints: [NSLayoutConstraint] = []
+    private lazy var selectionViewLeadingConstraint: NSLayoutConstraint = SlidingSegmentedControl.makeSelectionViewLeadingConstraint(slidingSegmentedControl: self)
 
-    private func addSelectionViewConstraints(to button: UIButton) {
-        NSLayoutConstraint.deactivate(selectionViewConstraints)
-        selectionViewConstraints = [
-            selectionView.topAnchor.constraint(equalTo: button.topAnchor),
-            selectionView.leadingAnchor.constraint(equalTo: button.leadingAnchor),
-            selectionView.bottomAnchor.constraint(equalTo: button.bottomAnchor),
-            selectionView.trailingAnchor.constraint(equalTo: button.trailingAnchor)]
-        NSLayoutConstraint.activate(selectionViewConstraints)
+    private var selectedButton: UIButton {
+        return buttons[selectedSegment]
+    }
+
+    private static func makeSelectionViewLeadingConstraint(slidingSegmentedControl: SlidingSegmentedControl) -> NSLayoutConstraint {
+        return slidingSegmentedControl.selectionView.leadingAnchor.constraint(equalTo: slidingSegmentedControl.selectedButton.leadingAnchor)
+    }
+
+    private func updateLayoutConstraints() {
+        selectionViewLeadingConstraint.isActive = false
+        selectionViewLeadingConstraint = SlidingSegmentedControl.makeSelectionViewLeadingConstraint(slidingSegmentedControl: self)
+        selectionViewLeadingConstraint.isActive = true
     }
 
     // MARK: Pan gesture recognizer

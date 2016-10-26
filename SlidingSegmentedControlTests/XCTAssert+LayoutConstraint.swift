@@ -1,6 +1,12 @@
 import XCTest
 import UIKit
 
+func XCTAssertNotConstraint(_ constraint: NSLayoutConstraint, inView view: UIView, file: StaticString = #file, line: UInt = #line) {
+    if view.numberOfConstraintsMatching(constraint: constraint) != 0 {
+        XCTFail("Matching constraint(s) found", file: file, line: line)
+    }
+}
+
 func XCTAssertConstraint(_ constraint: NSLayoutConstraint, inView view: UIView, file: StaticString = #file, line: UInt = #line) {
     switch view.numberOfConstraintsMatching(constraint: constraint) {
     case 0:
