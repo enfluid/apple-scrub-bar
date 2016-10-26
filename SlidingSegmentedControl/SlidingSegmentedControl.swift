@@ -36,9 +36,7 @@ public class SlidingSegmentedControl: UIControl {
         stackView.distribution = .fillEqually
         addSubview(stackView)
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        buttons.forEach { (button) in
-            stackView.addArrangedSubview(button)
-        }
+        buttons.forEach(stackView.addArrangedSubview)
         NSLayoutConstraint.activate(stackViewConstraints)
     }
 
