@@ -198,8 +198,6 @@ class SlidingSegmentedControlTests: XCTestCase {
         XCTAssertNotConstraint(notExpectedConstraint, inView: slidingSegmentedControl)
     }
 
-
-
     // MARK: Pan gesture
 
     func testPanGesture() {
