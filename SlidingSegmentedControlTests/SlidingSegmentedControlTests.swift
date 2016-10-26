@@ -7,7 +7,7 @@ class SlidingSegmentedControlTests: XCTestCase {
 
     // MARK: Main
 
-    func testSuperClass() {
+    func testSuperclass() {
         XCTAssert(slidingSegmentedControl as Any is UIControl)
     }
 
