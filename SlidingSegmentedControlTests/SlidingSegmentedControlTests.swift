@@ -217,14 +217,4 @@ class SlidingSegmentedControlTests: XCTestCase {
         }
     }
 
-    // MARK: Set title for segment
-
-    func testSetTitleForSegment() {
-        slidingSegmentedControl.buttons.enumerated().forEach { (index, button) in
-            let title = String(index)
-            slidingSegmentedControl.setTitle(title, forSegmentAt: index)
-            XCTAssertEqual(button.title(for: .normal), title)
-        }
-    }
-
 }

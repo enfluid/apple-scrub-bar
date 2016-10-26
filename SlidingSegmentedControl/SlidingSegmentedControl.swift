@@ -115,9 +115,4 @@ public class SlidingSegmentedControl: UIControl {
         buttons[index].setImage(image, for: .normal)
     }
 
-    // MARK: Set title for segment
-
-    func setTitle(_ title: String, forSegmentAt index: Int) {
-        buttons[index].setTitle(title, for: .normal)
-    }
 }
