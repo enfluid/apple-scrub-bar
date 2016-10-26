@@ -76,19 +76,28 @@ class SlidingSegmentedControlTests: XCTestCase {
         XCTAssertEqual(slidingSegmentedControl.buttons.count, numberOfItem)
     }
 
-    func testButtonTouchTarget() {
-        slidingSegmentedControl.buttons.forEach { button in
-            let actions = button.actions(forTarget: slidingSegmentedControl, forControlEvent: .touchUpInside) ?? []
-            let expectedAction = String(describing:  #selector(SlidingSegmentedControl.buttonTapped(sender:)))
-            XCTAssertEqual(actions, [expectedAction])
-        }
+    func testButtonTouchTarget1() {
+        let actions = slidingSegmentedControl.buttons[0].actions(forTarget: slidingSegmentedControl, forControlEvent: .touchUpInside)!
+        let expectedAction = String(describing: #selector(SlidingSegmentedControl.buttonTapped(sender:)))
+        XCTAssertEqual(actions, [expectedAction])
     }
 
-    func testButtonAction() {
-        slidingSegmentedControl.buttons.enumerated().forEach { (index, button) in
-            slidingSegmentedControl.buttonTapped(sender: button)
-            XCTAssertEqual(slidingSegmentedControl.selectedSegment, index)
-        }
+    func testButtonTouchTarget2() {
+        let actions = slidingSegmentedControl.buttons[1].actions(forTarget: slidingSegmentedControl, forControlEvent: .touchUpInside)!
+        let expectedAction = String(describing: #selector(SlidingSegmentedControl.buttonTapped(sender:)))
+        XCTAssertEqual(actions, [expectedAction])
+    }
+
+    func testButtonAction1() {
+        let selectedItem = 1
+        slidingSegmentedControl.buttonTapped(sender: slidingSegmentedControl.buttons[selectedItem])
+        XCTAssertEqual(slidingSegmentedControl.selectedSegment, selectedItem)
+    }
+
+    func testButtonAction2() {
+        let selectedItem = 2
+        slidingSegmentedControl.buttonTapped(sender: slidingSegmentedControl.buttons[selectedItem])
+        XCTAssertEqual(slidingSegmentedControl.selectedSegment, selectedItem)
     }
 
     // MARK: Selected segment

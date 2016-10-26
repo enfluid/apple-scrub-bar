@@ -5,8 +5,9 @@ public class SlidingSegmentedControl: UIControl {
     // MARK: Initialization
 
     public init(numberOfItems: Int) {
+        buttons = SlidingSegmentedControl.makeButtons(numberOfItems: numberOfItems)
         super.init(frame: .zero)
-        initButtons(number: numberOfItems)
+        buttons.forEach(configureButton)
         initStackView()
         initSelectionView()
         initPanGestureRecognizer()
@@ -50,20 +51,19 @@ public class SlidingSegmentedControl: UIControl {
 
     // MARK: Buttons
 
-    var buttons: [UIButton] = []
+    let buttons: [UIButton]
 
-    private func initButtons(number: Int) {
-        for _ in 0..<number {
-            let button = UIButton()
-            button.addTarget(self, action: #selector(buttonTapped(sender:)), for: UIControlEvents.touchUpInside)
-            buttons += [button]
-        }
+    private static func makeButtons(numberOfItems: Int) -> [UIButton] {
+        let buttonRange = 0..<numberOfItems
+        return buttonRange.map { _ in UIButton() }
+    }
+
+    private func configureButton(button: UIButton) {
+        button.addTarget(self, action: #selector(SlidingSegmentedControl.buttonTapped(sender:)), for: .touchUpInside)
     }
 
     func buttonTapped(sender: UIButton) {
-        if let index = buttons.index(of: sender) {
-            selectedSegment = index
-        }
+        selectedSegment = buttons.index(of: sender)!
     }
 
     // MARK: Selection view
