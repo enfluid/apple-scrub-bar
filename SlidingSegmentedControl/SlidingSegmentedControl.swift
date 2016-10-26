@@ -16,7 +16,11 @@ public class SlidingSegmentedControl: UIControl {
         return nil
     }
 
-    var selectedSegment = 0
+    var selectedSegment = 0 {
+        didSet {
+            addSelectionViewConstraints(to: buttons[selectedSegment])
+        }
+    }
 
     // MARK: Stack view
 
@@ -63,7 +67,21 @@ public class SlidingSegmentedControl: UIControl {
     func initSelectionView() {
         insertSubview(selectionView, belowSubview: stackView)
         selectionView.layer.masksToBounds = true
+        selectionView.translatesAutoresizingMaskIntoConstraints = false
         selectionView.layer.cornerRadius = min(stackView.bounds.width, stackView.bounds.height)
+        addSelectionViewConstraints(to: buttons[0])
+    }
+
+    private var selectionViewConstraints: [NSLayoutConstraint] = []
+
+    private func addSelectionViewConstraints(to button: UIButton) {
+        NSLayoutConstraint.deactivate(selectionViewConstraints)
+        selectionViewConstraints = [
+            selectionView.topAnchor.constraint(equalTo: button.topAnchor),
+            selectionView.leadingAnchor.constraint(equalTo: button.leadingAnchor),
+            selectionView.bottomAnchor.constraint(equalTo: button.bottomAnchor),
+            selectionView.trailingAnchor.constraint(equalTo: button.trailingAnchor)]
+        NSLayoutConstraint.activate(selectionViewConstraints)
     }
 
     // MARK: Pan gesture recognizer

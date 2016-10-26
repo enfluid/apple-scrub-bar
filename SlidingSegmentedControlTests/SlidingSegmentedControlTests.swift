@@ -82,7 +82,6 @@ class SlidingSegmentedControlTests: XCTestCase {
             let expectedAction = String(describing:  #selector(SlidingSegmentedControl.buttonTapped(sender:)))
             XCTAssertEqual(actions, [expectedAction])
         }
-
     }
 
     func testButtonAction() {
@@ -116,6 +115,10 @@ class SlidingSegmentedControlTests: XCTestCase {
         XCTAssert(slidingSegmentedControl.selectionView as Any is UIView)
     }
 
+    func testSelectionViewIgnoresAutoresizingMask() {
+        XCTAssertFalse(slidingSegmentedControl.selectionView.translatesAutoresizingMaskIntoConstraints)
+    }
+
     func testSelectionViewLayerMasksToBounds() {
         XCTAssert(slidingSegmentedControl.selectionView.layer.masksToBounds)
     }
@@ -125,16 +128,37 @@ class SlidingSegmentedControlTests: XCTestCase {
         XCTAssertEqual(slidingSegmentedControl.selectionView.layer.cornerRadius, expectedCornerRadius)
     }
 
-    func testSelectionViewDefaultFrame() {
-        let expectedFrame = slidingSegmentedControl.buttons[0].frame
-        XCTAssertEqual(slidingSegmentedControl.selectionView.frame, expectedFrame)
+
+    func testSelectionViewTopConstraint() {
+        for index in 0..<slidingSegmentedControl.buttons.count {
+            slidingSegmentedControl.selectedSegment = index
+            let expectedConstraint = slidingSegmentedControl.selectionView.topAnchor.constraint(equalTo: slidingSegmentedControl.buttons[index].topAnchor)
+            XCTAssertConstraint(expectedConstraint, inView: slidingSegmentedControl)
+        }
     }
 
-    func testSlectionViewFrame() {
-        let selectedSegment = 1
-        slidingSegmentedControl.selectedSegment = selectedSegment
-        let expectedFrame = slidingSegmentedControl.buttons[selectedSegment].frame
-        XCTAssertEqual(slidingSegmentedControl.selectionView.frame, expectedFrame)
+    func testSelectionViewLeadingConstraint() {
+        for index in 0..<slidingSegmentedControl.buttons.count {
+            slidingSegmentedControl.selectedSegment = index
+            let expectedConstraint = slidingSegmentedControl.selectionView.leadingAnchor.constraint(equalTo: slidingSegmentedControl.buttons[index].leadingAnchor)
+            XCTAssertConstraint(expectedConstraint, inView: slidingSegmentedControl)
+        }
+    }
+
+    func testSelectionViewBottomConstraint() {
+        for index in 0..<slidingSegmentedControl.buttons.count {
+            slidingSegmentedControl.selectedSegment = index
+            let expectedConstraint = slidingSegmentedControl.selectionView.bottomAnchor.constraint(equalTo: slidingSegmentedControl.buttons[index].bottomAnchor)
+            XCTAssertConstraint(expectedConstraint, inView: slidingSegmentedControl)
+        }
+    }
+
+    func testSelectionViewTrailingConstraint() {
+        for index in 0..<slidingSegmentedControl.buttons.count {
+            slidingSegmentedControl.selectedSegment = index
+            let expectedConstraint = slidingSegmentedControl.selectionView.trailingAnchor.constraint(equalTo: slidingSegmentedControl.buttons[index].trailingAnchor)
+            XCTAssertConstraint(expectedConstraint, inView: slidingSegmentedControl)
+        }
     }
 
     // MARK: Pan gesture
