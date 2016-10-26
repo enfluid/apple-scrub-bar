@@ -56,8 +56,9 @@ public class SlidingSegmentedControl: UIControl {
     }
 
     func buttonTapped(sender: UIButton) {
-        guard let index = buttons.index(of: sender) else { return }
-        selectedSegment = index
+        if let index = buttons.index(of: sender) {
+            selectedSegment = index
+        }
     }
 
     // MARK: Selection view
