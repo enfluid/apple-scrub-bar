@@ -13,7 +13,7 @@ public class SlidingSegmentedControl: UIControl {
         initPanGestureRecognizer()
     }
 
-    required public init?(coder aDecoder: NSCoder) {
+    required public init?(coder: NSCoder) {
         return nil
     }
 
