@@ -22,6 +22,11 @@ public class SlidingSegmentedControl: UIControl {
         }
     }
 
+    public override func layoutSubviews() {
+        super.layoutSubviews()
+        selectionView.layer.cornerRadius = min(stackView.bounds.width, stackView.bounds.height)
+    }
+
     // MARK: Stack view
 
     let stackView = UIStackView()
@@ -69,7 +74,6 @@ public class SlidingSegmentedControl: UIControl {
         insertSubview(selectionView, belowSubview: stackView)
         selectionView.layer.masksToBounds = true
         selectionView.translatesAutoresizingMaskIntoConstraints = false
-        selectionView.layer.cornerRadius = min(stackView.bounds.width, stackView.bounds.height)
         addSelectionViewConstraints(to: buttons[0])
     }
 

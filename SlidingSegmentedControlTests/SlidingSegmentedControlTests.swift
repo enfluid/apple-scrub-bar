@@ -115,9 +115,32 @@ class SlidingSegmentedControlTests: XCTestCase {
         XCTAssert(slidingSegmentedControl.selectionView.layer.masksToBounds)
     }
 
-    func testSelectionViewLayerCornerRadius() {
-        let expectedCornerRadius = min(slidingSegmentedControl.stackView.bounds.width, slidingSegmentedControl.stackView.bounds.height)
-        XCTAssertEqual(slidingSegmentedControl.selectionView.layer.cornerRadius, expectedCornerRadius)
+    func testSelectionViewLayerCornerRadiusFromWidth1() {
+        let stackViewWidth: CGFloat = 1
+        slidingSegmentedControl.stackView.bounds.size = CGSize(width: stackViewWidth, height: stackViewWidth + 1)
+        slidingSegmentedControl.layoutSubviews()
+        XCTAssertEqual(slidingSegmentedControl.selectionView.layer.cornerRadius, stackViewWidth)
+    }
+
+    func testSelectionViewLayerCornerRadiusFromWidth2() {
+        let stackViewWidth: CGFloat = 2
+        slidingSegmentedControl.stackView.bounds.size = CGSize(width: stackViewWidth, height: stackViewWidth + 1)
+        slidingSegmentedControl.layoutSubviews()
+        XCTAssertEqual(slidingSegmentedControl.selectionView.layer.cornerRadius, stackViewWidth)
+    }
+
+    func testSelectionViewLayerCornerRadiusFromHeight1() {
+        let stackViewHeight: CGFloat = 3
+        slidingSegmentedControl.stackView.bounds.size = CGSize(width: stackViewHeight + 1, height: stackViewHeight)
+        slidingSegmentedControl.layoutSubviews()
+        XCTAssertEqual(slidingSegmentedControl.selectionView.layer.cornerRadius, stackViewHeight)
+    }
+
+    func testSelectionViewLayerCornerRadiusFromHeight2() {
+        let stackViewHeight: CGFloat = 4
+        slidingSegmentedControl.stackView.bounds.size = CGSize(width: stackViewHeight + 1, height: stackViewHeight)
+        slidingSegmentedControl.layoutSubviews()
+        XCTAssertEqual(slidingSegmentedControl.selectionView.layer.cornerRadius, stackViewHeight)
     }
 
     func testSelectionViewTopConstraint() {
