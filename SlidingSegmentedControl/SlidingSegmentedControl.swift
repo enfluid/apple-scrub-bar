@@ -21,7 +21,7 @@ public class SlidingSegmentedControl: UIControl {
         return nil
     }
 
-    var selectedSegment = 0 {
+    public var selectedSegment = 0 {
         didSet {
             updateLayoutConstraints()
         }
