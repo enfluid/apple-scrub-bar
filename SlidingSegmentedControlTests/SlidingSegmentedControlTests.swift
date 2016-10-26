@@ -3,7 +3,7 @@ import XCTest
 
 class SlidingSegmentedControlTests: XCTestCase {
 
-    lazy var slidingSegmentedControl = SlidingSegmentedControl(numberOfItems: 3)
+    lazy var slidingSegmentedControl = SlidingSegmentedControl(images: Array(repeating: UIImage(), count: 3))
 
     // MARK: Main
 
@@ -69,15 +69,17 @@ class SlidingSegmentedControlTests: XCTestCase {
     }
 
     func testButtonsCount1() {
-        let numberOfItems = 4
-        let slidingSegmentedControl = SlidingSegmentedControl(numberOfItems: numberOfItems)
+        let numberOfItems = 1
+        let images = Array(repeating: UIImage(), count: numberOfItems)
+        let slidingSegmentedControl = SlidingSegmentedControl(images: images)
         XCTAssertEqual(slidingSegmentedControl.buttons.count, numberOfItems)
     }
 
     func testButtonsCount2() {
-        let numberOfItem = 8
-        let slidingSegmentedControl = SlidingSegmentedControl(numberOfItems: numberOfItem)
-        XCTAssertEqual(slidingSegmentedControl.buttons.count, numberOfItem)
+        let numberOfItems = 2
+        let images = Array(repeating: UIImage(), count: numberOfItems)
+        let slidingSegmentedControl = SlidingSegmentedControl(images: images)
+        XCTAssertEqual(slidingSegmentedControl.buttons.count, numberOfItems)
     }
 
     func testButtonTouchTarget1() {
@@ -102,6 +104,18 @@ class SlidingSegmentedControlTests: XCTestCase {
         let selectedItem = 2
         slidingSegmentedControl.buttonTapped(sender: slidingSegmentedControl.buttons[selectedItem])
         XCTAssertEqual(slidingSegmentedControl.selectedSegment, selectedItem)
+    }
+
+    func testButtonImage1() {
+        let image = UIImage()
+        let slidingSegmentedControl = SlidingSegmentedControl(images: [image])
+        XCTAssertEqual(slidingSegmentedControl.buttons[0].image(for: .normal), image)
+    }
+
+    func testButtonImage2() {
+        let image = UIImage()
+        let slidingSegmentedControl = SlidingSegmentedControl(images: [UIImage(), image])
+        XCTAssertEqual(slidingSegmentedControl.buttons[1].image(for: .normal), image)
     }
 
     // MARK: Selected segment
@@ -203,16 +217,6 @@ class SlidingSegmentedControlTests: XCTestCase {
     func testPanGesture() {
         let gestureRecognizers = slidingSegmentedControl.gestureRecognizers ?? []
         XCTAssert(gestureRecognizers.first is UIPanGestureRecognizer)
-    }
-
-    // MARK: Set image for segment
-
-    func testSetImageForSegment() {
-        slidingSegmentedControl.buttons.enumerated().forEach { (index, button) in
-            let image = UIImage()
-            slidingSegmentedControl.setImage(image, forSegmentAt: index)
-            XCTAssertEqual(button.imageView?.image, image)
-        }
     }
 
 }

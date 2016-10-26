@@ -4,10 +4,14 @@ public class SlidingSegmentedControl: UIControl {
 
     // MARK: Initialization
 
-    public init(numberOfItems: Int) {
-        buttons = SlidingSegmentedControl.makeButtons(numberOfItems: numberOfItems)
+    public init(images: [UIImage]) {
+        buttons = SlidingSegmentedControl.makeButtons(numberOfItems: images.count)
         super.init(frame: .zero)
         buttons.forEach(configureButton)
+        zip(buttons, images).forEach { (button, image) in
+            button.setImage(image, for: .normal)
+        }
+        buttons[0].setImage(images[0], for: .normal)
         initStackView()
         initSelectionView()
         initPanGestureRecognizer()
@@ -107,12 +111,6 @@ public class SlidingSegmentedControl: UIControl {
 
     func didPan(panGesture: UIGestureRecognizer) {
 
-    }
-
-    // MARK: Set image for segment
-
-    func setImage(_ image: UIImage?, forSegmentAt index: Int) {
-        buttons[index].setImage(image, for: .normal)
     }
 
 }
