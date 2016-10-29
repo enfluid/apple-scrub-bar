@@ -19,7 +19,7 @@ class PanGestureRecognizerTests: XCTestCase {
         class Target {}
         let target = Target()
         let panGestureRecognizer = PanGestureRecognizer(target: target, action: nil)
-        XCTAssertTrue(panGestureRecognizer.initialTarget as? Target === target)
+        XCTAssert(panGestureRecognizer.initialTarget as? Target === target)
     }
 
     func testInitialActionType() {
