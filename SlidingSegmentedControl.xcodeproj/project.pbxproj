@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0F7E35581DC2EC8D00C62142 /* PanGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F7E35571DC2EC8D00C62142 /* PanGestureRecognizer.swift */; };
+		0F7E355A1DC2ED0900C62142 /* PanGestureRecognizerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F7E35591DC2ED0900C62142 /* PanGestureRecognizerTests.swift */; };
 		0FC1688E1DB5B2200090CB3A /* SlidingSegmentedControl.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0FC168841DB5B2200090CB3A /* SlidingSegmentedControl.framework */; };
 		0FC168931DB5B2200090CB3A /* SlidingSegmentedControlTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FC168921DB5B2200090CB3A /* SlidingSegmentedControlTests.swift */; };
 		0FC168951DB5B2200090CB3A /* SlidingSegmentedControl.h in Headers */ = {isa = PBXBuildFile; fileRef = 0FC168871DB5B2200090CB3A /* SlidingSegmentedControl.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -26,6 +28,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0F7E35571DC2EC8D00C62142 /* PanGestureRecognizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PanGestureRecognizer.swift; sourceTree = "<group>"; };
+		0F7E35591DC2ED0900C62142 /* PanGestureRecognizerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PanGestureRecognizerTests.swift; sourceTree = "<group>"; };
 		0FC168841DB5B2200090CB3A /* SlidingSegmentedControl.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SlidingSegmentedControl.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		0FC168871DB5B2200090CB3A /* SlidingSegmentedControl.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SlidingSegmentedControl.h; sourceTree = "<group>"; };
 		0FC168881DB5B2200090CB3A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -79,6 +83,7 @@
 			children = (
 				0FC168871DB5B2200090CB3A /* SlidingSegmentedControl.h */,
 				0FC1689E1DB5B3510090CB3A /* SlidingSegmentedControl.swift */,
+				0F7E35571DC2EC8D00C62142 /* PanGestureRecognizer.swift */,
 				0FC168881DB5B2200090CB3A /* Info.plist */,
 			);
 			path = SlidingSegmentedControl;
@@ -88,6 +93,7 @@
 			isa = PBXGroup;
 			children = (
 				0FC168921DB5B2200090CB3A /* SlidingSegmentedControlTests.swift */,
+				0F7E35591DC2ED0900C62142 /* PanGestureRecognizerTests.swift */,
 				0FC168A01DB5B4C50090CB3A /* NSCoder+Empty.swift */,
 				0FC168A21DB5BDAE0090CB3A /* XCTAssert+LayoutConstraint.swift */,
 				0FC168941DB5B2200090CB3A /* Info.plist */,
@@ -207,6 +213,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0FC1689F1DB5B3510090CB3A /* SlidingSegmentedControl.swift in Sources */,
+				0F7E35581DC2EC8D00C62142 /* PanGestureRecognizer.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -217,6 +224,7 @@
 				0FC168A31DB5BDAE0090CB3A /* XCTAssert+LayoutConstraint.swift in Sources */,
 				0FC168A11DB5B4C50090CB3A /* NSCoder+Empty.swift in Sources */,
 				0FC168931DB5B2200090CB3A /* SlidingSegmentedControlTests.swift in Sources */,
+				0F7E355A1DC2ED0900C62142 /* PanGestureRecognizerTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -412,6 +420,7 @@
 				0FC1689A1DB5B2200090CB3A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		0FC1689B1DB5B2200090CB3A /* Build configuration list for PBXNativeTarget "SlidingSegmentedControlTests" */ = {
 			isa = XCConfigurationList;
@@ -420,6 +429,7 @@
 				0FC1689D1DB5B2200090CB3A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
