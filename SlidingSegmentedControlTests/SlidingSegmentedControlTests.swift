@@ -214,9 +214,22 @@ class SlidingSegmentedControlTests: XCTestCase {
 
     // MARK: Pan gesture
 
-    func testPanGesture() {
+    func testPanGestureType() {
+        XCTAssert(slidingSegmentedControl.panGestureRecognizer as Any is PanGestureRecognizer)
+    }
+
+    func testPanGestureIsAdded() {
         let gestureRecognizers = slidingSegmentedControl.gestureRecognizers ?? []
-        XCTAssert(gestureRecognizers.first is UIPanGestureRecognizer)
+        XCTAssertEqual(gestureRecognizers.first, slidingSegmentedControl.panGestureRecognizer)
+    }
+
+    func testPanGestureTarget() {
+        XCTAssert(slidingSegmentedControl.panGestureRecognizer?.initialTarget as? SlidingSegmentedControl === slidingSegmentedControl)
+    }
+
+    func testPanGestureAation() {
+        let selector = #selector(SlidingSegmentedControl.didPan(panGesture:))
+        XCTAssertEqual(slidingSegmentedControl.panGestureRecognizer?.initialAction, selector)
     }
 
 }

@@ -111,12 +111,16 @@ public class SlidingSegmentedControl: UIControl {
 
     // MARK: Pan gesture recognizer
 
+    var panGestureRecognizer: PanGestureRecognizer?
+
     func initPanGestureRecognizer() {
-        let panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(didPan(panGesture:)))
-        addGestureRecognizer(panGestureRecognizer)
+        panGestureRecognizer = PanGestureRecognizer(target: self, action: #selector(SlidingSegmentedControl.didPan(panGesture:)))
+        if let panGestureRecognizer = panGestureRecognizer {
+            addGestureRecognizer(panGestureRecognizer)
+        }
     }
 
-    func didPan(panGesture: UIGestureRecognizer) {
+    func didPan(panGesture: PanGestureRecognizer) {
 
     }
 
