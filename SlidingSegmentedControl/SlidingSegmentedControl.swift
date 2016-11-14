@@ -10,7 +10,6 @@ public class SlidingSegmentedControl: UIControl {
         initButtons(with: images)
         initStackView()
         initSelectionView()
-        initPanGestureRecognizer()
     }
 
     required public init?(coder: NSCoder) {
@@ -107,21 +106,6 @@ public class SlidingSegmentedControl: UIControl {
 
     private static func makeSelectionViewLeadingConstraint(slidingSegmentedControl: SlidingSegmentedControl) -> NSLayoutConstraint {
         return slidingSegmentedControl.selectionView.leadingAnchor.constraint(equalTo: slidingSegmentedControl.selectedButton.leadingAnchor)
-    }
-
-    // MARK: Pan gesture recognizer
-
-    var panGestureRecognizer: PanGestureRecognizer?
-
-    func initPanGestureRecognizer() {
-        panGestureRecognizer = PanGestureRecognizer(target: self, action: #selector(SlidingSegmentedControl.didPan(panGesture:)))
-        if let panGestureRecognizer = panGestureRecognizer {
-            addGestureRecognizer(panGestureRecognizer)
-        }
-    }
-
-    func didPan(panGesture: PanGestureRecognizer) {
-
     }
 
     // MARK: Touch tracking

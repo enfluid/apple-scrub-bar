@@ -212,26 +212,6 @@ class SlidingSegmentedControlTests: XCTestCase {
         XCTAssertNotConstraint(notExpectedConstraint, inView: slidingSegmentedControl)
     }
 
-    // MARK: Pan gesture
-
-    func testPanGestureType() {
-        XCTAssert(slidingSegmentedControl.panGestureRecognizer as Any is PanGestureRecognizer)
-    }
-
-    func testPanGestureIsAdded() {
-        let gestureRecognizers = slidingSegmentedControl.gestureRecognizers ?? []
-        XCTAssertEqual(gestureRecognizers.first, slidingSegmentedControl.panGestureRecognizer)
-    }
-
-    func testPanGestureTarget() {
-        XCTAssert(slidingSegmentedControl.panGestureRecognizer?.initialTarget as? SlidingSegmentedControl === slidingSegmentedControl)
-    }
-
-    func testPanGestureAation() {
-        let selector = #selector(SlidingSegmentedControl.didPan(panGesture:))
-        XCTAssertEqual(slidingSegmentedControl.panGestureRecognizer?.initialAction, selector)
-    }
-
     // MARK: Change active segment with a tap
 
     func testActiveSegmentCalculatorType() {
