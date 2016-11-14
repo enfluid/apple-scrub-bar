@@ -276,6 +276,7 @@ class SlidingSegmentedControlTests: XCTestCase {
     // MARK: Change active segment with a pan
 
     func testContinueTrackingReturnsTrue() {
+        _ = slidingSegmentedControl.beginTracking(UITouch(), with: nil)
         XCTAssertTrue(slidingSegmentedControl.continueTracking(UITouch(), with: nil))
     }
 
@@ -291,6 +292,7 @@ class SlidingSegmentedControlTests: XCTestCase {
         let activeSegmentCalculatorMock = ActiveSegmentCalculatorMock()
         slidingSegmentedControl.activeSegmentCalculator = activeSegmentCalculatorMock
         let touch = TouchStub(location: location, view: slidingSegmentedControl)
+        _ = slidingSegmentedControl.beginTracking(UITouch(), with: nil)
         _ = slidingSegmentedControl.continueTracking(touch, with: nil)
         XCTAssertEqual(activeSegmentCalculatorMock.touchLocations, [touch.location], file: file, line: line)
     }
@@ -306,10 +308,74 @@ class SlidingSegmentedControlTests: XCTestCase {
     func testPanChangesSelection(withSegmentIndex segmentIndex: Int, file: StaticString = #file, line: UInt = #line) {
         let activeSegmentCalculatorStub = ActiveSegmentCalculatorStub(indexOfActiveSegment: segmentIndex)
         slidingSegmentedControl.activeSegmentCalculator = activeSegmentCalculatorStub
+        _ = slidingSegmentedControl.beginTracking(UITouch(), with: nil)
         _ = slidingSegmentedControl.continueTracking(UITouch(), with: nil)
         XCTAssertEqual(slidingSegmentedControl.selectedSegment, segmentIndex, file: file, line: line)
     }
-    
+
+    // MARK: Scrub mode
+
+    func testScrubModeType() {
+        XCTAssertTrue(slidingSegmentedControl.isInScrubMode as Any is Bool)
+    }
+
+    func testScrubModeFalse() {
+        XCTAssertFalse(slidingSegmentedControl.isInScrubMode)
+    }
+
+    // MARK: Minimum pan distance for scrub mode
+
+    func testMinPanDistanceType() {
+        XCTAssertTrue(slidingSegmentedControl.minPanDistance as Any is CGFloat)
+    }
+
+    func testDefaultMinPanDistance() {
+        XCTAssertEqual(slidingSegmentedControl.minPanDistance, 10)
+    }
+
+    func testBeginTrackingReturnsTrue() {
+        XCTAssertTrue(slidingSegmentedControl.beginTracking(UITouch(), with: nil))
+    }
+
+    func testContinueWithoutBeginReturnsFalse() {
+        XCTAssertFalse(slidingSegmentedControl.continueTracking(UITouch(), with: nil))
+    }
+
+    func testIsInScrubModeAfterPanTrue1() {
+        slidingSegmentedControl.minPanDistance = 2
+        testIsInScrubModeWithPan(from: .zero, to: CGPoint(x: slidingSegmentedControl.minPanDistance, y: 0), expected: true)
+    }
+
+    func testIsInScrubModeAfterPanTrue2() {
+        let point1 = CGPoint(x: 100, y: 0)
+        let point2 = CGPoint(x: point1.x - slidingSegmentedControl.minPanDistance, y: 0)
+        testIsInScrubModeWithPan(from: point1, to: point2, expected: true)
+    }
+
+    func testIsInScrubModeAfterPanFalse1() {
+        testIsInScrubModeWithPan(from: .zero, to: CGPoint(x: slidingSegmentedControl.minPanDistance - 1, y: 0), expected: false)
+    }
+
+    func testIsInScrubModeAfterPanFalse2() {
+        let point1 = CGPoint(x: 100, y: 0)
+        let point2 = CGPoint(x: point1.x + 1, y: 0)
+        testIsInScrubModeWithPan(from: point1, to: point2, expected: false)
+    }
+
+    func testIsInScrubModeWithPan(from point1: CGPoint, to point2: CGPoint, expected expectedIsInScrubMode: Bool, file: StaticString = #file, line: UInt = #line) {
+        let startTouch = TouchStub(location: point1, view: slidingSegmentedControl)
+        _ = slidingSegmentedControl.beginTracking(startTouch, with: nil)
+        let panTouch = TouchStub(location: point2, view: slidingSegmentedControl)
+        _ = slidingSegmentedControl.continueTracking(panTouch, with: nil)
+        XCTAssertEqual(slidingSegmentedControl.isInScrubMode, expectedIsInScrubMode, file: file, line: line)
+    }
+
+    func testIsInScrubModeAfterEndIsFalse() {
+        slidingSegmentedControl.isInScrubMode = true
+        slidingSegmentedControl.endTracking(nil, with: nil)
+        XCTAssertFalse(slidingSegmentedControl.isInScrubMode)
+    }
+
 }
 
 class TouchStub: UITouch {

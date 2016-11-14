@@ -126,14 +126,23 @@ public class SlidingSegmentedControl: UIControl {
 
     // MARK: Touch tracking
 
+    var touchStartLocation: CGPoint?
+
     var activeSegmentCalculator: ActiveSegmentCalculator = DefaultActiveSegmentCalculator(numberOfElements: 0, elementWidth: 0, boundsWidth: 0)
 
-//    public override func beginTracking(_ touch: UITouch, with event: UIEvent?) -> Bool {
-//        return true
-//    }
+    public override func beginTracking(_ touch: UITouch, with event: UIEvent?) -> Bool {
+        touchStartLocation = touch.location(in: self)
+        return true
+    }
 
     public override func continueTracking(_ touch: UITouch, with event: UIEvent?) -> Bool {
-        selectedSegment = activeSegmentCalculator.indexOfActiveSegment(forTouchLocation: touch.location(in: self))
+        guard let touchStartLocation = touchStartLocation else {
+            // don't do fatal error, because we can't ensure UIKit always calls beginTracking (though it probably does)
+            return false
+        }
+        let location = touch.location(in: self)
+        selectedSegment = activeSegmentCalculator.indexOfActiveSegment(forTouchLocation: location)
+        isInScrubMode = abs(location.x - touchStartLocation.x) >= minPanDistance
         return true
     }
 
@@ -141,9 +150,17 @@ public class SlidingSegmentedControl: UIControl {
         // required, but don't know how to test this
         super.endTracking(touch, with: event)
 
+        isInScrubMode = false
+
         guard let touch = touch else { return }
 
         selectedSegment = activeSegmentCalculator.indexOfActiveSegment(forTouchLocation: touch.location(in: self))
     }
 
+    // MARK: Scrub mode
+
+    var isInScrubMode = false
+
+    var minPanDistance: CGFloat = 10
+    
 }
