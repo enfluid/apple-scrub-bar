@@ -232,7 +232,7 @@ class SlidingSegmentedControlTests: XCTestCase {
         XCTAssertEqual(slidingSegmentedControl.panGestureRecognizer?.initialAction, selector)
     }
 
-    // MARK: Tracking touches
+    // MARK: Change active segment with a tap
 
     func testActiveSegmentCalculatorType() {
         XCTAssertTrue(slidingSegmentedControl.activeSegmentCalculator as Any is DefaultActiveSegmentCalculator)
@@ -273,6 +273,8 @@ class SlidingSegmentedControlTests: XCTestCase {
         slidingSegmentedControl.endTracking(nil, with: nil)
     }
 
+    // MARK: Change active segment with a pan
+
     func testContinueTrackingReturnsTrue() {
         XCTAssertTrue(slidingSegmentedControl.continueTracking(UITouch(), with: nil))
     }
@@ -307,6 +309,7 @@ class SlidingSegmentedControlTests: XCTestCase {
         _ = slidingSegmentedControl.continueTracking(UITouch(), with: nil)
         XCTAssertEqual(slidingSegmentedControl.selectedSegment, segmentIndex, file: file, line: line)
     }
+    
 }
 
 class TouchStub: UITouch {
