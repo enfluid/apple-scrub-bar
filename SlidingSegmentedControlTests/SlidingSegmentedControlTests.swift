@@ -35,7 +35,7 @@ class SlidingSegmentedControlTests: XCTestCase {
     }
 
     func testStackViewArrangedSubviews() {
-        XCTAssertEqual(slidingSegmentedControl.stackView.arrangedSubviews, slidingSegmentedControl.buttons)
+        XCTAssertEqual(slidingSegmentedControl.stackView.arrangedSubviews, slidingSegmentedControl.imageViews)
     }
 
     func testStackViewIgnoresAutoresizingMask() {
@@ -62,60 +62,16 @@ class SlidingSegmentedControlTests: XCTestCase {
         XCTAssertConstraint(expectedConstraint, inView: slidingSegmentedControl)
     }
 
-    // MARK: Buttons
+    // MARK: UIImageViews
 
-    func testButtonsType() {
-        XCTAssert(slidingSegmentedControl.buttons as Any is [UIButton])
+    func testImageViewsType() {
+        XCTAssertTrue(slidingSegmentedControl.imageViews as Any is [UIImageView])
     }
 
-    func testButtonsCount1() {
-        let numberOfItems = 1
-        let images = Array(repeating: UIImage(), count: numberOfItems)
+    func testImageViewsImages() {
+        let images = [UIImage(), UIImage()]
         let slidingSegmentedControl = SlidingSegmentedControl(images: images)
-        XCTAssertEqual(slidingSegmentedControl.buttons.count, numberOfItems)
-    }
-
-    func testButtonsCount2() {
-        let numberOfItems = 2
-        let images = Array(repeating: UIImage(), count: numberOfItems)
-        let slidingSegmentedControl = SlidingSegmentedControl(images: images)
-        XCTAssertEqual(slidingSegmentedControl.buttons.count, numberOfItems)
-    }
-
-    func testButtonTouchTarget1() {
-        let actions = slidingSegmentedControl.buttons[0].actions(forTarget: slidingSegmentedControl, forControlEvent: .touchUpInside)!
-        let expectedAction = String(describing: #selector(SlidingSegmentedControl.buttonTapped(sender:)))
-        XCTAssertEqual(actions, [expectedAction])
-    }
-
-    func testButtonTouchTarget2() {
-        let actions = slidingSegmentedControl.buttons[1].actions(forTarget: slidingSegmentedControl, forControlEvent: .touchUpInside)!
-        let expectedAction = String(describing: #selector(SlidingSegmentedControl.buttonTapped(sender:)))
-        XCTAssertEqual(actions, [expectedAction])
-    }
-
-    func testButtonAction1() {
-        let selectedItem = 1
-        slidingSegmentedControl.buttonTapped(sender: slidingSegmentedControl.buttons[selectedItem])
-        XCTAssertEqual(slidingSegmentedControl.selectedSegment, selectedItem)
-    }
-
-    func testButtonAction2() {
-        let selectedItem = 2
-        slidingSegmentedControl.buttonTapped(sender: slidingSegmentedControl.buttons[selectedItem])
-        XCTAssertEqual(slidingSegmentedControl.selectedSegment, selectedItem)
-    }
-
-    func testButtonImage1() {
-        let image = UIImage()
-        let slidingSegmentedControl = SlidingSegmentedControl(images: [image])
-        XCTAssertEqual(slidingSegmentedControl.buttons[0].image(for: .normal), image)
-    }
-
-    func testButtonImage2() {
-        let image = UIImage()
-        let slidingSegmentedControl = SlidingSegmentedControl(images: [UIImage(), image])
-        XCTAssertEqual(slidingSegmentedControl.buttons[1].image(for: .normal), image)
+        XCTAssertEqual(slidingSegmentedControl.imageViews.map {$0.image!}, images)
     }
 
     // MARK: Selected segment
@@ -181,26 +137,26 @@ class SlidingSegmentedControlTests: XCTestCase {
     }
 
     func testSelectionViewWidthConstraint() {
-        let expectedConstraint = slidingSegmentedControl.selectionView.widthAnchor.constraint(equalTo: slidingSegmentedControl.buttons[0].widthAnchor)
+        let expectedConstraint = slidingSegmentedControl.selectionView.widthAnchor.constraint(equalTo: slidingSegmentedControl.imageViews[0].widthAnchor)
         XCTAssertConstraint(expectedConstraint, inView: slidingSegmentedControl)
     }
 
     func testSelectionViewLeadingConstraintDefault() {
-        let expectedConstraint = slidingSegmentedControl.selectionView.leadingAnchor.constraint(equalTo: slidingSegmentedControl.buttons[0].leadingAnchor)
+        let expectedConstraint = slidingSegmentedControl.selectionView.leadingAnchor.constraint(equalTo: slidingSegmentedControl.imageViews[0].leadingAnchor)
         XCTAssertConstraint(expectedConstraint, inView: slidingSegmentedControl)
     }
 
     func testSelectionViewLeadingConstraintActive1() {
         let selectedSegment = 1
         slidingSegmentedControl.selectedSegment = selectedSegment
-        let expectedConstraint = slidingSegmentedControl.selectionView.leadingAnchor.constraint(equalTo: slidingSegmentedControl.buttons[selectedSegment].leadingAnchor)
+        let expectedConstraint = slidingSegmentedControl.selectionView.leadingAnchor.constraint(equalTo: slidingSegmentedControl.imageViews[selectedSegment].leadingAnchor)
         XCTAssertConstraint(expectedConstraint, inView: slidingSegmentedControl)
     }
 
     func testSelectionViewLeadingConstraintActive2() {
         let selectedSegment = 2
         slidingSegmentedControl.selectedSegment = selectedSegment
-        let expectedConstraint = slidingSegmentedControl.selectionView.leadingAnchor.constraint(equalTo: slidingSegmentedControl.buttons[selectedSegment].leadingAnchor)
+        let expectedConstraint = slidingSegmentedControl.selectionView.leadingAnchor.constraint(equalTo: slidingSegmentedControl.imageViews[selectedSegment].leadingAnchor)
         XCTAssertConstraint(expectedConstraint, inView: slidingSegmentedControl)
     }
 
@@ -208,7 +164,7 @@ class SlidingSegmentedControlTests: XCTestCase {
         let previouslySelectedSegment = 0
         slidingSegmentedControl.selectedSegment = previouslySelectedSegment
         slidingSegmentedControl.selectedSegment = 1
-        let notExpectedConstraint = slidingSegmentedControl.selectionView.leadingAnchor.constraint(equalTo: slidingSegmentedControl.buttons[previouslySelectedSegment].leadingAnchor)
+        let notExpectedConstraint = slidingSegmentedControl.selectionView.leadingAnchor.constraint(equalTo: slidingSegmentedControl.imageViews[previouslySelectedSegment].leadingAnchor)
         XCTAssertNotConstraint(notExpectedConstraint, inView: slidingSegmentedControl)
     }
 

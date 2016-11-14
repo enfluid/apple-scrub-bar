@@ -5,12 +5,13 @@ public class SlidingSegmentedControl: UIControl {
     // MARK: Initialization
 
     public init(images: [UIImage]) {
-        buttons = SlidingSegmentedControl.makeButtons(numberOfItems: images.count)
+        imageViews = images.map { UIImageView(image: $0) }
         super.init(frame: .zero)
-        initButtons(with: images)
         initStackView()
         initSelectionView()
     }
+
+    let imageViews: [UIImageView]
 
     required public init?(coder: NSCoder) {
         return nil
@@ -35,7 +36,7 @@ public class SlidingSegmentedControl: UIControl {
         stackView.distribution = .fillEqually
         addSubview(stackView)
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        buttons.forEach(stackView.addArrangedSubview)
+        imageViews.forEach(stackView.addArrangedSubview)
         NSLayoutConstraint.activate(stackViewConstraints)
     }
 
@@ -48,29 +49,6 @@ public class SlidingSegmentedControl: UIControl {
         ]
     }
 
-    // MARK: Buttons
-
-    let buttons: [UIButton]
-
-    private func initButtons(with images: [UIImage]) {
-        buttons.forEach(configureButton)
-        zip(buttons, images).forEach { (button, image) in
-            button.setImage(image, for: .normal)
-        }
-    }
-
-    private static func makeButtons(numberOfItems: Int) -> [UIButton] {
-        let buttonRange = 0..<numberOfItems
-        return buttonRange.map { _ in UIButton() }
-    }
-
-    private func configureButton(button: UIButton) {
-        button.addTarget(self, action: #selector(SlidingSegmentedControl.buttonTapped(sender:)), for: .touchUpInside)
-    }
-
-    func buttonTapped(sender: UIButton) {
-        selectedSegment = buttons.index(of: sender)!
-    }
 
     // MARK: Selection view
 
@@ -88,14 +66,14 @@ public class SlidingSegmentedControl: UIControl {
         return [
             selectionView.topAnchor.constraint(equalTo: stackView.topAnchor),
             selectionView.bottomAnchor.constraint(equalTo: stackView.bottomAnchor),
-            selectionView.widthAnchor.constraint(equalTo: buttons[0].widthAnchor)
+            selectionView.widthAnchor.constraint(equalTo: imageViews[0].widthAnchor)
         ]
     }
 
     private lazy var selectionViewLeadingConstraint: NSLayoutConstraint = SlidingSegmentedControl.makeSelectionViewLeadingConstraint(slidingSegmentedControl: self)
 
-    private var selectedButton: UIButton {
-        return buttons[selectedSegment]
+    private var selectedButton: UIImageView {
+        return imageViews[selectedSegment]
     }
 
     private func updateSelectionViewLeadingConstraint() {
