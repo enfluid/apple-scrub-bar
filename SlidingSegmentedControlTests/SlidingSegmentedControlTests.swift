@@ -269,6 +269,10 @@ class SlidingSegmentedControlTests: XCTestCase {
         XCTAssertEqual(slidingSegmentedControl.selectedSegment, segmentIndex, file: file, line: line)
     }
 
+    func testEndTrackingWithNilTouch() {
+        slidingSegmentedControl.endTracking(nil, with: nil)
+    }
+
 }
 
 class TouchStub: UITouch {

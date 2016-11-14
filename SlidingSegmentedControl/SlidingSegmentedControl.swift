@@ -133,7 +133,12 @@ public class SlidingSegmentedControl: UIControl {
     }
 
     public override func endTracking(_ touch: UITouch?, with event: UIEvent?) {
-        selectedSegment = activeSegmentCalculator.indexOfActiveSegment(forTouchLocation: touch!.location(in: self))
+        // required, but don't know how to test this
+        super.endTracking(touch, with: event)
+
+        guard let touch = touch else { return }
+
+        selectedSegment = activeSegmentCalculator.indexOfActiveSegment(forTouchLocation: touch.location(in: self))
     }
 
 }
