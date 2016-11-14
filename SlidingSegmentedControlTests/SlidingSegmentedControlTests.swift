@@ -249,8 +249,8 @@ class SlidingSegmentedControlTests: XCTestCase {
     func testTapCallsActiveSegmentCalculator(withLocation location: CGPoint, file: StaticString = #file, line: UInt = #line) {
         let activeSegmentCalculatorMock = ActiveSegmentCalculatorMock()
         slidingSegmentedControl.activeSegmentCalculator = activeSegmentCalculatorMock
-        let endTouch = TouchStub(location: location)
-        _ = slidingSegmentedControl.endTracking(endTouch, with: nil)
+        let endTouch = TouchStub(location: location, view: slidingSegmentedControl)
+        slidingSegmentedControl.endTracking(endTouch, with: nil)
         XCTAssertEqual(activeSegmentCalculatorMock.touchLocations, [endTouch.location], file: file, line: line)
     }
 
@@ -265,7 +265,7 @@ class SlidingSegmentedControlTests: XCTestCase {
     func testTapChangesSelection(withSegmentIndex segmentIndex: Int, file: StaticString = #file, line: UInt = #line) {
         let activeSegmentCalculatorStub = ActiveSegmentCalculatorStub(indexOfActiveSegment: segmentIndex)
         slidingSegmentedControl.activeSegmentCalculator = activeSegmentCalculatorStub
-        _ = slidingSegmentedControl.endTracking(TouchStub(location: .zero), with: nil)
+        slidingSegmentedControl.endTracking(TouchStub(location: .zero, view: slidingSegmentedControl), with: nil)
         XCTAssertEqual(slidingSegmentedControl.selectedSegment, segmentIndex, file: file, line: line)
     }
 
@@ -274,12 +274,18 @@ class SlidingSegmentedControlTests: XCTestCase {
 class TouchStub: UITouch {
 
     let location: CGPoint
+    let touchView: UIView
 
-    init(location: CGPoint) {
+    init(location: CGPoint, view: UIView) {
         self.location = location
+        self.touchView = view
     }
 
     override func location(in view: UIView?) -> CGPoint {
+        guard view == self.touchView else {
+            XCTFail("View is not equal to \(self.view)")
+            return .zero
+        }
         return location
     }
 
