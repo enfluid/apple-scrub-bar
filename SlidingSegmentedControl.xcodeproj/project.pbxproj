@@ -15,6 +15,7 @@
 		0FC1689F1DB5B3510090CB3A /* SlidingSegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FC1689E1DB5B3510090CB3A /* SlidingSegmentedControl.swift */; };
 		0FC168A11DB5B4C50090CB3A /* NSCoder+Empty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FC168A01DB5B4C50090CB3A /* NSCoder+Empty.swift */; };
 		0FC168A31DB5BDAE0090CB3A /* XCTAssert+LayoutConstraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FC168A21DB5BDAE0090CB3A /* XCTAssert+LayoutConstraint.swift */; };
+		81C9D7B71DDA0574003E884D /* ActiveSegmentCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81C9D7B61DDA0574003E884D /* ActiveSegmentCalculator.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -39,6 +40,7 @@
 		0FC1689E1DB5B3510090CB3A /* SlidingSegmentedControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SlidingSegmentedControl.swift; sourceTree = "<group>"; };
 		0FC168A01DB5B4C50090CB3A /* NSCoder+Empty.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSCoder+Empty.swift"; sourceTree = "<group>"; };
 		0FC168A21DB5BDAE0090CB3A /* XCTAssert+LayoutConstraint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "XCTAssert+LayoutConstraint.swift"; sourceTree = "<group>"; };
+		81C9D7B61DDA0574003E884D /* ActiveSegmentCalculator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActiveSegmentCalculator.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -83,6 +85,7 @@
 			children = (
 				0FC168871DB5B2200090CB3A /* SlidingSegmentedControl.h */,
 				0FC1689E1DB5B3510090CB3A /* SlidingSegmentedControl.swift */,
+				81C9D7B61DDA0574003E884D /* ActiveSegmentCalculator.swift */,
 				0F7E35571DC2EC8D00C62142 /* PanGestureRecognizer.swift */,
 				0FC168881DB5B2200090CB3A /* Info.plist */,
 			);
@@ -213,6 +216,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0FC1689F1DB5B3510090CB3A /* SlidingSegmentedControl.swift in Sources */,
+				81C9D7B71DDA0574003E884D /* ActiveSegmentCalculator.swift in Sources */,
 				0F7E35581DC2EC8D00C62142 /* PanGestureRecognizer.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -232,4 +232,98 @@ class SlidingSegmentedControlTests: XCTestCase {
         XCTAssertEqual(slidingSegmentedControl.panGestureRecognizer?.initialAction, selector)
     }
 
+    // MARK: Tracking touches
+
+    func testActiveSegmentCalculatorType() {
+        XCTAssertTrue(slidingSegmentedControl.activeSegmentCalculator as Any is DefaultActiveSegmentCalculator)
+    }
+
+    func testTapCallsActiveSegmentCalculator1() {
+        testTapCallsActiveSegmentCalculator(withLocation: CGPoint(x: 0, y: 0))
+    }
+
+    func testTapCallsActiveSegmentCalculator2() {
+        testTapCallsActiveSegmentCalculator(withLocation: CGPoint(x: 0, y: 1))
+    }
+
+    func testTapCallsActiveSegmentCalculator(withLocation location: CGPoint, file: StaticString = #file, line: UInt = #line) {
+        let activeSegmentCalculatorMock = ActiveSegmentCalculatorMock()
+        slidingSegmentedControl.activeSegmentCalculator = activeSegmentCalculatorMock
+        let endTouch = TouchStub(location: location)
+        _ = slidingSegmentedControl.endTracking(endTouch, with: nil)
+        XCTAssertEqual(activeSegmentCalculatorMock.touchLocations, [endTouch.location], file: file, line: line)
+    }
+
+    func testTapChangesSelection1() {
+        testTapChangesSelection(withSegmentIndex: 1)
+    }
+
+    func testTapChangesSelection2() {
+        testTapChangesSelection(withSegmentIndex: 2)
+    }
+
+    func testTapChangesSelection(withSegmentIndex segmentIndex: Int, file: StaticString = #file, line: UInt = #line) {
+        let activeSegmentCalculatorStub = ActiveSegmentCalculatorStub(indexOfActiveSegment: segmentIndex)
+        slidingSegmentedControl.activeSegmentCalculator = activeSegmentCalculatorStub
+        _ = slidingSegmentedControl.endTracking(TouchStub(location: .zero), with: nil)
+        XCTAssertEqual(slidingSegmentedControl.selectedSegment, segmentIndex, file: file, line: line)
+    }
+
+}
+
+class TouchStub: UITouch {
+
+    let location: CGPoint
+
+    init(location: CGPoint) {
+        self.location = location
+    }
+
+    override func location(in view: UIView?) -> CGPoint {
+        return location
+    }
+
+}
+
+final class ActiveSegmentCalculatorMock: ActiveSegmentCalculator {
+
+    let numberOfElements: Int
+    let elementWidth: CGFloat
+    let boundsWidth: CGFloat
+
+    convenience init() {
+        self.init(numberOfElements: 0, elementWidth: 0, boundsWidth: 0)
+    }
+
+    init(numberOfElements: Int, elementWidth: CGFloat, boundsWidth: CGFloat) {
+        self.numberOfElements = numberOfElements
+        self.elementWidth = elementWidth
+        self.boundsWidth = boundsWidth
+    }
+
+    var touchLocations: [CGPoint] = []
+
+    func indexOfActiveSegment(forTouchLocation touchLocation: CGPoint) -> Int {
+        touchLocations.append(touchLocation)
+        return 0
+    }
+
+}
+
+struct ActiveSegmentCalculatorStub: ActiveSegmentCalculator {
+
+    let indexOfActiveSegment: Int
+
+    init(indexOfActiveSegment: Int) {
+        self.indexOfActiveSegment = indexOfActiveSegment
+    }
+
+    init(numberOfElements: Int, elementWidth: CGFloat, boundsWidth: CGFloat) {
+        indexOfActiveSegment = 0
+    }
+
+    func indexOfActiveSegment(forTouchLocation touchLocation: CGPoint) -> Int {
+        return indexOfActiveSegment
+    }
+
 }

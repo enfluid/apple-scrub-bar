@@ -124,4 +124,16 @@ public class SlidingSegmentedControl: UIControl {
 
     }
 
+    // MARK: Touch tracking
+
+    var activeSegmentCalculator: ActiveSegmentCalculator = DefaultActiveSegmentCalculator(numberOfElements: 0, elementWidth: 0, boundsWidth: 0)
+
+    public override func beginTracking(_ touch: UITouch, with event: UIEvent?) -> Bool {
+        return true
+    }
+
+    public override func endTracking(_ touch: UITouch?, with event: UIEvent?) {
+        selectedSegment = activeSegmentCalculator.indexOfActiveSegment(forTouchLocation: touch!.location(in: self))
+    }
+
 }
