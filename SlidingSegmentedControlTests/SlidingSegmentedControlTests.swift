@@ -273,6 +273,40 @@ class SlidingSegmentedControlTests: XCTestCase {
         slidingSegmentedControl.endTracking(nil, with: nil)
     }
 
+    func testContinueTrackingReturnsTrue() {
+        XCTAssertTrue(slidingSegmentedControl.continueTracking(UITouch(), with: nil))
+    }
+
+    func testPanCallsActiveSegmentCalculator1() {
+        testPanCallsActiveSegmentCalculator(withLocation: CGPoint(x: 1, y: 1))
+    }
+
+    func testPanCallsActiveSegmentCalculator2() {
+        testPanCallsActiveSegmentCalculator(withLocation: CGPoint(x: 2, y: 2))
+    }
+
+    func testPanCallsActiveSegmentCalculator(withLocation location: CGPoint, file: StaticString = #file, line: UInt = #line) {
+        let activeSegmentCalculatorMock = ActiveSegmentCalculatorMock()
+        slidingSegmentedControl.activeSegmentCalculator = activeSegmentCalculatorMock
+        let touch = TouchStub(location: location, view: slidingSegmentedControl)
+        _ = slidingSegmentedControl.continueTracking(touch, with: nil)
+        XCTAssertEqual(activeSegmentCalculatorMock.touchLocations, [touch.location], file: file, line: line)
+    }
+
+    func testPanChangesSelection1() {
+        testPanChangesSelection(withSegmentIndex: 1)
+    }
+
+    func testPanChangesSelection2() {
+        testPanChangesSelection(withSegmentIndex: 2)
+    }
+
+    func testPanChangesSelection(withSegmentIndex segmentIndex: Int, file: StaticString = #file, line: UInt = #line) {
+        let activeSegmentCalculatorStub = ActiveSegmentCalculatorStub(indexOfActiveSegment: segmentIndex)
+        slidingSegmentedControl.activeSegmentCalculator = activeSegmentCalculatorStub
+        _ = slidingSegmentedControl.continueTracking(UITouch(), with: nil)
+        XCTAssertEqual(slidingSegmentedControl.selectedSegment, segmentIndex, file: file, line: line)
+    }
 }
 
 class TouchStub: UITouch {
