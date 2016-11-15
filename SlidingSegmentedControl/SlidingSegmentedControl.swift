@@ -66,7 +66,7 @@ public class SlidingSegmentedControl: UIControl {
         return [
             selectionView.topAnchor.constraint(equalTo: stackView.topAnchor),
             selectionView.bottomAnchor.constraint(equalTo: stackView.bottomAnchor),
-            selectionView.widthAnchor.constraint(equalTo: imageViews[0].widthAnchor)
+            selectionView.widthAnchor.constraint(equalTo: selectionView.heightAnchor)
         ]
     }
 

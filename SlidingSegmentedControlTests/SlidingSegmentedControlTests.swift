@@ -123,8 +123,8 @@ class SlidingSegmentedControlTests: XCTestCase {
     }
 
     func testSelectionViewWidthConstraint() {
-        let expectedConstraint = slidingSegmentedControl.selectionView.widthAnchor.constraint(equalTo: slidingSegmentedControl.imageViews[0].widthAnchor)
-        XCTAssertConstraint(expectedConstraint, inView: slidingSegmentedControl)
+        let expectedConstraint = slidingSegmentedControl.selectionView.widthAnchor.constraint(equalTo: slidingSegmentedControl.selectionView.heightAnchor)
+        XCTAssertConstraint(expectedConstraint, inView: slidingSegmentedControl.selectionView)
     }
 
     func testSelectionViewLeadingConstraintDefault() {
