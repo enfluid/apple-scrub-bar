@@ -7,8 +7,8 @@ public class SlidingSegmentedControl: UIControl {
     public init(images: [UIImage]) {
         imageViews = images.map { UIImageView(image: $0) }
         super.init(frame: .zero)
-        initStackView()
-        initSelectionView()
+        configureStackView()
+        configureSelectionView()
     }
 
     let imageViews: [UIImageView]
@@ -32,7 +32,7 @@ public class SlidingSegmentedControl: UIControl {
 
     let stackView = UIStackView()
 
-    private func initStackView() {
+    private func configureStackView() {
         stackView.distribution = .fillEqually
         addSubview(stackView)
         stackView.translatesAutoresizingMaskIntoConstraints = false
@@ -49,12 +49,11 @@ public class SlidingSegmentedControl: UIControl {
         ]
     }
 
-
     // MARK: Selection view
 
     let selectionView = UIView()
 
-    func initSelectionView() {
+    func configureSelectionView() {
         insertSubview(selectionView, belowSubview: stackView)
         selectionView.layer.masksToBounds = true
         selectionView.translatesAutoresizingMaskIntoConstraints = false
