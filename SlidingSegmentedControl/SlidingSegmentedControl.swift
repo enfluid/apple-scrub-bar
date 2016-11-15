@@ -70,7 +70,7 @@ public class SlidingSegmentedControl: UIControl {
         ]
     }
 
-    private lazy var selectionViewLeadingConstraint: NSLayoutConstraint = SlidingSegmentedControl.makeSelectionViewLeadingConstraint(slidingSegmentedControl: self)
+    private lazy var selectionViewLeadingConstraint: NSLayoutConstraint = self.makeSelectionViewLeadingConstraint()
 
     private var selectedButton: UIImageView {
         return imageViews[selectedSegment]
@@ -78,12 +78,12 @@ public class SlidingSegmentedControl: UIControl {
 
     private func updateSelectionViewLeadingConstraint() {
         selectionViewLeadingConstraint.isActive = false
-        selectionViewLeadingConstraint = SlidingSegmentedControl.makeSelectionViewLeadingConstraint(slidingSegmentedControl: self)
+        selectionViewLeadingConstraint = makeSelectionViewLeadingConstraint()
         selectionViewLeadingConstraint.isActive = true
     }
 
-    private static func makeSelectionViewLeadingConstraint(slidingSegmentedControl: SlidingSegmentedControl) -> NSLayoutConstraint {
-        return slidingSegmentedControl.selectionView.leadingAnchor.constraint(equalTo: slidingSegmentedControl.selectedButton.leadingAnchor)
+    private func makeSelectionViewLeadingConstraint() -> NSLayoutConstraint {
+        return selectionView.leadingAnchor.constraint(equalTo: selectedButton.leadingAnchor)
     }
 
     // MARK: Touch tracking
