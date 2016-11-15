@@ -19,7 +19,7 @@ public class SlidingSegmentedControl: UIControl {
 
     public var selectedSegment = 0 {
         didSet {
-            updateSelectionViewLeadingConstraint()
+            updateSelectionViewCenterXConstraint()
         }
     }
 
@@ -58,7 +58,7 @@ public class SlidingSegmentedControl: UIControl {
         selectionView.layer.masksToBounds = true
         selectionView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate(selectionViewStaticConstraints)
-        updateSelectionViewLeadingConstraint()
+        updateSelectionViewCenterXConstraint()
         updateSelectionViewWidthConstraint()
     }
 
@@ -69,16 +69,20 @@ public class SlidingSegmentedControl: UIControl {
         ]
     }
 
-    private func updateSelectionViewLeadingConstraint() {
-        selectionViewLeadingConstraint.isActive = false
-        selectionViewLeadingConstraint = makeSelectionViewLeadingConstraint()
-        selectionViewLeadingConstraint.isActive = true
+    private func updateSelectionViewCenterXConstraint() {
+        selectionViewCenterXConstraint.isActive = false
+        selectionViewCenterXConstraint = makeSelectionViewCenterXConstraint()
+        selectionViewCenterXConstraint.isActive = true
     }
 
-    private lazy var selectionViewLeadingConstraint: NSLayoutConstraint = self.makeSelectionViewLeadingConstraint()
+    private lazy var selectionViewCenterXConstraint: NSLayoutConstraint = self.makeSelectionViewCenterXConstraint()
 
-    private func makeSelectionViewLeadingConstraint() -> NSLayoutConstraint {
-        return selectionView.leadingAnchor.constraint(equalTo: selectedImageView.leadingAnchor)
+    private func makeSelectionViewCenterXConstraint() -> NSLayoutConstraint {
+        return selectionView.centerXAnchor.constraint(equalTo: selectedImageView.centerXAnchor)
+    }
+
+    private var selectedImageView: UIImageView {
+        return imageViews[selectedSegment]
     }
 
     private func updateSelectionViewWidthConstraint() {
@@ -91,10 +95,6 @@ public class SlidingSegmentedControl: UIControl {
 
     private func makeSelectionViewWidthConstraint() -> NSLayoutConstraint {
         return selectionView.widthAnchor.constraint(equalTo: isInScrubMode ? stackView.widthAnchor : selectionView.heightAnchor)
-    }
-
-    private var selectedImageView: UIImageView {
-        return imageViews[selectedSegment]
     }
 
     // MARK: Touch tracking

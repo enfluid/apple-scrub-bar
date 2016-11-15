@@ -133,31 +133,36 @@ class SlidingSegmentedControlTests: XCTestCase {
         XCTAssertConstraint(expectedConstraint, inView: slidingSegmentedControl)
     }
 
-    func testSelectionViewLeadingConstraintDefault() {
-        let expectedConstraint = slidingSegmentedControl.selectionView.leadingAnchor.constraint(equalTo: slidingSegmentedControl.imageViews[0].leadingAnchor)
+    func testSelectionViewWidthConstraintGetsRemoved() {
+        let constraint = slidingSegmentedControl.selectionView.widthAnchor.constraint(equalTo: slidingSegmentedControl.selectionView.heightAnchor)
+        slidingSegmentedControl.isInScrubMode = true
+        XCTAssertNotConstraint(constraint, inView: slidingSegmentedControl.selectionView)
+    }
+
+    func testSelectionViewCenterXConstraintDefault() {
+        let expectedConstraint = slidingSegmentedControl.selectionView.centerXAnchor.constraint(equalTo: slidingSegmentedControl.imageViews[0].centerXAnchor)
         XCTAssertConstraint(expectedConstraint, inView: slidingSegmentedControl)
     }
 
-    func testSelectionViewLeadingConstraintActive1() {
-        let selectedSegment = 1
+    func testSelectionViewCenterXConstraint1() {
+        testSelectionViewCenterXConstraint(withSelectedSegment: 1)
+    }
+
+    func testSelectionViewCenterXConstraint2() {
+        testSelectionViewCenterXConstraint(withSelectedSegment: 2)
+    }
+
+    func testSelectionViewCenterXConstraint(withSelectedSegment selectedSegment: Int, file: StaticString = #file, line: UInt = #line) {
         slidingSegmentedControl.selectedSegment = selectedSegment
-        let expectedConstraint = slidingSegmentedControl.selectionView.leadingAnchor.constraint(equalTo: slidingSegmentedControl.imageViews[selectedSegment].leadingAnchor)
-        XCTAssertConstraint(expectedConstraint, inView: slidingSegmentedControl)
+        let expectedConstraint = slidingSegmentedControl.selectionView.centerXAnchor.constraint(equalTo: slidingSegmentedControl.imageViews[selectedSegment].centerXAnchor)
+        XCTAssertConstraint(expectedConstraint, inView: slidingSegmentedControl, file: file, line: line)
     }
 
-    func testSelectionViewLeadingConstraintActive2() {
-        let selectedSegment = 2
-        slidingSegmentedControl.selectedSegment = selectedSegment
-        let expectedConstraint = slidingSegmentedControl.selectionView.leadingAnchor.constraint(equalTo: slidingSegmentedControl.imageViews[selectedSegment].leadingAnchor)
-        XCTAssertConstraint(expectedConstraint, inView: slidingSegmentedControl)
-    }
-
-    func testSelectionViewLeadingConstraintInactive() {
-        let previouslySelectedSegment = 0
-        slidingSegmentedControl.selectedSegment = previouslySelectedSegment
+    func testSelectionViewCenterXConstraintGetsRemoved() {
+        let constraint = slidingSegmentedControl.selectionView.centerXAnchor.constraint(equalTo: slidingSegmentedControl.imageViews[0].centerXAnchor)
+        slidingSegmentedControl.selectedSegment = 0
         slidingSegmentedControl.selectedSegment = 1
-        let notExpectedConstraint = slidingSegmentedControl.selectionView.leadingAnchor.constraint(equalTo: slidingSegmentedControl.imageViews[previouslySelectedSegment].leadingAnchor)
-        XCTAssertNotConstraint(notExpectedConstraint, inView: slidingSegmentedControl)
+        XCTAssertNotConstraint(constraint, inView: slidingSegmentedControl)
     }
 
     // MARK: Change active segment with a tap
