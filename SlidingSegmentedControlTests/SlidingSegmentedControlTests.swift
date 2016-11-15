@@ -165,6 +165,19 @@ class SlidingSegmentedControlTests: XCTestCase {
         XCTAssertNotConstraint(constraint, inView: slidingSegmentedControl)
     }
 
+    func testSelectionViewCenterXConstraintInScrubMode1() {
+        slidingSegmentedControl.isInScrubMode = true
+        let expectedConstraint = slidingSegmentedControl.selectionView.centerXAnchor.constraint(equalTo: slidingSegmentedControl.stackView.centerXAnchor)
+        XCTAssertConstraint(expectedConstraint, inView: slidingSegmentedControl)
+    }
+
+    func testSelectionViewCenterXConstraintInScrubMode2() {
+        slidingSegmentedControl.isInScrubMode = true
+        slidingSegmentedControl.selectedSegment = 0
+        let constraint = slidingSegmentedControl.selectionView.centerXAnchor.constraint(equalTo: slidingSegmentedControl.imageViews[0].centerXAnchor)
+        XCTAssertNotConstraint(constraint, inView: slidingSegmentedControl)
+    }
+
     // MARK: Change active segment with a tap
 
     func testActiveSegmentCalculatorType() {

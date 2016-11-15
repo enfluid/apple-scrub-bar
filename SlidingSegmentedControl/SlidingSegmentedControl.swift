@@ -78,7 +78,7 @@ public class SlidingSegmentedControl: UIControl {
     private lazy var selectionViewCenterXConstraint: NSLayoutConstraint = self.makeSelectionViewCenterXConstraint()
 
     private func makeSelectionViewCenterXConstraint() -> NSLayoutConstraint {
-        return selectionView.centerXAnchor.constraint(equalTo: selectedImageView.centerXAnchor)
+        return selectionView.centerXAnchor.constraint(equalTo: isInScrubMode ? stackView.centerXAnchor : selectedImageView.centerXAnchor)
     }
 
     private var selectedImageView: UIImageView {
@@ -135,6 +135,7 @@ public class SlidingSegmentedControl: UIControl {
     var isInScrubMode = false {
         didSet {
             updateSelectionViewWidthConstraint()
+            updateSelectionViewCenterXConstraint()
         }
     }
 
