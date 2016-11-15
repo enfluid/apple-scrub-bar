@@ -127,6 +127,12 @@ class SlidingSegmentedControlTests: XCTestCase {
         XCTAssertConstraint(expectedConstraint, inView: slidingSegmentedControl.selectionView)
     }
 
+    func testSelectionViewWidthConstraintInScrubMode() {
+        slidingSegmentedControl.isInScrubMode = true
+        let expectedConstraint = slidingSegmentedControl.selectionView.widthAnchor.constraint(equalTo: slidingSegmentedControl.stackView.widthAnchor)
+        XCTAssertConstraint(expectedConstraint, inView: slidingSegmentedControl)
+    }
+
     func testSelectionViewLeadingConstraintDefault() {
         let expectedConstraint = slidingSegmentedControl.selectionView.leadingAnchor.constraint(equalTo: slidingSegmentedControl.imageViews[0].leadingAnchor)
         XCTAssertConstraint(expectedConstraint, inView: slidingSegmentedControl)

@@ -59,13 +59,13 @@ public class SlidingSegmentedControl: UIControl {
         selectionView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate(selectionViewStaticConstraints)
         updateSelectionViewLeadingConstraint()
+        updateSelectionViewWidthConstraint()
     }
 
     private var selectionViewStaticConstraints: [NSLayoutConstraint] {
         return [
             selectionView.topAnchor.constraint(equalTo: stackView.topAnchor),
             selectionView.bottomAnchor.constraint(equalTo: stackView.bottomAnchor),
-            selectionView.widthAnchor.constraint(equalTo: selectionView.heightAnchor)
         ]
     }
 
@@ -79,6 +79,18 @@ public class SlidingSegmentedControl: UIControl {
 
     private func makeSelectionViewLeadingConstraint() -> NSLayoutConstraint {
         return selectionView.leadingAnchor.constraint(equalTo: selectedImageView.leadingAnchor)
+    }
+
+    private func updateSelectionViewWidthConstraint() {
+        selectionViewWidthConstraint.isActive = false
+        selectionViewWidthConstraint = makeSelectionViewWidthConstraint()
+        selectionViewWidthConstraint.isActive = true
+    }
+
+    private lazy var selectionViewWidthConstraint: NSLayoutConstraint = self.makeSelectionViewWidthConstraint()
+
+    private func makeSelectionViewWidthConstraint() -> NSLayoutConstraint {
+        return selectionView.widthAnchor.constraint(equalTo: isInScrubMode ? stackView.widthAnchor : selectionView.heightAnchor)
     }
 
     private var selectedImageView: UIImageView {
@@ -120,7 +132,11 @@ public class SlidingSegmentedControl: UIControl {
 
     // MARK: Scrub mode
 
-    var isInScrubMode = false
+    var isInScrubMode = false {
+        didSet {
+            updateSelectionViewWidthConstraint()
+        }
+    }
 
     var minPanDistance: CGFloat = 10
     
