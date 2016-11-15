@@ -25,7 +25,7 @@ public class SlidingSegmentedControl: UIControl {
 
     public override func layoutSubviews() {
         super.layoutSubviews()
-        selectionView.layer.cornerRadius = min(stackView.bounds.width, stackView.bounds.height)
+        selectionView.layer.cornerRadius = stackView.bounds.height / 2
     }
 
     // MARK: Stack view

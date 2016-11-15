@@ -98,32 +98,18 @@ class SlidingSegmentedControlTests: XCTestCase {
         XCTAssert(slidingSegmentedControl.selectionView.layer.masksToBounds)
     }
 
-    func testSelectionViewLayerCornerRadiusFromWidth1() {
-        let stackViewWidth: CGFloat = 1
-        slidingSegmentedControl.stackView.bounds.size = CGSize(width: stackViewWidth, height: stackViewWidth + 1)
-        slidingSegmentedControl.layoutSubviews()
-        XCTAssertEqual(slidingSegmentedControl.selectionView.layer.cornerRadius, stackViewWidth)
+    func testSelectionViewLayerCornerRadius1() {
+        testSelectionViewLayerCornerRadius(withStackViewHeight: 10)
     }
 
-    func testSelectionViewLayerCornerRadiusFromWidth2() {
-        let stackViewWidth: CGFloat = 2
-        slidingSegmentedControl.stackView.bounds.size = CGSize(width: stackViewWidth, height: stackViewWidth + 1)
-        slidingSegmentedControl.layoutSubviews()
-        XCTAssertEqual(slidingSegmentedControl.selectionView.layer.cornerRadius, stackViewWidth)
+    func testSelectionViewLayerCornerRadius2() {
+        testSelectionViewLayerCornerRadius(withStackViewHeight: 20)
     }
 
-    func testSelectionViewLayerCornerRadiusFromHeight1() {
-        let stackViewHeight: CGFloat = 3
-        slidingSegmentedControl.stackView.bounds.size = CGSize(width: stackViewHeight + 1, height: stackViewHeight)
+    func testSelectionViewLayerCornerRadius(withStackViewHeight stackViewHeight: CGFloat, file: StaticString = #file, line: UInt = #line) {
+        slidingSegmentedControl.stackView.bounds.size = CGSize(width: 0, height: stackViewHeight)
         slidingSegmentedControl.layoutSubviews()
-        XCTAssertEqual(slidingSegmentedControl.selectionView.layer.cornerRadius, stackViewHeight)
-    }
-
-    func testSelectionViewLayerCornerRadiusFromHeight2() {
-        let stackViewHeight: CGFloat = 4
-        slidingSegmentedControl.stackView.bounds.size = CGSize(width: stackViewHeight + 1, height: stackViewHeight)
-        slidingSegmentedControl.layoutSubviews()
-        XCTAssertEqual(slidingSegmentedControl.selectionView.layer.cornerRadius, stackViewHeight)
+        XCTAssertEqual(slidingSegmentedControl.selectionView.layer.cornerRadius, stackViewHeight / 2, file: file, line: line)
     }
 
     func testSelectionViewTopConstraint() {
