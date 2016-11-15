@@ -70,32 +70,28 @@ public class SlidingSegmentedControl: UIControl {
     }
 
     private func updateSelectionViewCenterXConstraint() {
-        selectionViewCenterXConstraint.isActive = false
-        selectionViewCenterXConstraint = makeSelectionViewCenterXConstraint()
-        selectionViewCenterXConstraint.isActive = true
+        // deactivate old constraint
+        selectionViewCenterXConstraint?.isActive = false
+
+        let newConstraint = selectionView.centerXAnchor.constraint(equalTo: isInScrubMode ? stackView.centerXAnchor : selectedImageView.centerXAnchor)
+        newConstraint.isActive = true
+        selectionViewCenterXConstraint = newConstraint
     }
 
-    private lazy var selectionViewCenterXConstraint: NSLayoutConstraint = self.makeSelectionViewCenterXConstraint()
-
-    private func makeSelectionViewCenterXConstraint() -> NSLayoutConstraint {
-        return selectionView.centerXAnchor.constraint(equalTo: isInScrubMode ? stackView.centerXAnchor : selectedImageView.centerXAnchor)
-    }
+    private var selectionViewCenterXConstraint: NSLayoutConstraint?
 
     private var selectedImageView: UIImageView {
         return imageViews[selectedSegment]
     }
 
     private func updateSelectionViewWidthConstraint() {
-        selectionViewWidthConstraint.isActive = false
-        selectionViewWidthConstraint = makeSelectionViewWidthConstraint()
-        selectionViewWidthConstraint.isActive = true
+        selectionViewWidthConstraint?.isActive = false
+        let newConstraint = selectionView.widthAnchor.constraint(equalTo: isInScrubMode ? stackView.widthAnchor : selectionView.heightAnchor)
+        newConstraint.isActive = true
+        selectionViewWidthConstraint = newConstraint
     }
 
-    private lazy var selectionViewWidthConstraint: NSLayoutConstraint = self.makeSelectionViewWidthConstraint()
-
-    private func makeSelectionViewWidthConstraint() -> NSLayoutConstraint {
-        return selectionView.widthAnchor.constraint(equalTo: isInScrubMode ? stackView.widthAnchor : selectionView.heightAnchor)
-    }
+    private var selectionViewWidthConstraint: NSLayoutConstraint?
 
     // MARK: Touch tracking
 
