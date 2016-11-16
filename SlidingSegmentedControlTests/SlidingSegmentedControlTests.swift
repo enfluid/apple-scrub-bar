@@ -295,11 +295,35 @@ class SlidingSegmentedControlTests: XCTestCase {
         XCTAssertEqual(slidingSegmentedControl.minPanDistance, 10)
     }
 
+    // MARK: Start touch location
+
+    func testStartTouchLocationType() {
+        XCTAssertTrue(slidingSegmentedControl.startTouchLocation as Any? is CGPoint?)
+    }
+
+    func testStartTouchLocationDefault() {
+        XCTAssertNil(slidingSegmentedControl.startTouchLocation)
+    }
+
+    // MARK: Begin tracking
+
     func testBeginTrackingReturnsTrue() {
         XCTAssertTrue(slidingSegmentedControl.beginTracking(UITouch(), with: nil))
     }
 
-    func testContinueWithoutBeginReturnsFalse() {
+    func testBeginTrackingSetsStartTouchLocation1() { testBeginTrackingSetsStartTouchLocation(withTouchLocation: CGPoint(x: 10, y: 10)) }
+    func testBeginTrackingSetsStartTouchLocation2() { testBeginTrackingSetsStartTouchLocation(withTouchLocation: CGPoint(x: 20, y: 20)) }
+
+    func testBeginTrackingSetsStartTouchLocation(withTouchLocation touchLocation: CGPoint, file: StaticString = #file, line: UInt = #line) {
+        let touchStub = TouchStub(location: touchLocation, view: slidingSegmentedControl)
+        _ = slidingSegmentedControl.beginTracking(touchStub, with: nil)
+        XCTAssertEqual(slidingSegmentedControl.startTouchLocation, touchLocation, file: file, line: line)
+    }
+
+    // MARK: Continue tracking
+
+    func testContinueWithoutStartTouchLocationReturnsFalse() {
+        slidingSegmentedControl.startTouchLocation = nil
         XCTAssertFalse(slidingSegmentedControl.continueTracking(UITouch(), with: nil))
     }
 
@@ -346,6 +370,7 @@ class SlidingSegmentedControlTests: XCTestCase {
         _ = slidingSegmentedControl.continueTracking(touchStub1, with: nil)
         XCTAssertTrue(slidingSegmentedControl.isInScrubMode)
     }
+
 }
 
 class TouchStub: UITouch {

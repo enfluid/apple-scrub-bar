@@ -95,17 +95,17 @@ public class SlidingSegmentedControl: UIControl {
 
     // MARK: Touch tracking
 
-    var touchStartLocation: CGPoint?
+    var startTouchLocation: CGPoint?
 
     var activeSegmentCalculator: ActiveSegmentCalculator = DefaultActiveSegmentCalculator(numberOfElements: 0, elementWidth: 0, boundsWidth: 0)
 
     public override func beginTracking(_ touch: UITouch, with event: UIEvent?) -> Bool {
-        touchStartLocation = touch.location(in: self)
+        startTouchLocation = touch.location(in: self)
         return true
     }
 
     public override func continueTracking(_ touch: UITouch, with event: UIEvent?) -> Bool {
-        guard let touchStartLocation = touchStartLocation else {
+        guard let touchStartLocation = startTouchLocation else {
             // don't do fatal error, because we can't ensure UIKit always calls beginTracking (though it probably does)
             return false
         }
