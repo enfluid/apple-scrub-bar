@@ -7,11 +7,16 @@ public class SlidingSegmentedControl: UIControl {
     public init(images: [UIImage]) {
         imageViews = images.map { UIImageView(image: $0) }
         super.init(frame: .zero)
+        configureImageViews()
         configureStackView()
         configureSelectionView()
     }
 
     let imageViews: [UIImageView]
+
+    private func configureImageViews() {
+        imageViews.forEach { $0.contentMode = .center }
+    }
 
     required public init?(coder: NSCoder) {
         return nil
@@ -56,6 +61,7 @@ public class SlidingSegmentedControl: UIControl {
     func configureSelectionView() {
         insertSubview(selectionView, belowSubview: stackView)
         selectionView.layer.masksToBounds = true
+        selectionView.backgroundColor = .white
         selectionView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate(selectionViewStaticConstraints)
         updateSelectionViewCenterXConstraint()

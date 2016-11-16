@@ -74,6 +74,10 @@ class SlidingSegmentedControlTests: XCTestCase {
         XCTAssertEqual(slidingSegmentedControl.imageViews.map {$0.image!}, images)
     }
 
+    func testImageViewsContentMode() {
+        XCTAssertEqual(slidingSegmentedControl.imageViews.map {$0.contentMode}, [.center, .center, .center])
+    }
+
     // MARK: Selected segment
 
     func testSelectedSegmentType() {
@@ -88,6 +92,10 @@ class SlidingSegmentedControlTests: XCTestCase {
 
     func testSelectionViewType() {
         XCTAssert(slidingSegmentedControl.selectionView as Any is UIView)
+    }
+
+    func testSelectionViewBackgroundColor() {
+        XCTAssertEqual(slidingSegmentedControl.selectionView.backgroundColor, .white)
     }
 
     func testSelectionViewIgnoresAutoresizingMask() {
