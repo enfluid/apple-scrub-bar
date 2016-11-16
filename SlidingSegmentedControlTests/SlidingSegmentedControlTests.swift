@@ -275,52 +275,52 @@ class SlidingSegmentedControlTests: XCTestCase {
 
     // MARK: Change active segment with a pan
 
-    func testPanCallsActiveSegmentCalculator1() {
-        testPanCallsActiveSegmentCalculator(withLocation: CGPoint(x: slidingSegmentedControl.minPanDistance, y: 1))
+    func testPanCallsSegmentLocator1() {
+        testPanCallsSegmentLocator(withLocation: CGPoint(x: slidingSegmentedControl.minPanDistance, y: 1))
     }
 
-    func testPanCallsActiveSegmentCalculator2() {
-        testPanCallsActiveSegmentCalculator(withLocation: CGPoint(x: slidingSegmentedControl.minPanDistance * 20, y: 2))
+    func testPanCallsSegmentLocator2() {
+        testPanCallsSegmentLocator(withLocation: CGPoint(x: slidingSegmentedControl.minPanDistance * 20, y: 2))
     }
 
-    func testPanCallsActiveSegmentCalculator(withLocation location: CGPoint, file: StaticString = #file, line: UInt = #line) {
-        let activeSegmentCalculatorMock = ActiveSegmentCalculatorMock()
-        slidingSegmentedControl.activeSegmentCalculator = activeSegmentCalculatorMock
+    func testPanCallsSegmentLocator(withLocation location: CGPoint, file: StaticString = #file, line: UInt = #line) {
+        let segmentLocatorMock = SegmentLocatorMock()
+        slidingSegmentedControl.segmentLocator = segmentLocatorMock
         slidingSegmentedControl.startTouchLocation = .zero
         let touchStub = TouchStub(location: location, view: slidingSegmentedControl)
         _ = slidingSegmentedControl.continueTracking(touchStub, with: nil)
-        XCTAssertEqual(activeSegmentCalculatorMock.touchLocations, [touchStub.location], file: file, line: line)
+        XCTAssertEqual(segmentLocatorMock.xCoordinates, [touchStub.location.x], file: file, line: line)
     }
 
-    func testPanDoesNotCallActiveSegmentCalculator1() {
-        testPanDoesNotCallActiveSegmentCalculator(withXDistance: slidingSegmentedControl.minPanDistance - 1)
+    func testPanDoesNotCallSegmentLocator1() {
+        testPanDoesNotCallSegmentLocator(withXDistance: slidingSegmentedControl.minPanDistance - 1)
     }
 
-    func testPanDoesNotCallActiveSegmentCalculator2() {
+    func testPanDoesNotCallSegmentLocator2() {
         slidingSegmentedControl.minPanDistance = 100
-        testPanDoesNotCallActiveSegmentCalculator(withXDistance: slidingSegmentedControl.minPanDistance - 1)
+        testPanDoesNotCallSegmentLocator(withXDistance: slidingSegmentedControl.minPanDistance - 1)
     }
 
-    func testPanDoesNotCallActiveSegmentCalculator(withXDistance xDistance: CGFloat, file: StaticString = #file, line: UInt = #line) {
-        let activeSegmentCalculatorMock = ActiveSegmentCalculatorMock()
-        slidingSegmentedControl.activeSegmentCalculator = activeSegmentCalculatorMock
+    func testPanDoesNotCallSegmentLocator(withXDistance xDistance: CGFloat, file: StaticString = #file, line: UInt = #line) {
+        let segmentLocatorMock = SegmentLocatorMock()
+        slidingSegmentedControl.segmentLocator = segmentLocatorMock
         slidingSegmentedControl.startTouchLocation = .zero
         let touchStub = TouchStub(location: CGPoint(x: xDistance, y: 0), view: slidingSegmentedControl)
         _ = slidingSegmentedControl.continueTracking(touchStub, with: nil)
-        XCTAssertEqual(activeSegmentCalculatorMock.touchLocations, [], file: file, line: line)
+        XCTAssertEqual(segmentLocatorMock.xCoordinates, [], file: file, line: line)
     }
 
     func testPanCallsActiveSegmentInScrubMode() {
         slidingSegmentedControl.isInScrubMode = true
-        testPanCallsActiveSegmentCalculator(withLocation: CGPoint(x: slidingSegmentedControl.minPanDistance, y: 1))
+        testPanCallsSegmentLocator(withLocation: CGPoint(x: slidingSegmentedControl.minPanDistance, y: 1))
     }
 
     func testPanChangesSelection1() { testPanChangesSelection(withSegmentIndex: 1) }
     func testPanChangesSelection2() { testPanChangesSelection(withSegmentIndex: 2) }
 
     func testPanChangesSelection(withSegmentIndex segmentIndex: Int, file: StaticString = #file, line: UInt = #line) {
-        let activeSegmentCalculatorStub = ActiveSegmentCalculatorStub(indexOfActiveSegment: segmentIndex)
-        slidingSegmentedControl.activeSegmentCalculator = activeSegmentCalculatorStub
+        let segmentLocatorStub = SegmentLocatorStub(indexOfActiveSegment: segmentIndex)
+        slidingSegmentedControl.segmentLocator = segmentLocatorStub
         _ = slidingSegmentedControl.beginTracking(UITouch(), with: nil)
         let panTouch = TouchStub(location: CGPoint(x: slidingSegmentedControl.minPanDistance, y: 0), view: slidingSegmentedControl)
         _ = slidingSegmentedControl.continueTracking(panTouch, with: nil)
@@ -337,27 +337,27 @@ class SlidingSegmentedControlTests: XCTestCase {
 
     // MARK: Change active segment with a tap
 
-    func testActiveSegmentCalculatorType() {
-        XCTAssertTrue(slidingSegmentedControl.activeSegmentCalculator as Any is DefaultActiveSegmentCalculator)
+    func testSegmentLocatorType() {
+        XCTAssertTrue(slidingSegmentedControl.segmentLocator as Any is DefaultSegmentLocator)
     }
 
-    func testTapCallsActiveSegmentCalculator1() { testTapCallsActiveSegmentCalculator(withLocation: CGPoint(x: 0, y: 0)) }
-    func testTapCallsActiveSegmentCalculator2() { testTapCallsActiveSegmentCalculator(withLocation: CGPoint(x: 0, y: 1)) }
+    func testTapCallsSegmentLocator1() { testTapCallsSegmentLocator(withLocation: CGPoint(x: 0, y: 0)) }
+    func testTapCallsSegmentLocator2() { testTapCallsSegmentLocator(withLocation: CGPoint(x: 0, y: 1)) }
 
-    func testTapCallsActiveSegmentCalculator(withLocation location: CGPoint, file: StaticString = #file, line: UInt = #line) {
-        let activeSegmentCalculatorMock = ActiveSegmentCalculatorMock()
-        slidingSegmentedControl.activeSegmentCalculator = activeSegmentCalculatorMock
+    func testTapCallsSegmentLocator(withLocation location: CGPoint, file: StaticString = #file, line: UInt = #line) {
+        let segmentLocatorMock = SegmentLocatorMock()
+        slidingSegmentedControl.segmentLocator = segmentLocatorMock
         let endTouch = TouchStub(location: location, view: slidingSegmentedControl)
         slidingSegmentedControl.endTracking(endTouch, with: nil)
-        XCTAssertEqual(activeSegmentCalculatorMock.touchLocations, [endTouch.location], file: file, line: line)
+        XCTAssertEqual(segmentLocatorMock.xCoordinates, [endTouch.location.x], file: file, line: line)
     }
 
     func testTapChangesSelection1() { testTapChangesSelection(withSegmentIndex: 1) }
     func testTapChangesSelection2() { testTapChangesSelection(withSegmentIndex: 2) }
 
     func testTapChangesSelection(withSegmentIndex segmentIndex: Int, file: StaticString = #file, line: UInt = #line) {
-        let activeSegmentCalculatorStub = ActiveSegmentCalculatorStub(indexOfActiveSegment: segmentIndex)
-        slidingSegmentedControl.activeSegmentCalculator = activeSegmentCalculatorStub
+        let segmentLocatorStub = SegmentLocatorStub(indexOfActiveSegment: segmentIndex)
+        slidingSegmentedControl.segmentLocator = segmentLocatorStub
         slidingSegmentedControl.endTracking(TouchStub(location: .zero, view: slidingSegmentedControl), with: nil)
         XCTAssertEqual(slidingSegmentedControl.selectedSegment, segmentIndex, file: file, line: line)
     }
@@ -384,32 +384,30 @@ class TouchStub: UITouch {
 
 }
 
-final class ActiveSegmentCalculatorMock: ActiveSegmentCalculator {
+final class SegmentLocatorMock: SegmentLocator {
 
-    let numberOfElements: Int
-    let elementWidth: CGFloat
+    let numberOfSegments: Int
     let boundsWidth: CGFloat
 
     convenience init() {
-        self.init(numberOfElements: 0, elementWidth: 0, boundsWidth: 0)
+        self.init(numberOfSegments: 0, boundsWidth: 0)
     }
 
-    init(numberOfElements: Int, elementWidth: CGFloat, boundsWidth: CGFloat) {
-        self.numberOfElements = numberOfElements
-        self.elementWidth = elementWidth
+    init(numberOfSegments: Int, boundsWidth: CGFloat) {
+        self.numberOfSegments = numberOfSegments
         self.boundsWidth = boundsWidth
     }
 
-    var touchLocations: [CGPoint] = []
+    var xCoordinates: [CGFloat] = []
 
-    func indexOfActiveSegment(forTouchLocation touchLocation: CGPoint) -> Int {
-        touchLocations.append(touchLocation)
+    func indexOfSegment(forX x: CGFloat) -> Int {
+        xCoordinates.append(x)
         return 0
     }
 
 }
 
-struct ActiveSegmentCalculatorStub: ActiveSegmentCalculator {
+struct SegmentLocatorStub: SegmentLocator {
 
     let indexOfActiveSegment: Int
 
@@ -417,11 +415,11 @@ struct ActiveSegmentCalculatorStub: ActiveSegmentCalculator {
         self.indexOfActiveSegment = indexOfActiveSegment
     }
 
-    init(numberOfElements: Int, elementWidth: CGFloat, boundsWidth: CGFloat) {
+    init(numberOfSegments: Int, boundsWidth: CGFloat) {
         indexOfActiveSegment = 0
     }
 
-    func indexOfActiveSegment(forTouchLocation touchLocation: CGPoint) -> Int {
+    func indexOfSegment(forX x: CGFloat) -> Int {
         return indexOfActiveSegment
     }
 

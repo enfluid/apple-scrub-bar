@@ -97,7 +97,7 @@ public class SlidingSegmentedControl: UIControl {
 
     var startTouchLocation: CGPoint?
 
-    var activeSegmentCalculator: ActiveSegmentCalculator = DefaultActiveSegmentCalculator(numberOfElements: 0, elementWidth: 0, boundsWidth: 0)
+    var segmentLocator: SegmentLocator = DefaultSegmentLocator(numberOfSegments: 0, boundsWidth: 0)
 
     public override func beginTracking(_ touch: UITouch, with event: UIEvent?) -> Bool {
         startTouchLocation = touch.location(in: self)
@@ -115,7 +115,7 @@ public class SlidingSegmentedControl: UIControl {
             isInScrubMode = true
         }
         if isInScrubMode {
-            selectedSegment = activeSegmentCalculator.indexOfActiveSegment(forTouchLocation: location)
+            selectedSegment = segmentLocator.indexOfSegment(forX: location.x)
         }
 
         return true
@@ -129,7 +129,7 @@ public class SlidingSegmentedControl: UIControl {
 
         guard let touch = touch else { return }
 
-        selectedSegment = activeSegmentCalculator.indexOfActiveSegment(forTouchLocation: touch.location(in: self))
+        selectedSegment = segmentLocator.indexOfSegment(forX: touch.location(in: self).x)
     }
 
     // MARK: Scrub mode
