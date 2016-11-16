@@ -261,13 +261,10 @@ class SlidingSegmentedControlTests: XCTestCase {
         _ = slidingSegmentedControl.continueTracking(panTouch, with: nil)
         XCTAssertEqual(activeSegmentCalculatorMock.touchLocations, [], file: file, line: line)
     }
-    func testPanChangesSelection1() {
-        testPanChangesSelection(withSegmentIndex: 1)
-    }
 
-    func testPanChangesSelection2() {
-        testPanChangesSelection(withSegmentIndex: 2)
-    }
+
+    func testPanChangesSelection1() { testPanChangesSelection(withSegmentIndex: 1) }
+    func testPanChangesSelection2() { testPanChangesSelection(withSegmentIndex: 2) }
 
     func testPanChangesSelection(withSegmentIndex segmentIndex: Int, file: StaticString = #file, line: UInt = #line) {
         let activeSegmentCalculatorStub = ActiveSegmentCalculatorStub(indexOfActiveSegment: segmentIndex)
@@ -280,11 +277,11 @@ class SlidingSegmentedControlTests: XCTestCase {
 
     // MARK: Scrub mode
 
-    func testScrubModeType() {
+    func testIsInScrubModeType() {
         XCTAssertTrue(slidingSegmentedControl.isInScrubMode as Any is Bool)
     }
 
-    func testScrubModeDefault() {
+    func testIsInScrubModeDefault() {
         XCTAssertFalse(slidingSegmentedControl.isInScrubMode)
     }
 
@@ -294,7 +291,7 @@ class SlidingSegmentedControlTests: XCTestCase {
         XCTAssertTrue(slidingSegmentedControl.minPanDistance as Any is CGFloat)
     }
 
-    func testDefaultMinPanDistance() {
+    func testMinPanDistanceDefault() {
         XCTAssertEqual(slidingSegmentedControl.minPanDistance, 10)
     }
 
@@ -306,22 +303,22 @@ class SlidingSegmentedControlTests: XCTestCase {
         XCTAssertFalse(slidingSegmentedControl.continueTracking(UITouch(), with: nil))
     }
 
-    func testIsInScrubModeAfterPanTrue1() {
+    func testIsInScrubModeTrue1() {
         slidingSegmentedControl.minPanDistance = 2
         testIsInScrubModeWithPan(from: .zero, to: CGPoint(x: slidingSegmentedControl.minPanDistance, y: 0), expected: true)
     }
 
-    func testIsInScrubModeAfterPanTrue2() {
+    func testIsInScrubModeTrue2() {
         let point1 = CGPoint(x: 100, y: 0)
         let point2 = CGPoint(x: point1.x - slidingSegmentedControl.minPanDistance, y: 0)
         testIsInScrubModeWithPan(from: point1, to: point2, expected: true)
     }
 
-    func testIsInScrubModeAfterPanFalse1() {
+    func testIsInScrubModeFalse1() {
         testIsInScrubModeWithPan(from: .zero, to: CGPoint(x: slidingSegmentedControl.minPanDistance - 1, y: 0), expected: false)
     }
 
-    func testIsInScrubModeAfterPanFalse2() {
+    func testIsInScrubModeFalse2() {
         let point1 = CGPoint(x: 100, y: 0)
         let point2 = CGPoint(x: point1.x + 1, y: 0)
         testIsInScrubModeWithPan(from: point1, to: point2, expected: false)
