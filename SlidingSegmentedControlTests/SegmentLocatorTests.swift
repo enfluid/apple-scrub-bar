@@ -7,6 +7,7 @@ class SegmentLocatorTests: XCTestCase {
     func testIndexOfSegment1() { testIndexOfSegment(withX: 15, expectedIndex: 1) }
     func testIndexOfSegment2() { testIndexOfSegment(withX: 25, expectedIndex: 2) }
     func testIndexOfSegment3() { testIndexOfSegment(withX: 100, expectedIndex: 9) }
+    func testIndexOfSegment4() { testIndexOfSegment(withX: -100, expectedIndex: 0) }
 
     func testIndexOfSegment(withX x: CGFloat, expectedIndex: Int, file: StaticString = #file, line: UInt = #line) {
         XCTAssertEqual(segmentLocator.indexOfSegment(forX: x), expectedIndex)

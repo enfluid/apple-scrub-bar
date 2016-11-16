@@ -17,7 +17,7 @@ struct DefaultSegmentLocator: SegmentLocator {
 
     func indexOfSegment(forX x: CGFloat) -> Int {
         let segmentWidth = boundsWidth / CGFloat(numberOfSegments)
-        return min(Int(x / segmentWidth), numberOfSegments - 1)
+        return max(0, min(numberOfSegments - 1, Int(x / segmentWidth)))
     }
 
 }
