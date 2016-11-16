@@ -38,8 +38,9 @@ public class SlidingSegmentedControl: UIControl {
     let stackView = UIStackView()
 
     private func configureStackView() {
-        stackView.distribution = .fillEqually
         addSubview(stackView)
+        stackView.isUserInteractionEnabled = false
+        stackView.distribution = .fillEqually
         stackView.translatesAutoresizingMaskIntoConstraints = false
         imageViews.forEach(stackView.addArrangedSubview)
         NSLayoutConstraint.activate(stackViewConstraints)
@@ -60,6 +61,7 @@ public class SlidingSegmentedControl: UIControl {
 
     func configureSelectionView() {
         insertSubview(selectionView, belowSubview: stackView)
+        selectionView.isUserInteractionEnabled = false
         selectionView.layer.masksToBounds = true
         selectionView.backgroundColor = .white
         selectionView.translatesAutoresizingMaskIntoConstraints = false

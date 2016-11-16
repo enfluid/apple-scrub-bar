@@ -30,6 +30,10 @@ class SlidingSegmentedControlTests: XCTestCase {
         XCTAssert(slidingSegmentedControl.stackView as Any is UIStackView)
     }
 
+    func testStackViewIsUserInteractionEnabledFalse() {
+        XCTAssertFalse(slidingSegmentedControl.stackView.isUserInteractionEnabled)
+    }
+
     func testStackViewEqualDistribution() {
         XCTAssertEqual(slidingSegmentedControl.stackView.distribution, .fillEqually)
     }
@@ -92,6 +96,10 @@ class SlidingSegmentedControlTests: XCTestCase {
 
     func testSelectionViewType() {
         XCTAssert(slidingSegmentedControl.selectionView as Any is UIView)
+    }
+
+    func testSelectionViewIsUserInteractionEnabled() {
+        XCTAssertFalse(slidingSegmentedControl.selectionView.isUserInteractionEnabled)
     }
 
     func testSelectionViewBackgroundColor() {
