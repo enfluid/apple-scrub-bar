@@ -110,8 +110,14 @@ public class SlidingSegmentedControl: UIControl {
             return false
         }
         let location = touch.location(in: self)
-        selectedSegment = activeSegmentCalculator.indexOfActiveSegment(forTouchLocation: location)
-        isInScrubMode = abs(location.x - touchStartLocation.x) >= minPanDistance
+        let panDistance = abs(location.x - touchStartLocation.x)
+        if (!isInScrubMode && panDistance >= minPanDistance) {
+            isInScrubMode = true
+        }
+        if panDistance >= minPanDistance {
+            selectedSegment = activeSegmentCalculator.indexOfActiveSegment(forTouchLocation: location)
+        }
+
         return true
     }
 

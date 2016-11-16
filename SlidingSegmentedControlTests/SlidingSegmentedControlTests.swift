@@ -227,11 +227,11 @@ class SlidingSegmentedControlTests: XCTestCase {
     }
 
     func testPanCallsActiveSegmentCalculator1() {
-        testPanCallsActiveSegmentCalculator(withLocation: CGPoint(x: 1, y: 1))
+        testPanCallsActiveSegmentCalculator(withLocation: CGPoint(x: slidingSegmentedControl.minPanDistance, y: 1))
     }
 
     func testPanCallsActiveSegmentCalculator2() {
-        testPanCallsActiveSegmentCalculator(withLocation: CGPoint(x: 2, y: 2))
+        testPanCallsActiveSegmentCalculator(withLocation: CGPoint(x: slidingSegmentedControl.minPanDistance * 20, y: 2))
     }
 
     func testPanCallsActiveSegmentCalculator(withLocation location: CGPoint, file: StaticString = #file, line: UInt = #line) {
@@ -243,6 +243,24 @@ class SlidingSegmentedControlTests: XCTestCase {
         XCTAssertEqual(activeSegmentCalculatorMock.touchLocations, [touch.location], file: file, line: line)
     }
 
+    func testPanDoesNotCallActiveSegmentCalculator1() {
+        testPanDoesNotCallActiveSegmentCalculator(withXDistance: slidingSegmentedControl.minPanDistance - 1)
+    }
+
+    func testPanDoesNotCallActiveSegmentCalculator2() {
+        slidingSegmentedControl.minPanDistance = 100
+        testPanDoesNotCallActiveSegmentCalculator(withXDistance: slidingSegmentedControl.minPanDistance - 1)
+    }
+
+    func testPanDoesNotCallActiveSegmentCalculator(withXDistance xDistance: CGFloat, file: StaticString = #file, line: UInt = #line) {
+        let activeSegmentCalculatorMock = ActiveSegmentCalculatorMock()
+        slidingSegmentedControl.activeSegmentCalculator = activeSegmentCalculatorMock
+        let startTouch = TouchStub(location: .zero, view: slidingSegmentedControl)
+        let panTouch = TouchStub(location: CGPoint(x: xDistance, y: 0), view: slidingSegmentedControl)
+        _ = slidingSegmentedControl.beginTracking(startTouch, with: nil)
+        _ = slidingSegmentedControl.continueTracking(panTouch, with: nil)
+        XCTAssertEqual(activeSegmentCalculatorMock.touchLocations, [], file: file, line: line)
+    }
     func testPanChangesSelection1() {
         testPanChangesSelection(withSegmentIndex: 1)
     }
@@ -255,7 +273,8 @@ class SlidingSegmentedControlTests: XCTestCase {
         let activeSegmentCalculatorStub = ActiveSegmentCalculatorStub(indexOfActiveSegment: segmentIndex)
         slidingSegmentedControl.activeSegmentCalculator = activeSegmentCalculatorStub
         _ = slidingSegmentedControl.beginTracking(UITouch(), with: nil)
-        _ = slidingSegmentedControl.continueTracking(UITouch(), with: nil)
+        let panTouch = TouchStub(location: CGPoint(x: slidingSegmentedControl.minPanDistance, y: 0), view: slidingSegmentedControl)
+        _ = slidingSegmentedControl.continueTracking(panTouch, with: nil)
         XCTAssertEqual(slidingSegmentedControl.selectedSegment, segmentIndex, file: file, line: line)
     }
 
@@ -265,7 +284,7 @@ class SlidingSegmentedControlTests: XCTestCase {
         XCTAssertTrue(slidingSegmentedControl.isInScrubMode as Any is Bool)
     }
 
-    func testScrubModeFalse() {
+    func testScrubModeDefault() {
         XCTAssertFalse(slidingSegmentedControl.isInScrubMode)
     }
 
@@ -322,6 +341,14 @@ class SlidingSegmentedControlTests: XCTestCase {
         XCTAssertFalse(slidingSegmentedControl.isInScrubMode)
     }
 
+    func testScrubModeStays() {
+        let touchStub1 = TouchStub(location: .zero, view: slidingSegmentedControl)
+        let touchStub2 = TouchStub(location: CGPoint(x: slidingSegmentedControl.minPanDistance, y: 0), view: slidingSegmentedControl)
+        _ = slidingSegmentedControl.beginTracking(touchStub1, with: nil)
+        _ = slidingSegmentedControl.continueTracking(touchStub2, with: nil)
+        _ = slidingSegmentedControl.continueTracking(touchStub1, with: nil)
+        XCTAssertTrue(slidingSegmentedControl.isInScrubMode)
+    }
 }
 
 class TouchStub: UITouch {
