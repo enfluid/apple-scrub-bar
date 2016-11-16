@@ -280,12 +280,14 @@ class SlidingSegmentedControlTests: XCTestCase {
     }
 
     func testIsInScrubModeWithPan(from point1: CGPoint, to point2: CGPoint, expected expectedIsInScrubMode: Bool, file: StaticString = #file, line: UInt = #line) {
+        slidingSegmentedControl.bounds = CGRect(x: 0, y: 0, width: 100, height: 0)
         _ = slidingSegmentedControl.beginTracking(TouchStub(location: point1, view: slidingSegmentedControl), with: nil)
         _ = slidingSegmentedControl.continueTracking(TouchStub(location: point2, view: slidingSegmentedControl), with: nil)
         XCTAssertEqual(slidingSegmentedControl.isInScrubMode, expectedIsInScrubMode, file: file, line: line)
     }
 
     func testScrubModeStays() {
+        slidingSegmentedControl.bounds = CGRect(x: 0, y: 0, width: 100, height: 0)
         _ = slidingSegmentedControl.beginTracking(TouchStub(location: .zero, view: slidingSegmentedControl), with: nil)
         slidingSegmentedControl.isInScrubMode = true
         _ = slidingSegmentedControl.continueTracking(TouchStub(location: .zero, view: slidingSegmentedControl), with: nil)

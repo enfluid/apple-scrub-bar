@@ -1,15 +1,23 @@
 protocol SegmentLocator {
-    init(numberOfSegments: Int, boundsWidth: CGFloat)
+    init?(numberOfSegments: Int, boundsWidth: CGFloat)
     func indexOfSegment(forX x: CGFloat) -> Int
 }
 
 struct DefaultSegmentLocator: SegmentLocator {
 
-    internal init(numberOfSegments: Int, boundsWidth: CGFloat) {
+    let numberOfSegments: Int
+    let boundsWidth: CGFloat
+
+    init?(numberOfSegments: Int, boundsWidth: CGFloat) {
+        guard numberOfSegments > 0, boundsWidth > 0 else { return nil }
+
+        self.numberOfSegments = numberOfSegments
+        self.boundsWidth = boundsWidth
     }
 
     func indexOfSegment(forX x: CGFloat) -> Int {
-        return 0
+        let segmentWidth = boundsWidth / CGFloat(numberOfSegments)
+        return min(Int(x / segmentWidth), numberOfSegments - 1)
     }
 
 }
