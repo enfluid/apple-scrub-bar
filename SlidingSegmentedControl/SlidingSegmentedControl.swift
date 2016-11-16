@@ -80,7 +80,7 @@ public class SlidingSegmentedControl: UIControl {
     private func updateSelectionViewCenterXConstraint() {
         // deactivate old constraint
         selectionViewCenterXConstraint?.isActive = false
-
+        // create new constraint
         let newConstraint = selectionView.centerXAnchor.constraint(equalTo: isInScrubMode ? stackView.centerXAnchor : selectedImageView.centerXAnchor)
         newConstraint.isActive = true
         selectionViewCenterXConstraint = newConstraint
@@ -101,18 +101,20 @@ public class SlidingSegmentedControl: UIControl {
 
     private var selectionViewWidthConstraint: NSLayoutConstraint?
 
-    // MARK: Touch tracking
-
-    var startTouchLocation: CGPoint?
-
-    lazy var SegmentLocatorType: SegmentLocator.Type = DefaultSegmentLocator.self
-    var segmentLocator: SegmentLocator?
+    // MARK: - Begin tracking
 
     public override func beginTracking(_ touch: UITouch, with event: UIEvent?) -> Bool {
         startTouchLocation = touch.location(in: self)
         segmentLocator = SegmentLocatorType.init(numberOfSegments: imageViews.count, boundsWidth: bounds.width)
         return true
     }
+
+    var startTouchLocation: CGPoint?
+
+    var segmentLocator: SegmentLocator?
+    lazy var SegmentLocatorType: SegmentLocator.Type = DefaultSegmentLocator.self
+
+    // MARK: Continue tracking
 
     public override func continueTracking(_ touch: UITouch, with event: UIEvent?) -> Bool {
         guard let touchStartLocation = startTouchLocation else {
@@ -131,6 +133,17 @@ public class SlidingSegmentedControl: UIControl {
         return true
     }
 
+    var isInScrubMode = false {
+        didSet {
+            updateSelectionViewWidthConstraint()
+            updateSelectionViewCenterXConstraint()
+        }
+    }
+
+    var minPanDistance: CGFloat = 10
+
+    // MARK: End tracking
+
     public override func endTracking(_ touch: UITouch?, with event: UIEvent?) {
         // required, but don't know how to test this
         super.endTracking(touch, with: event)
@@ -142,15 +155,4 @@ public class SlidingSegmentedControl: UIControl {
         selectedSegment = segmentLocator!.indexOfSegment(forX: touch.location(in: self).x)
     }
 
-    // MARK: Scrub mode
-
-    var isInScrubMode = false {
-        didSet {
-            updateSelectionViewWidthConstraint()
-            updateSelectionViewCenterXConstraint()
-        }
-    }
-
-    var minPanDistance: CGFloat = 10
-    
 }
