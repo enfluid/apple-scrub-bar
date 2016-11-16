@@ -356,6 +356,11 @@ class SlidingSegmentedControlTests: XCTestCase {
         XCTAssertEqual(slidingSegmentedControl.isInScrubMode, expectedIsInScrubMode, file: file, line: line)
     }
 
+    func testPanCallsActiveSegmentInScrubMode() {
+        slidingSegmentedControl.isInScrubMode = true
+        testPanCallsActiveSegmentCalculator(withLocation: CGPoint(x: slidingSegmentedControl.minPanDistance, y: 1))
+    }
+
     func testIsInScrubModeAfterEndIsFalse() {
         slidingSegmentedControl.isInScrubMode = true
         slidingSegmentedControl.endTracking(nil, with: nil)

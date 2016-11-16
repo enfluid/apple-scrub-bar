@@ -114,7 +114,7 @@ public class SlidingSegmentedControl: UIControl {
         if (!isInScrubMode && panDistance >= minPanDistance) {
             isInScrubMode = true
         }
-        if panDistance >= minPanDistance {
+        if isInScrubMode {
             selectedSegment = activeSegmentCalculator.indexOfActiveSegment(forTouchLocation: location)
         }
 
