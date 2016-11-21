@@ -366,7 +366,7 @@ class SlidingSegmentedControlTests: XCTestCase {
 
     // MARK: - End tracking
 
-    func testIsInScrubModeAfterEndIsFalse() {
+    func testIsInScrubModeIsFalseAfterEndTracking() {
         slidingSegmentedControl.isInScrubMode = true
         slidingSegmentedControl.endTracking(nil, with: nil)
         XCTAssertFalse(slidingSegmentedControl.isInScrubMode)
