@@ -1,7 +1,8 @@
 import XCTest
 @testable import SlidingSegmentedControl
 
-class SegmentLocatorTests: XCTestCase {
+class DefaultSegmentLocatorTests: XCTestCase {
+    
     lazy var segmentLocator = DefaultSegmentLocator(numberOfSegments: 10, boundsWidth: 100)!
 
     func testIndexOfSegment1() { testIndexOfSegment(withX: 15, expectedIndex: 1) }
