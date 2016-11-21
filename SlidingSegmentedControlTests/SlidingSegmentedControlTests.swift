@@ -395,6 +395,14 @@ class SlidingSegmentedControlTests: XCTestCase {
         XCTAssertEqual(slidingSegmentedControl.selectedSegment, segmentIndex, file: file, line: line)
     }
 
+    // MARK: - Cancel tracking
+
+    func testIsInScrubModeIsFalseAfterCancelTracking() {
+        slidingSegmentedControl.isInScrubMode = true
+        slidingSegmentedControl.cancelTracking(with: nil)
+        XCTAssertFalse(slidingSegmentedControl.isInScrubMode)
+    }
+
 }
 
 class TouchStub: UITouch {

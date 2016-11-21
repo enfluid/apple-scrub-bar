@@ -155,4 +155,10 @@ public class SlidingSegmentedControl: UIControl {
         selectedSegment = segmentLocator!.indexOfSegment(forX: touch.location(in: self).x)
     }
 
+    // MARK: Cancel tracking
+
+    public override func cancelTracking(with event: UIEvent?) {
+        isInScrubMode = false
+    }
+
 }
