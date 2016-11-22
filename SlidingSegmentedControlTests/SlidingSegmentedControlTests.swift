@@ -199,7 +199,7 @@ class SlidingSegmentedControlTests: XCTestCase {
         XCTAssertTrue(slidingSegmentedControl.animating == UIView.self)
     }
 
-    func testSelectionViewXConstraintAnimationParams() {
+    func testSelectionViewSelectedSegmentAnimationParams() {
         AnimatingMock.reset()
         slidingSegmentedControl.animating = AnimatingMock.self
         slidingSegmentedControl.selectedSegment = 1
@@ -207,27 +207,23 @@ class SlidingSegmentedControlTests: XCTestCase {
         XCTAssertEqual(AnimatingMock.capturedEquatableParamsArray, [expectedParams])
     }
 
-    func testSelectionViewXConstraintAnimation1() {
+    func testSelectionViewXAfterSelectedSegmentAnimation1() { testSelectionViewXAfterSelectedSegmentAnimation(withSelectedSegment: 1, numberOfSegments: 3) }
+    func testSelectionViewXAfterSelectedSegmentAnimation2() { testSelectionViewXAfterSelectedSegmentAnimation(withSelectedSegment: 2, numberOfSegments: 5) }
+
+    func testSelectionViewXAfterSelectedSegmentAnimation(withSelectedSegment selectedSegment: Int, numberOfSegments: Int, file: StaticString = #file, line: UInt = #line) {
         AnimatingMock.reset()
+        let imageWidth = 40
+        let expectedCenterX = CGFloat(imageWidth * selectedSegment + imageWidth / 2)
+        let slidingSegmentedControl = SlidingSegmentedControl(images: Array(repeating: UIImage(), count: numberOfSegments))
+        slidingSegmentedControl.frame = CGRect(x: 0, y: 0, width: imageWidth * numberOfSegments, height: 30)
         slidingSegmentedControl.animating = AnimatingMock.self
-        slidingSegmentedControl.selectedSegment = 1
-        let constraint = slidingSegmentedControl.selectionView.centerXAnchor.constraint(equalTo: slidingSegmentedControl.imageViews[1].centerXAnchor)
-        XCTAssertNotConstraint(constraint, inView: slidingSegmentedControl)
+        slidingSegmentedControl.selectedSegment = selectedSegment
+        XCTAssertEqual(slidingSegmentedControl.selectionView.center.x, 0, file: file, line: line)
         AnimatingMock.capturedAnimationsArray[0]()
-        XCTAssertConstraint(constraint, inView: slidingSegmentedControl)
+        XCTAssertEqual(slidingSegmentedControl.selectionView.center.x, expectedCenterX, file: file, line: line)
     }
 
-    func testSelectionViewXConstraintAnimation2() {
-        AnimatingMock.reset()
-        slidingSegmentedControl.animating = AnimatingMock.self
-        slidingSegmentedControl.isInScrubMode = true
-        let constraint = slidingSegmentedControl.selectionView.centerXAnchor.constraint(equalTo: slidingSegmentedControl.stackView.centerXAnchor)
-        XCTAssertNotConstraint(constraint, inView: slidingSegmentedControl)
-        AnimatingMock.capturedAnimationsArray[0]()
-        XCTAssertConstraint(constraint, inView: slidingSegmentedControl)
-    }
-
-    func testSelectionViewWidthConstraintAnimationParams() {
+    func testSelectionViewScrubModeAnimationParams() {
         AnimatingMock.reset()
         slidingSegmentedControl.animating = AnimatingMock.self
         slidingSegmentedControl.isInScrubMode = true
@@ -235,14 +231,17 @@ class SlidingSegmentedControlTests: XCTestCase {
         XCTAssertEqual(AnimatingMock.capturedEquatableParamsArray, [expectedParams])
     }
 
-    func testSelectionViewWidthConstraintAnimation() {
+    func testSelectionViewWidthAfterScrubModeAnimation1() { testSelectionViewWidthAfterScrubModeAnimation(withFrameWidth: 100) }
+    func testSelectionViewWidthAfterScrubModeAnimation2() { testSelectionViewWidthAfterScrubModeAnimation(withFrameWidth: 200) }
+
+    func testSelectionViewWidthAfterScrubModeAnimation(withFrameWidth width: CGFloat, file: StaticString = #file, line: UInt = #line) {
         AnimatingMock.reset()
+        slidingSegmentedControl.frame = CGRect(x: 0, y: 0, width: width, height: 30)
         slidingSegmentedControl.animating = AnimatingMock.self
         slidingSegmentedControl.isInScrubMode = true
-        let constraint = slidingSegmentedControl.selectionView.widthAnchor.constraint(equalTo: slidingSegmentedControl.stackView.widthAnchor)
-        XCTAssertNotConstraint(constraint, inView: slidingSegmentedControl)
+        XCTAssertEqual(slidingSegmentedControl.selectionView.frame.width, 0, file: file, line: line)
         AnimatingMock.capturedAnimationsArray[0]()
-        XCTAssertConstraint(constraint, inView: slidingSegmentedControl)
+        XCTAssertEqual(slidingSegmentedControl.selectionView.frame.width, width, file: file, line: line)
     }
 
     // MARK: Start touch location
