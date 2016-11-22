@@ -11,7 +11,7 @@ class DefaultSegmentLocatorTests: XCTestCase {
     func testIndexOfSegment4() { testIndexOfSegment(withX: -100, expectedIndex: 0) }
 
     func testIndexOfSegment(withX x: CGFloat, expectedIndex: Int, file: StaticString = #file, line: UInt = #line) {
-        XCTAssertEqual(segmentLocator.indexOfSegment(forX: x), expectedIndex)
+        XCTAssertEqual(segmentLocator.indexOfSegment(forX: x), expectedIndex, file: file, line: line)
     }
 
     func testInitWithZeroSegments() {
