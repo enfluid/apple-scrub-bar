@@ -160,13 +160,8 @@ class SlidingSegmentedControlTests: XCTestCase {
         XCTAssertConstraint(expectedConstraint, inView: slidingSegmentedControl)
     }
 
-    func testSelectionViewCenterXConstraint1() {
-        testSelectionViewCenterXConstraint(withSelectedSegment: 1)
-    }
-
-    func testSelectionViewCenterXConstraint2() {
-        testSelectionViewCenterXConstraint(withSelectedSegment: 2)
-    }
+    func testSelectionViewCenterXConstraint1() { testSelectionViewCenterXConstraint(withSelectedSegment: 1) }
+    func testSelectionViewCenterXConstraint2() { testSelectionViewCenterXConstraint(withSelectedSegment: 2) }
 
     func testSelectionViewCenterXConstraint(withSelectedSegment selectedSegment: Int, file: StaticString = #file, line: UInt = #line) {
         slidingSegmentedControl.selectedSegment = selectedSegment
@@ -194,9 +189,6 @@ class SlidingSegmentedControlTests: XCTestCase {
         XCTAssertNotConstraint(constraint, inView: slidingSegmentedControl)
     }
 
-    func testEndTrackingWithNilTouch() {
-        slidingSegmentedControl.endTracking(nil, with: nil)
-    }
 
     // MARK: Start touch location
 
@@ -370,6 +362,10 @@ class SlidingSegmentedControlTests: XCTestCase {
         slidingSegmentedControl.isInScrubMode = true
         slidingSegmentedControl.endTracking(nil, with: nil)
         XCTAssertFalse(slidingSegmentedControl.isInScrubMode)
+    }
+
+    func testEndTrackingWithNilTouch() {
+        slidingSegmentedControl.endTracking(nil, with: nil)
     }
 
     // MARK: Change active segment with a tap
