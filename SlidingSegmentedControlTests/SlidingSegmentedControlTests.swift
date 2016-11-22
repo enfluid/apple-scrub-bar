@@ -189,6 +189,61 @@ class SlidingSegmentedControlTests: XCTestCase {
         XCTAssertNotConstraint(constraint, inView: slidingSegmentedControl)
     }
 
+    // MARK: Animate selection change
+
+    func testAnimatingType() {
+        XCTAssertTrue(slidingSegmentedControl.animating as Any is Animating.Type)
+    }
+
+    func testAnimatingDefault() {
+        XCTAssertTrue(slidingSegmentedControl.animating == UIView.self)
+    }
+
+    func testSelectionViewXConstraintAnimationParams() {
+        AnimatingMock.reset()
+        slidingSegmentedControl.animating = AnimatingMock.self
+        slidingSegmentedControl.selectedSegment = 1
+        let expectedParams = AnimatingMock.EquatableParams(duration: 0.35, delay: 0, dampingRatio: 1, velocity: 0, options: [])
+        XCTAssertEqual(AnimatingMock.capturedEquatableParamsArray, [expectedParams])
+    }
+
+    func testSelectionViewXConstraintAnimation1() {
+        AnimatingMock.reset()
+        slidingSegmentedControl.animating = AnimatingMock.self
+        slidingSegmentedControl.selectedSegment = 1
+        let constraint = slidingSegmentedControl.selectionView.centerXAnchor.constraint(equalTo: slidingSegmentedControl.imageViews[1].centerXAnchor)
+        XCTAssertNotConstraint(constraint, inView: slidingSegmentedControl)
+        AnimatingMock.capturedAnimationsArray[0]()
+        XCTAssertConstraint(constraint, inView: slidingSegmentedControl)
+    }
+
+    func testSelectionViewXConstraintAnimation2() {
+        AnimatingMock.reset()
+        slidingSegmentedControl.animating = AnimatingMock.self
+        slidingSegmentedControl.isInScrubMode = true
+        let constraint = slidingSegmentedControl.selectionView.centerXAnchor.constraint(equalTo: slidingSegmentedControl.stackView.centerXAnchor)
+        XCTAssertNotConstraint(constraint, inView: slidingSegmentedControl)
+        AnimatingMock.capturedAnimationsArray[0]()
+        XCTAssertConstraint(constraint, inView: slidingSegmentedControl)
+    }
+
+    func testSelectionViewWidthConstraintAnimationParams() {
+        AnimatingMock.reset()
+        slidingSegmentedControl.animating = AnimatingMock.self
+        slidingSegmentedControl.isInScrubMode = true
+        let expectedParams = AnimatingMock.EquatableParams(duration: 0.35, delay: 0, dampingRatio: 1, velocity: 0, options: [])
+        XCTAssertEqual(AnimatingMock.capturedEquatableParamsArray, [expectedParams])
+    }
+
+    func testSelectionViewWidthConstraintAnimation() {
+        AnimatingMock.reset()
+        slidingSegmentedControl.animating = AnimatingMock.self
+        slidingSegmentedControl.isInScrubMode = true
+        let constraint = slidingSegmentedControl.selectionView.widthAnchor.constraint(equalTo: slidingSegmentedControl.stackView.widthAnchor)
+        XCTAssertNotConstraint(constraint, inView: slidingSegmentedControl)
+        AnimatingMock.capturedAnimationsArray[0]()
+        XCTAssertConstraint(constraint, inView: slidingSegmentedControl)
+    }
 
     // MARK: Start touch location
 
@@ -460,4 +515,38 @@ struct SegmentLocatorStub: SegmentLocator {
         return indexOfSegment
     }
 
+}
+
+class AnimatingMock: Animating {
+
+    struct EquatableParams: Equatable {
+        let duration: TimeInterval
+        let delay: TimeInterval
+        let dampingRatio: CGFloat
+        let velocity: CGFloat
+        let options: UIViewAnimationOptions
+    }
+
+    static var capturedEquatableParamsArray: [EquatableParams] = []
+    static var capturedAnimationsArray: [() -> Void] = []
+
+    static func reset() {
+        capturedEquatableParamsArray = []
+        capturedAnimationsArray = []
+    }
+
+    static func animate(withDuration duration: TimeInterval, delay: TimeInterval, usingSpringWithDamping dampingRatio: CGFloat, initialSpringVelocity velocity: CGFloat, options: UIViewAnimationOptions, animations: @escaping () -> Void, completion: ((Bool) -> Swift.Void)?) {
+        let params = EquatableParams(duration: duration, delay: delay, dampingRatio: dampingRatio, velocity: velocity, options: options)
+        capturedEquatableParamsArray.append(params)
+        capturedAnimationsArray.append(animations)
+    }
+
+}
+
+func == (lhs: AnimatingMock.EquatableParams, rhs: AnimatingMock.EquatableParams) -> Bool {
+    return lhs.duration == rhs.duration &&
+        lhs.delay == rhs.delay &&
+        lhs.dampingRatio == rhs.dampingRatio &&
+        lhs.velocity == rhs.velocity &&
+        lhs.options == rhs.options
 }

@@ -24,7 +24,10 @@ public class SlidingSegmentedControl: UIControl {
 
     public var selectedSegment = 0 {
         didSet {
-            updateSelectionViewCenterXConstraint()
+            animating.animate(withDuration: 0.35, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: [], animations: { 
+                self.updateSelectionViewCenterXConstraint()
+            },
+            completion: nil)
         }
     }
 
@@ -135,8 +138,10 @@ public class SlidingSegmentedControl: UIControl {
 
     var isInScrubMode = false {
         didSet {
-            updateSelectionViewWidthConstraint()
-            updateSelectionViewCenterXConstraint()
+            animating.animate(withDuration: 0.35, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: [], animations: {
+                self.updateSelectionViewCenterXConstraint()
+                self.updateSelectionViewWidthConstraint()
+            }, completion: nil)
         }
     }
 
@@ -161,4 +166,15 @@ public class SlidingSegmentedControl: UIControl {
         isInScrubMode = false
     }
 
+    // MARK: Animating
+
+    var animating: Animating.Type = UIView.self
+
 }
+
+
+protocol Animating {
+    static func animate(withDuration duration: TimeInterval, delay: TimeInterval, usingSpringWithDamping dampingRatio: CGFloat, initialSpringVelocity velocity: CGFloat, options: UIViewAnimationOptions, animations: @escaping () -> Swift.Void, completion: ((Bool) -> Swift.Void)?)
+}
+
+extension UIView: Animating {}
