@@ -75,11 +75,11 @@ class SlidingSegmentedControlTests: XCTestCase {
     func testImageViewsImages() {
         let images = [UIImage(), UIImage()]
         let slidingSegmentedControl = SlidingSegmentedControl(images: images)
-        XCTAssertEqual(slidingSegmentedControl.imageViews.map {$0.image!}, images)
+        XCTAssertEqual(slidingSegmentedControl.imageViews.map { $0.image! }, images)
     }
 
     func testImageViewsContentMode() {
-        XCTAssertEqual(slidingSegmentedControl.imageViews.map {$0.contentMode}, [.center, .center, .center])
+        XCTAssertEqual(slidingSegmentedControl.imageViews.map { $0.contentMode }, [.center, .center, .center])
     }
 
     func testImageViewsIsAccessibilityElement() {
