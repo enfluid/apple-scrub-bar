@@ -101,7 +101,7 @@ public class SlidingSegmentedControl: UIControl {
 
     private var selectionViewWidthConstraint: NSLayoutConstraint?
 
-    // MARK: - Begin tracking
+    // MARK: Begin tracking
 
     public override func beginTracking(_ touch: UITouch, with event: UIEvent?) -> Bool {
         startTouchLocation = touch.location(in: self)
