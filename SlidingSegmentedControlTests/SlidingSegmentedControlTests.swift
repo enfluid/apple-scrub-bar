@@ -234,7 +234,7 @@ class SlidingSegmentedControlTests: XCTestCase {
         XCTAssertEqual(slidingSegmentedControl.minPanDistance, 10)
     }
 
-    // MARK: - Begin tracking
+    // MARK: Begin tracking
 
     func testBeginTrackingReturnsTrue() {
         XCTAssertTrue(slidingSegmentedControl.beginTracking(UITouch(), with: nil))
@@ -262,7 +262,7 @@ class SlidingSegmentedControlTests: XCTestCase {
         XCTAssertEqual(segmentLocatorMock.numberOfSegments, numberOfSegments, file: file, line: line)
     }
 
-    // MARK: - Continue tracking
+    // MARK: Continue tracking
 
     func testContinueTrackingReturnsTrue() {
         _ = slidingSegmentedControl.beginTracking(UITouch(), with: nil)
@@ -364,7 +364,7 @@ class SlidingSegmentedControlTests: XCTestCase {
         XCTAssertEqual(slidingSegmentedControl.selectedSegment, segmentIndex, file: file, line: line)
     }
 
-    // MARK: - End tracking
+    // MARK: End tracking
 
     func testIsInScrubModeIsFalseAfterEndTracking() {
         slidingSegmentedControl.isInScrubMode = true
@@ -395,7 +395,7 @@ class SlidingSegmentedControlTests: XCTestCase {
         XCTAssertEqual(slidingSegmentedControl.selectedSegment, segmentIndex, file: file, line: line)
     }
 
-    // MARK: - Cancel tracking
+    // MARK: Cancel tracking
 
     func testIsInScrubModeIsFalseAfterCancelTracking() {
         slidingSegmentedControl.isInScrubMode = true
