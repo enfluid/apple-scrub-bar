@@ -4,29 +4,45 @@ public class SlidingSegmentedControl: UIControl {
 
     // MARK: Initialization
 
-    public init(numberOfItems: Int) {
+    public init(images: [UIImage]) {
+        imageViews = images.map { UIImageView(image: $0) }
         super.init(frame: .zero)
-        initButtons(number: numberOfItems)
-        initStackView()
-        initSelectionView()
+        configureImageViews()
+        configureStackView()
+        configureSelectionView()
     }
 
-    required public init?(coder aDecoder: NSCoder) {
+    let imageViews: [UIImageView]
+
+    private func configureImageViews() {
+        imageViews.forEach { $0.contentMode = .center }
+    }
+
+    required public init?(coder: NSCoder) {
         return nil
     }
 
-    var selectedSegment = 0
+    public var selectedSegment = 0 {
+        didSet {
+            updateSelectionViewCenterXConstraint()
+        }
+    }
+
+    public override func layoutSubviews() {
+        super.layoutSubviews()
+        selectionView.layer.cornerRadius = stackView.bounds.height / 2
+    }
 
     // MARK: Stack view
 
     let stackView = UIStackView()
 
-    private func initStackView() {
+    private func configureStackView() {
         addSubview(stackView)
+        stackView.isUserInteractionEnabled = false
+        stackView.distribution = .fillEqually
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        buttons.forEach { (button) in
-            stackView.addArrangedSubview(button)
-        }
+        imageViews.forEach(stackView.addArrangedSubview)
         NSLayoutConstraint.activate(stackViewConstraints)
     }
 
@@ -35,45 +51,114 @@ public class SlidingSegmentedControl: UIControl {
             stackView.topAnchor.constraint(equalTo: topAnchor),
             stackView.leadingAnchor.constraint(equalTo: leadingAnchor),
             stackView.bottomAnchor.constraint(equalTo: bottomAnchor),
-            stackView.trailingAnchor.constraint(equalTo: trailingAnchor)]
-    }
-
-    // MARK: Buttons
-
-    var buttons: [UIButton] = []
-
-    private func initButtons(number: Int) {
-        for _ in 0..<number {
-            let button = UIButton()
-            button.addTarget(self, action: #selector(buttonTapped(sender:)), for: UIControlEvents.touchUpInside)
-            buttons += [button]
-        }
-    }
-
-    func buttonTapped(sender: UIButton) {
-        guard let index = buttons.index(of: sender) else { return }
-        selectedSegment = index
+            stackView.trailingAnchor.constraint(equalTo: trailingAnchor)
+        ]
     }
 
     // MARK: Selection view
 
     let selectionView = UIView()
 
-    func initSelectionView() {
+    func configureSelectionView() {
         insertSubview(selectionView, belowSubview: stackView)
+        selectionView.isUserInteractionEnabled = false
         selectionView.layer.masksToBounds = true
-        selectionView.layer.cornerRadius = min(stackView.bounds.width, stackView.bounds.height)
+        selectionView.backgroundColor = .white
+        selectionView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate(selectionViewStaticConstraints)
+        updateSelectionViewCenterXConstraint()
+        updateSelectionViewWidthConstraint()
     }
 
-    // MARK: Set image for segment
-
-    func setImage(_ image: UIImage?, forSegmentAt index: Int) {
-        buttons[index].setImage(image, for: .normal)
+    private var selectionViewStaticConstraints: [NSLayoutConstraint] {
+        return [
+            selectionView.topAnchor.constraint(equalTo: stackView.topAnchor),
+            selectionView.bottomAnchor.constraint(equalTo: stackView.bottomAnchor),
+        ]
     }
 
-    // MARK: Set title for segment
-
-    func setTitle(_ title: String, forSegmentAt index: Int) {
-        buttons[index].setTitle(title, for: .normal)
+    private func updateSelectionViewCenterXConstraint() {
+        // deactivate old constraint
+        selectionViewCenterXConstraint?.isActive = false
+        // create new constraint
+        let newConstraint = selectionView.centerXAnchor.constraint(equalTo: isInScrubMode ? stackView.centerXAnchor : selectedImageView.centerXAnchor)
+        newConstraint.isActive = true
+        selectionViewCenterXConstraint = newConstraint
     }
+
+    private var selectionViewCenterXConstraint: NSLayoutConstraint?
+
+    private var selectedImageView: UIImageView {
+        return imageViews[selectedSegment]
+    }
+
+    private func updateSelectionViewWidthConstraint() {
+        selectionViewWidthConstraint?.isActive = false
+        let newConstraint = selectionView.widthAnchor.constraint(equalTo: isInScrubMode ? stackView.widthAnchor : selectionView.heightAnchor)
+        newConstraint.isActive = true
+        selectionViewWidthConstraint = newConstraint
+    }
+
+    private var selectionViewWidthConstraint: NSLayoutConstraint?
+
+    // MARK: Begin tracking
+
+    public override func beginTracking(_ touch: UITouch, with event: UIEvent?) -> Bool {
+        startTouchLocation = touch.location(in: self)
+        segmentLocator = SegmentLocatorType.init(numberOfSegments: imageViews.count, boundsWidth: bounds.width)
+        return true
+    }
+
+    var startTouchLocation: CGPoint?
+
+    var segmentLocator: SegmentLocator?
+    lazy var SegmentLocatorType: SegmentLocator.Type = DefaultSegmentLocator.self
+
+    // MARK: Continue tracking
+
+    public override func continueTracking(_ touch: UITouch, with event: UIEvent?) -> Bool {
+        guard let touchStartLocation = startTouchLocation else {
+            // don't do fatal error, because we can't ensure UIKit always calls beginTracking (though it probably does)
+            return false
+        }
+        let location = touch.location(in: self)
+        let panDistance = abs(location.x - touchStartLocation.x)
+        if (!isInScrubMode && panDistance >= minPanDistance) {
+            isInScrubMode = true
+        }
+        if isInScrubMode {
+            selectedSegment = segmentLocator!.indexOfSegment(forX: location.x)
+        }
+
+        return true
+    }
+
+    var isInScrubMode = false {
+        didSet {
+            updateSelectionViewWidthConstraint()
+            updateSelectionViewCenterXConstraint()
+        }
+    }
+
+    var minPanDistance: CGFloat = 10
+
+    // MARK: End tracking
+
+    public override func endTracking(_ touch: UITouch?, with event: UIEvent?) {
+        // required, but don't know how to test this
+        super.endTracking(touch, with: event)
+
+        isInScrubMode = false
+
+        guard let touch = touch else { return }
+
+        selectedSegment = segmentLocator!.indexOfSegment(forX: touch.location(in: self).x)
+    }
+
+    // MARK: Cancel tracking
+
+    public override func cancelTracking(with event: UIEvent?) {
+        isInScrubMode = false
+    }
+
 }
