@@ -13,6 +13,7 @@
 		0FC1689F1DB5B3510090CB3A /* SlidingSegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FC1689E1DB5B3510090CB3A /* SlidingSegmentedControl.swift */; };
 		0FC168A11DB5B4C50090CB3A /* NSCoder+Empty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FC168A01DB5B4C50090CB3A /* NSCoder+Empty.swift */; };
 		0FC168A31DB5BDAE0090CB3A /* XCTAssert+LayoutConstraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FC168A21DB5BDAE0090CB3A /* XCTAssert+LayoutConstraint.swift */; };
+		81B922B91E040DD7000BA42F /* XCTAssertTrue+OptionalBool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81B922B81E040DD7000BA42F /* XCTAssertTrue+OptionalBool.swift */; };
 		81C9D7B71DDA0574003E884D /* SegmentLocator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81C9D7B61DDA0574003E884D /* SegmentLocator.swift */; };
 		81C9D7B91DDC5D91003E884D /* SegmentLocatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81C9D7B81DDC5D91003E884D /* SegmentLocatorTests.swift */; };
 /* End PBXBuildFile section */
@@ -37,6 +38,7 @@
 		0FC1689E1DB5B3510090CB3A /* SlidingSegmentedControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SlidingSegmentedControl.swift; sourceTree = "<group>"; };
 		0FC168A01DB5B4C50090CB3A /* NSCoder+Empty.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSCoder+Empty.swift"; sourceTree = "<group>"; };
 		0FC168A21DB5BDAE0090CB3A /* XCTAssert+LayoutConstraint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "XCTAssert+LayoutConstraint.swift"; sourceTree = "<group>"; };
+		81B922B81E040DD7000BA42F /* XCTAssertTrue+OptionalBool.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "XCTAssertTrue+OptionalBool.swift"; sourceTree = "<group>"; };
 		81C9D7B61DDA0574003E884D /* SegmentLocator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SegmentLocator.swift; sourceTree = "<group>"; };
 		81C9D7B81DDC5D91003E884D /* SegmentLocatorTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SegmentLocatorTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -95,6 +97,7 @@
 				0FC168921DB5B2200090CB3A /* SlidingSegmentedControlTests.swift */,
 				81C9D7B81DDC5D91003E884D /* SegmentLocatorTests.swift */,
 				0FC168A01DB5B4C50090CB3A /* NSCoder+Empty.swift */,
+				81B922B81E040DD7000BA42F /* XCTAssertTrue+OptionalBool.swift */,
 				0FC168A21DB5BDAE0090CB3A /* XCTAssert+LayoutConstraint.swift */,
 				0FC168941DB5B2200090CB3A /* Info.plist */,
 			);
@@ -225,6 +228,7 @@
 				0FC168A11DB5B4C50090CB3A /* NSCoder+Empty.swift in Sources */,
 				81C9D7B91DDC5D91003E884D /* SegmentLocatorTests.swift in Sources */,
 				0FC168931DB5B2200090CB3A /* SlidingSegmentedControlTests.swift in Sources */,
+				81B922B91E040DD7000BA42F /* XCTAssertTrue+OptionalBool.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

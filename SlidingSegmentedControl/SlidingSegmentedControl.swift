@@ -15,7 +15,11 @@ public class SlidingSegmentedControl: UIControl {
     let imageViews: [UIImageView]
 
     private func configureImageViews() {
-        imageViews.forEach { $0.contentMode = .center }
+        imageViews.forEach {
+            $0.contentMode = .center
+            $0.isAccessibilityElement = true
+            $0.accessibilityTraits = UIAccessibilityTraitButton
+        }
     }
 
     required public init?(coder: NSCoder) {

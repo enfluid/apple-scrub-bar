@@ -72,14 +72,56 @@ class SlidingSegmentedControlTests: XCTestCase {
         XCTAssertTrue(slidingSegmentedControl.imageViews as Any is [UIImageView])
     }
 
-    func testImageViewsImages() {
-        let images = [UIImage(), UIImage()]
-        let slidingSegmentedControl = SlidingSegmentedControl(images: images)
-        XCTAssertEqual(slidingSegmentedControl.imageViews.map {$0.image!}, images)
+    func testImageViewCount1() {
+        let slidingSegmentedControl = SlidingSegmentedControl(images: [UIImage()])
+        XCTAssertEqual(slidingSegmentedControl.imageViews.count, 1)
     }
 
-    func testImageViewsContentMode() {
-        XCTAssertEqual(slidingSegmentedControl.imageViews.map {$0.contentMode}, [.center, .center, .center])
+    func testImageViewCount2() {
+        let slidingSegmentedControl = SlidingSegmentedControl(images: [UIImage(), UIImage()])
+        XCTAssertEqual(slidingSegmentedControl.imageViews.count, 2)
+    }
+
+    func testImageViewsImage1() {
+        let image = UIImage()
+        let slidingSegmentedControl = SlidingSegmentedControl(images: [image, UIImage()])
+        XCTAssertEqual(slidingSegmentedControl.imageViews.first?.image, image)
+    }
+
+    func testImageViewsImage2() {
+        let image = UIImage()
+        let slidingSegmentedControl = SlidingSegmentedControl(images: [UIImage(), image])
+        XCTAssertEqual(slidingSegmentedControl.imageViews.last?.image, image)
+    }
+
+    func testImageViewsContentMode1() {
+        let slidingSegmentedControl = SlidingSegmentedControl(images: [UIImage(), UIImage()])
+        XCTAssertEqual(slidingSegmentedControl.imageViews.first?.contentMode, .center)
+    }
+
+    func testImageViewsContentMode2() {
+        let slidingSegmentedControl = SlidingSegmentedControl(images: [UIImage(), UIImage()])
+        XCTAssertEqual(slidingSegmentedControl.imageViews.last?.contentMode, .center)
+    }
+
+    func testImageViewsIsAccessibilityElement1() {
+        let slidingSegmentedControl = SlidingSegmentedControl(images: [UIImage(), UIImage()])
+        XCTAssertTrue(slidingSegmentedControl.imageViews.first?.isAccessibilityElement)
+    }
+
+    func testImageViewsIsAccessibilityElement2() {
+        let slidingSegmentedControl = SlidingSegmentedControl(images: [UIImage(), UIImage()])
+        XCTAssertTrue(slidingSegmentedControl.imageViews.last?.isAccessibilityElement)
+    }
+
+    func testImageViewsAccessibilityTraits1() {
+        let slidingSegmentedControl = SlidingSegmentedControl(images: [UIImage(), UIImage()])
+        XCTAssertEqual(slidingSegmentedControl.imageViews.first?.accessibilityTraits, UIAccessibilityTraitButton)
+    }
+
+    func testImageViewsAccessibilityTraits2() {
+        let slidingSegmentedControl = SlidingSegmentedControl(images: [UIImage(), UIImage()])
+        XCTAssertEqual(slidingSegmentedControl.imageViews.last?.accessibilityTraits, UIAccessibilityTraitButton)
     }
 
     // MARK: Selected segment
