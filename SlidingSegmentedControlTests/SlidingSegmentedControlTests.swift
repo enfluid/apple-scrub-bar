@@ -106,12 +106,12 @@ class SlidingSegmentedControlTests: XCTestCase {
 
     func testImageViewsIsAccessibilityElement1() {
         let slidingSegmentedControl = SlidingSegmentedControl(images: [UIImage(), UIImage()])
-        XCTAssertEqual(slidingSegmentedControl.imageViews.first?.isAccessibilityElement, true)
+        XCTAssertTrue(slidingSegmentedControl.imageViews.first?.isAccessibilityElement)
     }
 
     func testImageViewsIsAccessibilityElement2() {
         let slidingSegmentedControl = SlidingSegmentedControl(images: [UIImage(), UIImage()])
-        XCTAssertEqual(slidingSegmentedControl.imageViews.last?.isAccessibilityElement, true)
+        XCTAssertTrue(slidingSegmentedControl.imageViews.last?.isAccessibilityElement)
     }
 
     func testImageViewsAccessibilityTraits1() {
