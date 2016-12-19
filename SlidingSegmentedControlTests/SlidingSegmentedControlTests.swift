@@ -241,12 +241,24 @@ class SlidingSegmentedControlTests: XCTestCase {
         XCTAssertTrue(slidingSegmentedControl.animating == UIView.self)
     }
 
-    func testSelectionViewSelectedSegmentAnimationParams() {
+    func testAnimationDurationType() {
+        XCTAssertTrue(slidingSegmentedControl.animationDuration as Any is TimeInterval)
+    }
+
+    func testAnimationDurationDefault() {
+        XCTAssertEqual(slidingSegmentedControl.animationDuration, 0.35)
+    }
+
+    func testSelectionViewSelectedSegmentAnimationParams1() { testSelectionViewSelectedSegmentAnimationParams(withAnimationDuration: 1) }
+    func testSelectionViewSelectedSegmentAnimationParams2() { testSelectionViewSelectedSegmentAnimationParams(withAnimationDuration: 2.5) }
+
+    func testSelectionViewSelectedSegmentAnimationParams(withAnimationDuration animationDuration: TimeInterval, file: StaticString = #file, line: UInt = #line) {
         AnimatingMock.reset()
         slidingSegmentedControl.animating = AnimatingMock.self
+        slidingSegmentedControl.animationDuration = animationDuration
         slidingSegmentedControl.selectedSegment = 1
-        let expectedParams = AnimatingMock.EquatableParams(duration: 0.35, delay: 0, dampingRatio: 1, velocity: 0, options: [])
-        XCTAssertEqual(AnimatingMock.capturedEquatableParamsArray, [expectedParams])
+        let expectedParams = AnimatingMock.EquatableParams(duration: animationDuration, delay: 0, dampingRatio: 1, velocity: 0, options: [])
+        XCTAssertEqual(AnimatingMock.capturedEquatableParamsArray, [expectedParams], file: file, line: line)
     }
 
     func testSelectionViewXAfterSelectedSegmentAnimation1() { testSelectionViewXAfterSelectedSegmentAnimation(withSelectedSegment: 1, numberOfSegments: 3) }
@@ -265,12 +277,16 @@ class SlidingSegmentedControlTests: XCTestCase {
         XCTAssertEqual(slidingSegmentedControl.selectionView.center.x, expectedCenterX, file: file, line: line)
     }
 
-    func testSelectionViewScrubModeAnimationParams() {
+    func testSelectionViewScrubModeAnimationParams1() { testSelectionViewScrubModeAnimationParams(withAnimationDuration: 1) }
+    func testSelectionViewScrubModeAnimationParams2() { testSelectionViewScrubModeAnimationParams(withAnimationDuration: 2.5) }
+
+    func testSelectionViewScrubModeAnimationParams(withAnimationDuration animationDuration: TimeInterval, file: StaticString = #file, line: UInt = #line) {
         AnimatingMock.reset()
         slidingSegmentedControl.animating = AnimatingMock.self
+        slidingSegmentedControl.animationDuration = animationDuration
         slidingSegmentedControl.isInScrubMode = true
-        let expectedParams = AnimatingMock.EquatableParams(duration: 0.35, delay: 0, dampingRatio: 1, velocity: 0, options: [])
-        XCTAssertEqual(AnimatingMock.capturedEquatableParamsArray, [expectedParams])
+        let expectedParams = AnimatingMock.EquatableParams(duration: animationDuration, delay: 0, dampingRatio: 1, velocity: 0, options: [])
+        XCTAssertEqual(AnimatingMock.capturedEquatableParamsArray, [expectedParams], file: file, line: line)
     }
 
     func testSelectionViewWidthAfterScrubModeAnimation1() { testSelectionViewWidthAfterScrubModeAnimation(withFrameWidth: 100) }

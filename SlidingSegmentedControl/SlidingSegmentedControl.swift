@@ -29,7 +29,7 @@ public class SlidingSegmentedControl: UIControl {
     public var selectedSegment = 0 {
         didSet {
             updateSelectionViewCenterXConstraint()
-            animating.animate(withDuration: 0.35, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: [], animations: {
+            animating.animate(withDuration: animationDuration, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: [], animations: {
                 self.layoutIfNeeded()
             },
             completion: nil)
@@ -145,7 +145,7 @@ public class SlidingSegmentedControl: UIControl {
         didSet {
             updateSelectionViewCenterXConstraint()
             updateSelectionViewWidthConstraint()
-            animating.animate(withDuration: 0.35, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: [], animations: {
+            animating.animate(withDuration: animationDuration, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: [], animations: {
                 self.layoutIfNeeded()
             }, completion: nil)
         }
@@ -175,6 +175,8 @@ public class SlidingSegmentedControl: UIControl {
     // MARK: Animating
 
     var animating: Animating.Type = UIView.self
+
+    var animationDuration: TimeInterval = 0.35
 
 }
 
