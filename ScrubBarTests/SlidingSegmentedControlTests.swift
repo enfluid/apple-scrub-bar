@@ -1,5 +1,5 @@
 import XCTest
-@testable import SlidingSegmentedControl
+@testable import ScrubBar
 
 class SlidingSegmentedControlTests: XCTestCase {
 
