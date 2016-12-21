@@ -24,7 +24,7 @@
 			containerPortal = 0FC1687B1DB5B2200090CB3A /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 0FC168831DB5B2200090CB3A;
-			remoteInfo = SlidingSegmentedControl;
+			remoteInfo = ScrubBar;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -132,7 +132,7 @@
 			dependencies = (
 			);
 			name = ScrubBar;
-			productName = SlidingSegmentedControl;
+			productName = ScrubBar;
 			productReference = 0FC168841DB5B2200090CB3A /* ScrubBar.framework */;
 			productType = "com.apple.product-type.framework";
 		};
@@ -150,7 +150,7 @@
 				0FC168901DB5B2200090CB3A /* PBXTargetDependency */,
 			);
 			name = ScrubBarTests;
-			productName = SlidingSegmentedControlTests;
+			productName = ScrubBarTests;
 			productReference = 0FC1688D1DB5B2200090CB3A /* ScrubBarTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
