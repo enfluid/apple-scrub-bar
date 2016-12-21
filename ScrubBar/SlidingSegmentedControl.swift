@@ -1,6 +1,6 @@
 import UIKit
 
-public class SlidingSegmentedControl: UIControl {
+public class ScrubBar: UIControl {
 
     // MARK: Initialization
 

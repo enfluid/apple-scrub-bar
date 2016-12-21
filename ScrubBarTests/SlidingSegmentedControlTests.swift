@@ -1,159 +1,159 @@
 import XCTest
 @testable import ScrubBar
 
-class SlidingSegmentedControlTests: XCTestCase {
+class ScrubBarTests: XCTestCase {
 
-    lazy var slidingSegmentedControl = SlidingSegmentedControl(images: Array(repeating: UIImage(), count: 3))
+    lazy var scrubBar = ScrubBar(images: Array(repeating: UIImage(), count: 3))
 
     // MARK: Main
 
     func testSuperclass() {
-        XCTAssert(slidingSegmentedControl as Any is UIControl)
+        XCTAssert(scrubBar as Any is UIControl)
     }
 
     func testUnarchiving() {
-        let slidingSegmentedControl = SlidingSegmentedControl(coder: .empty)
-        XCTAssertNil(slidingSegmentedControl)
+        let scrubBar = ScrubBar(coder: .empty)
+        XCTAssertNil(scrubBar)
     }
 
     func testFrame() {
-        XCTAssertEqual(slidingSegmentedControl.frame, .zero)
+        XCTAssertEqual(scrubBar.frame, .zero)
     }
 
     func testSubviews() {
-        XCTAssertEqual(slidingSegmentedControl.subviews, [slidingSegmentedControl.selectionView, slidingSegmentedControl.stackView])
+        XCTAssertEqual(scrubBar.subviews, [scrubBar.selectionView, scrubBar.stackView])
     }
 
     // MARK: Stack view
 
     func testStackViewType() {
-        XCTAssert(slidingSegmentedControl.stackView as Any is UIStackView)
+        XCTAssert(scrubBar.stackView as Any is UIStackView)
     }
 
     func testStackViewIsUserInteractionEnabledFalse() {
-        XCTAssertFalse(slidingSegmentedControl.stackView.isUserInteractionEnabled)
+        XCTAssertFalse(scrubBar.stackView.isUserInteractionEnabled)
     }
 
     func testStackViewEqualDistribution() {
-        XCTAssertEqual(slidingSegmentedControl.stackView.distribution, .fillEqually)
+        XCTAssertEqual(scrubBar.stackView.distribution, .fillEqually)
     }
 
     func testStackViewArrangedSubviews() {
-        XCTAssertEqual(slidingSegmentedControl.stackView.arrangedSubviews, slidingSegmentedControl.imageViews)
+        XCTAssertEqual(scrubBar.stackView.arrangedSubviews, scrubBar.imageViews)
     }
 
     func testStackViewIgnoresAutoresizingMask() {
-        XCTAssertFalse(slidingSegmentedControl.stackView.translatesAutoresizingMaskIntoConstraints)
+        XCTAssertFalse(scrubBar.stackView.translatesAutoresizingMaskIntoConstraints)
     }
 
     func testStackViewTopConstraint() {
-        let expectedConstraint = slidingSegmentedControl.stackView.topAnchor.constraint(equalTo: slidingSegmentedControl.topAnchor)
-        XCTAssertConstraint(expectedConstraint, inView: slidingSegmentedControl)
+        let expectedConstraint = scrubBar.stackView.topAnchor.constraint(equalTo: scrubBar.topAnchor)
+        XCTAssertConstraint(expectedConstraint, inView: scrubBar)
     }
 
     func testStackViewLeadingConstraint() {
-        let expectedConstraint = slidingSegmentedControl.stackView.leadingAnchor.constraint(equalTo: slidingSegmentedControl.leadingAnchor)
-        XCTAssertConstraint(expectedConstraint, inView: slidingSegmentedControl)
+        let expectedConstraint = scrubBar.stackView.leadingAnchor.constraint(equalTo: scrubBar.leadingAnchor)
+        XCTAssertConstraint(expectedConstraint, inView: scrubBar)
     }
 
     func testStackViewBottomConstraint() {
-        let expectedConstraint = slidingSegmentedControl.stackView.bottomAnchor.constraint(equalTo: slidingSegmentedControl.bottomAnchor)
-        XCTAssertConstraint(expectedConstraint, inView: slidingSegmentedControl)
+        let expectedConstraint = scrubBar.stackView.bottomAnchor.constraint(equalTo: scrubBar.bottomAnchor)
+        XCTAssertConstraint(expectedConstraint, inView: scrubBar)
     }
 
     func testStackViewTrailingConstraint() {
-        let expectedConstraint = slidingSegmentedControl.stackView.trailingAnchor.constraint(equalTo: slidingSegmentedControl.trailingAnchor)
-        XCTAssertConstraint(expectedConstraint, inView: slidingSegmentedControl)
+        let expectedConstraint = scrubBar.stackView.trailingAnchor.constraint(equalTo: scrubBar.trailingAnchor)
+        XCTAssertConstraint(expectedConstraint, inView: scrubBar)
     }
 
     // MARK: UIImageViews
 
     func testImageViewsType() {
-        XCTAssertTrue(slidingSegmentedControl.imageViews as Any is [UIImageView])
+        XCTAssertTrue(scrubBar.imageViews as Any is [UIImageView])
     }
 
     func testImageViewCount1() {
-        let slidingSegmentedControl = SlidingSegmentedControl(images: [UIImage()])
-        XCTAssertEqual(slidingSegmentedControl.imageViews.count, 1)
+        let scrubBar = ScrubBar(images: [UIImage()])
+        XCTAssertEqual(scrubBar.imageViews.count, 1)
     }
 
     func testImageViewCount2() {
-        let slidingSegmentedControl = SlidingSegmentedControl(images: [UIImage(), UIImage()])
-        XCTAssertEqual(slidingSegmentedControl.imageViews.count, 2)
+        let scrubBar = ScrubBar(images: [UIImage(), UIImage()])
+        XCTAssertEqual(scrubBar.imageViews.count, 2)
     }
 
     func testImageViewsImage1() {
         let image = UIImage()
-        let slidingSegmentedControl = SlidingSegmentedControl(images: [image, UIImage()])
-        XCTAssertEqual(slidingSegmentedControl.imageViews.first?.image, image)
+        let scrubBar = ScrubBar(images: [image, UIImage()])
+        XCTAssertEqual(scrubBar.imageViews.first?.image, image)
     }
 
     func testImageViewsImage2() {
         let image = UIImage()
-        let slidingSegmentedControl = SlidingSegmentedControl(images: [UIImage(), image])
-        XCTAssertEqual(slidingSegmentedControl.imageViews.last?.image, image)
+        let scrubBar = ScrubBar(images: [UIImage(), image])
+        XCTAssertEqual(scrubBar.imageViews.last?.image, image)
     }
 
     func testImageViewsContentMode1() {
-        let slidingSegmentedControl = SlidingSegmentedControl(images: [UIImage(), UIImage()])
-        XCTAssertEqual(slidingSegmentedControl.imageViews.first?.contentMode, .center)
+        let scrubBar = ScrubBar(images: [UIImage(), UIImage()])
+        XCTAssertEqual(scrubBar.imageViews.first?.contentMode, .center)
     }
 
     func testImageViewsContentMode2() {
-        let slidingSegmentedControl = SlidingSegmentedControl(images: [UIImage(), UIImage()])
-        XCTAssertEqual(slidingSegmentedControl.imageViews.last?.contentMode, .center)
+        let scrubBar = ScrubBar(images: [UIImage(), UIImage()])
+        XCTAssertEqual(scrubBar.imageViews.last?.contentMode, .center)
     }
 
     func testImageViewsIsAccessibilityElement1() {
-        let slidingSegmentedControl = SlidingSegmentedControl(images: [UIImage(), UIImage()])
-        XCTAssertTrue(slidingSegmentedControl.imageViews.first?.isAccessibilityElement)
+        let scrubBar = ScrubBar(images: [UIImage(), UIImage()])
+        XCTAssertTrue(scrubBar.imageViews.first?.isAccessibilityElement)
     }
 
     func testImageViewsIsAccessibilityElement2() {
-        let slidingSegmentedControl = SlidingSegmentedControl(images: [UIImage(), UIImage()])
-        XCTAssertTrue(slidingSegmentedControl.imageViews.last?.isAccessibilityElement)
+        let scrubBar = ScrubBar(images: [UIImage(), UIImage()])
+        XCTAssertTrue(scrubBar.imageViews.last?.isAccessibilityElement)
     }
 
     func testImageViewsAccessibilityTraits1() {
-        let slidingSegmentedControl = SlidingSegmentedControl(images: [UIImage(), UIImage()])
-        XCTAssertEqual(slidingSegmentedControl.imageViews.first?.accessibilityTraits, UIAccessibilityTraitButton)
+        let scrubBar = ScrubBar(images: [UIImage(), UIImage()])
+        XCTAssertEqual(scrubBar.imageViews.first?.accessibilityTraits, UIAccessibilityTraitButton)
     }
 
     func testImageViewsAccessibilityTraits2() {
-        let slidingSegmentedControl = SlidingSegmentedControl(images: [UIImage(), UIImage()])
-        XCTAssertEqual(slidingSegmentedControl.imageViews.last?.accessibilityTraits, UIAccessibilityTraitButton)
+        let scrubBar = ScrubBar(images: [UIImage(), UIImage()])
+        XCTAssertEqual(scrubBar.imageViews.last?.accessibilityTraits, UIAccessibilityTraitButton)
     }
 
     // MARK: Selected segment
 
     func testSelectedSegmentType() {
-        XCTAssert(slidingSegmentedControl.selectedSegment as Any is Int)
+        XCTAssert(scrubBar.selectedSegment as Any is Int)
     }
 
     func testSelectedSegmentDefault() {
-        XCTAssertEqual(slidingSegmentedControl.selectedSegment, 0)
+        XCTAssertEqual(scrubBar.selectedSegment, 0)
     }
 
     // MARK: Selection view
 
     func testSelectionViewType() {
-        XCTAssert(slidingSegmentedControl.selectionView as Any is UIView)
+        XCTAssert(scrubBar.selectionView as Any is UIView)
     }
 
     func testSelectionViewIsUserInteractionEnabled() {
-        XCTAssertFalse(slidingSegmentedControl.selectionView.isUserInteractionEnabled)
+        XCTAssertFalse(scrubBar.selectionView.isUserInteractionEnabled)
     }
 
     func testSelectionViewBackgroundColor() {
-        XCTAssertEqual(slidingSegmentedControl.selectionView.backgroundColor, .white)
+        XCTAssertEqual(scrubBar.selectionView.backgroundColor, .white)
     }
 
     func testSelectionViewIgnoresAutoresizingMask() {
-        XCTAssertFalse(slidingSegmentedControl.selectionView.translatesAutoresizingMaskIntoConstraints)
+        XCTAssertFalse(scrubBar.selectionView.translatesAutoresizingMaskIntoConstraints)
     }
 
     func testSelectionViewLayerMasksToBounds() {
-        XCTAssert(slidingSegmentedControl.selectionView.layer.masksToBounds)
+        XCTAssert(scrubBar.selectionView.layer.masksToBounds)
     }
 
     func testSelectionViewLayerCornerRadius1() {
@@ -165,92 +165,92 @@ class SlidingSegmentedControlTests: XCTestCase {
     }
 
     func testSelectionViewLayerCornerRadius(withStackViewHeight stackViewHeight: CGFloat, file: StaticString = #file, line: UInt = #line) {
-        slidingSegmentedControl.stackView.bounds.size = CGSize(width: 0, height: stackViewHeight)
-        slidingSegmentedControl.layoutSubviews()
-        XCTAssertEqual(slidingSegmentedControl.selectionView.layer.cornerRadius, stackViewHeight / 2, file: file, line: line)
+        scrubBar.stackView.bounds.size = CGSize(width: 0, height: stackViewHeight)
+        scrubBar.layoutSubviews()
+        XCTAssertEqual(scrubBar.selectionView.layer.cornerRadius, stackViewHeight / 2, file: file, line: line)
     }
 
     func testSelectionViewTopConstraint() {
-        let expectedConstraint = slidingSegmentedControl.selectionView.topAnchor.constraint(equalTo: slidingSegmentedControl.stackView.topAnchor)
-        XCTAssertConstraint(expectedConstraint, inView: slidingSegmentedControl)
+        let expectedConstraint = scrubBar.selectionView.topAnchor.constraint(equalTo: scrubBar.stackView.topAnchor)
+        XCTAssertConstraint(expectedConstraint, inView: scrubBar)
     }
 
     func testSelectionViewBottomConstraint() {
-        let expectedConstraint = slidingSegmentedControl.selectionView.bottomAnchor.constraint(equalTo: slidingSegmentedControl.stackView.bottomAnchor)
-        XCTAssertConstraint(expectedConstraint, inView: slidingSegmentedControl)
+        let expectedConstraint = scrubBar.selectionView.bottomAnchor.constraint(equalTo: scrubBar.stackView.bottomAnchor)
+        XCTAssertConstraint(expectedConstraint, inView: scrubBar)
     }
 
     func testSelectionViewWidthConstraint() {
-        let expectedConstraint = slidingSegmentedControl.selectionView.widthAnchor.constraint(equalTo: slidingSegmentedControl.selectionView.heightAnchor)
-        XCTAssertConstraint(expectedConstraint, inView: slidingSegmentedControl.selectionView)
+        let expectedConstraint = scrubBar.selectionView.widthAnchor.constraint(equalTo: scrubBar.selectionView.heightAnchor)
+        XCTAssertConstraint(expectedConstraint, inView: scrubBar.selectionView)
     }
 
     func testSelectionViewWidthConstraintInScrubMode() {
-        slidingSegmentedControl.isInScrubMode = true
-        let expectedConstraint = slidingSegmentedControl.selectionView.widthAnchor.constraint(equalTo: slidingSegmentedControl.stackView.widthAnchor)
-        XCTAssertConstraint(expectedConstraint, inView: slidingSegmentedControl)
+        scrubBar.isInScrubMode = true
+        let expectedConstraint = scrubBar.selectionView.widthAnchor.constraint(equalTo: scrubBar.stackView.widthAnchor)
+        XCTAssertConstraint(expectedConstraint, inView: scrubBar)
     }
 
     func testSelectionViewWidthConstraintGetsRemoved() {
-        let constraint = slidingSegmentedControl.selectionView.widthAnchor.constraint(equalTo: slidingSegmentedControl.selectionView.heightAnchor)
-        slidingSegmentedControl.isInScrubMode = true
-        XCTAssertNotConstraint(constraint, inView: slidingSegmentedControl.selectionView)
+        let constraint = scrubBar.selectionView.widthAnchor.constraint(equalTo: scrubBar.selectionView.heightAnchor)
+        scrubBar.isInScrubMode = true
+        XCTAssertNotConstraint(constraint, inView: scrubBar.selectionView)
     }
 
     func testSelectionViewCenterXConstraintDefault() {
-        let expectedConstraint = slidingSegmentedControl.selectionView.centerXAnchor.constraint(equalTo: slidingSegmentedControl.imageViews[0].centerXAnchor)
-        XCTAssertConstraint(expectedConstraint, inView: slidingSegmentedControl)
+        let expectedConstraint = scrubBar.selectionView.centerXAnchor.constraint(equalTo: scrubBar.imageViews[0].centerXAnchor)
+        XCTAssertConstraint(expectedConstraint, inView: scrubBar)
     }
 
     func testSelectionViewCenterXConstraint1() { testSelectionViewCenterXConstraint(withSelectedSegment: 1) }
     func testSelectionViewCenterXConstraint2() { testSelectionViewCenterXConstraint(withSelectedSegment: 2) }
 
     func testSelectionViewCenterXConstraint(withSelectedSegment selectedSegment: Int, file: StaticString = #file, line: UInt = #line) {
-        slidingSegmentedControl.selectedSegment = selectedSegment
-        let expectedConstraint = slidingSegmentedControl.selectionView.centerXAnchor.constraint(equalTo: slidingSegmentedControl.imageViews[selectedSegment].centerXAnchor)
-        XCTAssertConstraint(expectedConstraint, inView: slidingSegmentedControl, file: file, line: line)
+        scrubBar.selectedSegment = selectedSegment
+        let expectedConstraint = scrubBar.selectionView.centerXAnchor.constraint(equalTo: scrubBar.imageViews[selectedSegment].centerXAnchor)
+        XCTAssertConstraint(expectedConstraint, inView: scrubBar, file: file, line: line)
     }
 
     func testSelectionViewCenterXConstraintGetsRemoved() {
-        let constraint = slidingSegmentedControl.selectionView.centerXAnchor.constraint(equalTo: slidingSegmentedControl.imageViews[0].centerXAnchor)
-        slidingSegmentedControl.selectedSegment = 1
-        XCTAssertNotConstraint(constraint, inView: slidingSegmentedControl)
+        let constraint = scrubBar.selectionView.centerXAnchor.constraint(equalTo: scrubBar.imageViews[0].centerXAnchor)
+        scrubBar.selectedSegment = 1
+        XCTAssertNotConstraint(constraint, inView: scrubBar)
     }
 
     func testSelectionViewCenterXConstraintInScrubMode1() {
-        slidingSegmentedControl.isInScrubMode = true
-        let expectedConstraint = slidingSegmentedControl.selectionView.centerXAnchor.constraint(equalTo: slidingSegmentedControl.stackView.centerXAnchor)
-        XCTAssertConstraint(expectedConstraint, inView: slidingSegmentedControl)
+        scrubBar.isInScrubMode = true
+        let expectedConstraint = scrubBar.selectionView.centerXAnchor.constraint(equalTo: scrubBar.stackView.centerXAnchor)
+        XCTAssertConstraint(expectedConstraint, inView: scrubBar)
     }
 
     func testSelectionViewCenterXConstraintInScrubMode2() {
         // Arrange
-        slidingSegmentedControl.isInScrubMode = true
+        scrubBar.isInScrubMode = true
 
         // Act
-        slidingSegmentedControl.selectedSegment = 0
+        scrubBar.selectedSegment = 0
 
         // Assert
-        let constraint = slidingSegmentedControl.selectionView.centerXAnchor.constraint(equalTo: slidingSegmentedControl.imageViews[0].centerXAnchor)
-        XCTAssertNotConstraint(constraint, inView: slidingSegmentedControl)
+        let constraint = scrubBar.selectionView.centerXAnchor.constraint(equalTo: scrubBar.imageViews[0].centerXAnchor)
+        XCTAssertNotConstraint(constraint, inView: scrubBar)
     }
 
     // MARK: Animate selection change
 
     func testAnimatingType() {
-        XCTAssertTrue(slidingSegmentedControl.animating as Any is Animating.Type)
+        XCTAssertTrue(scrubBar.animating as Any is Animating.Type)
     }
 
     func testAnimatingDefault() {
-        XCTAssertTrue(slidingSegmentedControl.animating == UIView.self)
+        XCTAssertTrue(scrubBar.animating == UIView.self)
     }
 
     func testAnimationDurationType() {
-        XCTAssertTrue(slidingSegmentedControl.animationDuration as Any is TimeInterval)
+        XCTAssertTrue(scrubBar.animationDuration as Any is TimeInterval)
     }
 
     func testAnimationDurationDefault() {
-        XCTAssertEqual(slidingSegmentedControl.animationDuration, 0.35)
+        XCTAssertEqual(scrubBar.animationDuration, 0.35)
     }
 
     func testSelectionViewSelectedSegmentAnimationParams1() { testSelectionViewSelectedSegmentAnimationParams(withAnimationDuration: 1) }
@@ -259,11 +259,11 @@ class SlidingSegmentedControlTests: XCTestCase {
     func testSelectionViewSelectedSegmentAnimationParams(withAnimationDuration animationDuration: TimeInterval, file: StaticString = #file, line: UInt = #line) {
         // Arrange
         AnimatingMock.reset()
-        slidingSegmentedControl.animating = AnimatingMock.self
-        slidingSegmentedControl.animationDuration = animationDuration
+        scrubBar.animating = AnimatingMock.self
+        scrubBar.animationDuration = animationDuration
 
         // Act
-        slidingSegmentedControl.selectedSegment = 1
+        scrubBar.selectedSegment = 1
 
         // Assert
         let expectedParams = AnimatingMock.EquatableParams(duration: animationDuration, delay: 0, dampingRatio: 1, velocity: 0, options: [])
@@ -278,18 +278,18 @@ class SlidingSegmentedControlTests: XCTestCase {
         AnimatingMock.reset()
         let imageWidth = 40
         let expectedCenterX = CGFloat(imageWidth * selectedSegment + imageWidth / 2)
-        let slidingSegmentedControl = SlidingSegmentedControl(images: Array(repeating: UIImage(), count: numberOfSegments))
-        slidingSegmentedControl.frame = CGRect(x: 0, y: 0, width: imageWidth * numberOfSegments, height: 30)
-        slidingSegmentedControl.animating = AnimatingMock.self
-        let initialSelectionViewCenterX = slidingSegmentedControl.selectionView.center.x
+        let scrubBar = ScrubBar(images: Array(repeating: UIImage(), count: numberOfSegments))
+        scrubBar.frame = CGRect(x: 0, y: 0, width: imageWidth * numberOfSegments, height: 30)
+        scrubBar.animating = AnimatingMock.self
+        let initialSelectionViewCenterX = scrubBar.selectionView.center.x
 
         // Act
-        slidingSegmentedControl.selectedSegment = selectedSegment
+        scrubBar.selectedSegment = selectedSegment
         AnimatingMock.capturedAnimationsArray[0]()
 
         // Assert
         XCTAssertEqual(initialSelectionViewCenterX, 0, file: file, line: line)
-        XCTAssertEqual(slidingSegmentedControl.selectionView.center.x, expectedCenterX, file: file, line: line)
+        XCTAssertEqual(scrubBar.selectionView.center.x, expectedCenterX, file: file, line: line)
     }
 
     func testSelectionViewScrubModeAnimationParams1() { testSelectionViewScrubModeAnimationParams(withAnimationDuration: 1) }
@@ -298,11 +298,11 @@ class SlidingSegmentedControlTests: XCTestCase {
     func testSelectionViewScrubModeAnimationParams(withAnimationDuration animationDuration: TimeInterval, file: StaticString = #file, line: UInt = #line) {
         // Arrange
         AnimatingMock.reset()
-        slidingSegmentedControl.animating = AnimatingMock.self
-        slidingSegmentedControl.animationDuration = animationDuration
+        scrubBar.animating = AnimatingMock.self
+        scrubBar.animationDuration = animationDuration
 
         // Act
-        slidingSegmentedControl.isInScrubMode = true
+        scrubBar.isInScrubMode = true
 
         // Assert
         let expectedParams = AnimatingMock.EquatableParams(duration: animationDuration, delay: 0, dampingRatio: 1, velocity: 0, options: [])
@@ -315,68 +315,68 @@ class SlidingSegmentedControlTests: XCTestCase {
     func testSelectionViewWidthAfterScrubModeAnimation(withFrameWidth width: CGFloat, file: StaticString = #file, line: UInt = #line) {
         // Arrange
         AnimatingMock.reset()
-        slidingSegmentedControl.frame = CGRect(x: 0, y: 0, width: width, height: 30)
-        slidingSegmentedControl.animating = AnimatingMock.self
-        let initialSelectionViewWidth = slidingSegmentedControl.selectionView.frame.width
+        scrubBar.frame = CGRect(x: 0, y: 0, width: width, height: 30)
+        scrubBar.animating = AnimatingMock.self
+        let initialSelectionViewWidth = scrubBar.selectionView.frame.width
 
         // Act
-        slidingSegmentedControl.isInScrubMode = true
+        scrubBar.isInScrubMode = true
         AnimatingMock.capturedAnimationsArray[0]()
 
         // Assert
         XCTAssertEqual(initialSelectionViewWidth, 0, file: file, line: line)
-        XCTAssertEqual(slidingSegmentedControl.selectionView.frame.width, width, file: file, line: line)
+        XCTAssertEqual(scrubBar.selectionView.frame.width, width, file: file, line: line)
     }
 
     // MARK: Start touch location
 
     func testStartTouchLocationType() {
-        XCTAssertTrue(slidingSegmentedControl.startTouchLocation as Any? is CGPoint?)
+        XCTAssertTrue(scrubBar.startTouchLocation as Any? is CGPoint?)
     }
 
     func testStartTouchLocationDefault() {
-        XCTAssertNil(slidingSegmentedControl.startTouchLocation)
+        XCTAssertNil(scrubBar.startTouchLocation)
     }
 
     // MARK: Segment locator
 
     func testSegmentLocatorType() {
-        XCTAssertTrue(slidingSegmentedControl.segmentLocator as Any? is DefaultSegmentLocator?)
+        XCTAssertTrue(scrubBar.segmentLocator as Any? is DefaultSegmentLocator?)
     }
 
     // MARK: Scrub mode
 
     func testIsInScrubModeType() {
-        XCTAssertTrue(slidingSegmentedControl.isInScrubMode as Any is Bool)
+        XCTAssertTrue(scrubBar.isInScrubMode as Any is Bool)
     }
 
     func testIsInScrubModeDefault() {
-        XCTAssertFalse(slidingSegmentedControl.isInScrubMode)
+        XCTAssertFalse(scrubBar.isInScrubMode)
     }
 
     // MARK: Minimum pan distance for scrub mode
 
     func testMinPanDistanceType() {
-        XCTAssertTrue(slidingSegmentedControl.minPanDistance as Any is CGFloat)
+        XCTAssertTrue(scrubBar.minPanDistance as Any is CGFloat)
     }
 
     func testMinPanDistanceDefault() {
-        XCTAssertEqual(slidingSegmentedControl.minPanDistance, 10)
+        XCTAssertEqual(scrubBar.minPanDistance, 10)
     }
 
     // MARK: Begin tracking
 
     func testBeginTrackingReturnsTrue() {
-        XCTAssertTrue(slidingSegmentedControl.beginTracking(UITouch(), with: nil))
+        XCTAssertTrue(scrubBar.beginTracking(UITouch(), with: nil))
     }
 
     func testBeginTrackingSetsStartTouchLocation1() { testBeginTrackingSetsStartTouchLocation(withTouchLocation: CGPoint(x: 10, y: 10)) }
     func testBeginTrackingSetsStartTouchLocation2() { testBeginTrackingSetsStartTouchLocation(withTouchLocation: CGPoint(x: 20, y: 20)) }
 
     func testBeginTrackingSetsStartTouchLocation(withTouchLocation touchLocation: CGPoint, file: StaticString = #file, line: UInt = #line) {
-        let touchStub = TouchStub(location: touchLocation, view: slidingSegmentedControl)
-        _ = slidingSegmentedControl.beginTracking(touchStub, with: nil)
-        XCTAssertEqual(slidingSegmentedControl.startTouchLocation, touchLocation, file: file, line: line)
+        let touchStub = TouchStub(location: touchLocation, view: scrubBar)
+        _ = scrubBar.beginTracking(touchStub, with: nil)
+        XCTAssertEqual(scrubBar.startTouchLocation, touchLocation, file: file, line: line)
     }
 
     func testBeginTrackingCreatesSegmentLocator1() { testBeginTrackingCreatesSegmentLocator(withNumberOfSegments: 3, boundsWidth: 100) }
@@ -384,15 +384,15 @@ class SlidingSegmentedControlTests: XCTestCase {
 
     func testBeginTrackingCreatesSegmentLocator(withNumberOfSegments numberOfSegments: Int, boundsWidth: CGFloat, file: StaticString = #file, line: UInt = #line) {
         // Arrange
-        let slidingSegmentedControl = SlidingSegmentedControl(images: Array(repeating: UIImage(), count: numberOfSegments))
-        slidingSegmentedControl.bounds = CGRect(x: 0, y: 0, width: boundsWidth, height: 0)
-        slidingSegmentedControl.SegmentLocatorType = SegmentLocatorMock.self
+        let scrubBar = ScrubBar(images: Array(repeating: UIImage(), count: numberOfSegments))
+        scrubBar.bounds = CGRect(x: 0, y: 0, width: boundsWidth, height: 0)
+        scrubBar.SegmentLocatorType = SegmentLocatorMock.self
 
         // Act
-        _ = slidingSegmentedControl.beginTracking(UITouch(), with: nil)
+        _ = scrubBar.beginTracking(UITouch(), with: nil)
 
         // Assert
-        let segmentLocatorMock = slidingSegmentedControl.segmentLocator as! SegmentLocatorMock
+        let segmentLocatorMock = scrubBar.segmentLocator as! SegmentLocatorMock
         XCTAssertEqual(segmentLocatorMock.boundsWidth, boundsWidth, file: file, line: line)
         XCTAssertEqual(segmentLocatorMock.numberOfSegments, numberOfSegments, file: file, line: line)
     }
@@ -400,28 +400,28 @@ class SlidingSegmentedControlTests: XCTestCase {
     // MARK: Continue tracking
 
     func testContinueTrackingReturnsTrue() {
-        _ = slidingSegmentedControl.beginTracking(UITouch(), with: nil)
-        XCTAssertTrue(slidingSegmentedControl.continueTracking(UITouch(), with: nil))
+        _ = scrubBar.beginTracking(UITouch(), with: nil)
+        XCTAssertTrue(scrubBar.continueTracking(UITouch(), with: nil))
     }
 
     func testContinueWithoutStartTouchLocationReturnsFalse() {
-        slidingSegmentedControl.startTouchLocation = nil
-        XCTAssertFalse(slidingSegmentedControl.continueTracking(UITouch(), with: nil))
+        scrubBar.startTouchLocation = nil
+        XCTAssertFalse(scrubBar.continueTracking(UITouch(), with: nil))
     }
 
     func testIsInScrubModeTrue1() {
-        slidingSegmentedControl.minPanDistance = 2
-        testIsInScrubModeWithPan(from: .zero, to: CGPoint(x: slidingSegmentedControl.minPanDistance, y: 0), expected: true)
+        scrubBar.minPanDistance = 2
+        testIsInScrubModeWithPan(from: .zero, to: CGPoint(x: scrubBar.minPanDistance, y: 0), expected: true)
     }
 
     func testIsInScrubModeTrue2() {
         let point1 = CGPoint(x: 100, y: 0)
-        let point2 = CGPoint(x: point1.x - slidingSegmentedControl.minPanDistance, y: 0)
+        let point2 = CGPoint(x: point1.x - scrubBar.minPanDistance, y: 0)
         testIsInScrubModeWithPan(from: point1, to: point2, expected: true)
     }
 
     func testIsInScrubModeFalse1() {
-        testIsInScrubModeWithPan(from: .zero, to: CGPoint(x: slidingSegmentedControl.minPanDistance - 1, y: 0), expected: false)
+        testIsInScrubModeWithPan(from: .zero, to: CGPoint(x: scrubBar.minPanDistance - 1, y: 0), expected: false)
     }
 
     func testIsInScrubModeFalse2() {
@@ -432,79 +432,79 @@ class SlidingSegmentedControlTests: XCTestCase {
 
     func testIsInScrubModeWithPan(from point1: CGPoint, to point2: CGPoint, expected expectedIsInScrubMode: Bool, file: StaticString = #file, line: UInt = #line) {
         // Arrange
-        slidingSegmentedControl.bounds = CGRect(x: 0, y: 0, width: 100, height: 0)
+        scrubBar.bounds = CGRect(x: 0, y: 0, width: 100, height: 0)
 
         // Act
-        _ = slidingSegmentedControl.beginTracking(TouchStub(location: point1, view: slidingSegmentedControl), with: nil)
-        _ = slidingSegmentedControl.continueTracking(TouchStub(location: point2, view: slidingSegmentedControl), with: nil)
+        _ = scrubBar.beginTracking(TouchStub(location: point1, view: scrubBar), with: nil)
+        _ = scrubBar.continueTracking(TouchStub(location: point2, view: scrubBar), with: nil)
 
         // Assert
-        XCTAssertEqual(slidingSegmentedControl.isInScrubMode, expectedIsInScrubMode, file: file, line: line)
+        XCTAssertEqual(scrubBar.isInScrubMode, expectedIsInScrubMode, file: file, line: line)
     }
 
     func testScrubModeStays() {
         // Arrange
-        slidingSegmentedControl.bounds = CGRect(x: 0, y: 0, width: 100, height: 0)
+        scrubBar.bounds = CGRect(x: 0, y: 0, width: 100, height: 0)
 
         // Act
-        _ = slidingSegmentedControl.beginTracking(TouchStub(location: .zero, view: slidingSegmentedControl), with: nil)
-        slidingSegmentedControl.isInScrubMode = true
-        _ = slidingSegmentedControl.continueTracking(TouchStub(location: .zero, view: slidingSegmentedControl), with: nil)
+        _ = scrubBar.beginTracking(TouchStub(location: .zero, view: scrubBar), with: nil)
+        scrubBar.isInScrubMode = true
+        _ = scrubBar.continueTracking(TouchStub(location: .zero, view: scrubBar), with: nil)
 
         // Assert
-        XCTAssertTrue(slidingSegmentedControl.isInScrubMode)
+        XCTAssertTrue(scrubBar.isInScrubMode)
     }
 
     // MARK: Change active segment with a pan
 
     func testPanCallsSegmentLocator1() {
-        testPanCallsSegmentLocator(withLocation: CGPoint(x: slidingSegmentedControl.minPanDistance, y: 1))
+        testPanCallsSegmentLocator(withLocation: CGPoint(x: scrubBar.minPanDistance, y: 1))
     }
 
     func testPanCallsSegmentLocator2() {
-        testPanCallsSegmentLocator(withLocation: CGPoint(x: slidingSegmentedControl.minPanDistance * 20, y: 2))
+        testPanCallsSegmentLocator(withLocation: CGPoint(x: scrubBar.minPanDistance * 20, y: 2))
     }
 
     func testPanCallsSegmentLocator(withLocation location: CGPoint, file: StaticString = #file, line: UInt = #line) {
         // Arrange
         let segmentLocatorMock = SegmentLocatorMock()
-        slidingSegmentedControl.segmentLocator = segmentLocatorMock
-        slidingSegmentedControl.startTouchLocation = .zero
-        let touchStub = TouchStub(location: location, view: slidingSegmentedControl)
+        scrubBar.segmentLocator = segmentLocatorMock
+        scrubBar.startTouchLocation = .zero
+        let touchStub = TouchStub(location: location, view: scrubBar)
 
         // Act
-        _ = slidingSegmentedControl.continueTracking(touchStub, with: nil)
+        _ = scrubBar.continueTracking(touchStub, with: nil)
 
         // Assert
         XCTAssertEqual(segmentLocatorMock.xCoordinates, [touchStub.location.x], file: file, line: line)
     }
 
     func testPanDoesNotCallSegmentLocator1() {
-        testPanDoesNotCallSegmentLocator(withXDistance: slidingSegmentedControl.minPanDistance - 1)
+        testPanDoesNotCallSegmentLocator(withXDistance: scrubBar.minPanDistance - 1)
     }
 
     func testPanDoesNotCallSegmentLocator2() {
-        slidingSegmentedControl.minPanDistance = 100
-        testPanDoesNotCallSegmentLocator(withXDistance: slidingSegmentedControl.minPanDistance - 1)
+        scrubBar.minPanDistance = 100
+        testPanDoesNotCallSegmentLocator(withXDistance: scrubBar.minPanDistance - 1)
     }
 
     func testPanDoesNotCallSegmentLocator(withXDistance xDistance: CGFloat, file: StaticString = #file, line: UInt = #line) {
         // Arrange
         let segmentLocatorMock = SegmentLocatorMock()
-        slidingSegmentedControl.segmentLocator = segmentLocatorMock
-        slidingSegmentedControl.startTouchLocation = .zero
-        let touchStub = TouchStub(location: CGPoint(x: xDistance, y: 0), view: slidingSegmentedControl)
+        scrubBar.segmentLocator = segmentLocatorMock
+        scrubBar.startTouchLocation = .zero
+        let touchStub = TouchStub(location: CGPoint(x: xDistance, y: 0), view: scrubBar)
 
         // Act
-        _ = slidingSegmentedControl.continueTracking(touchStub, with: nil)
+        _ = scrubBar.continueTracking(touchStub, with: nil)
 
         // Assert
         XCTAssertEqual(segmentLocatorMock.xCoordinates, [], file: file, line: line)
     }
 
     func testPanCallsActiveSegmentInScrubMode() {
-        slidingSegmentedControl.isInScrubMode = true
-        testPanCallsSegmentLocator(withLocation: CGPoint(x: slidingSegmentedControl.minPanDistance, y: 1))
+        scrubBar.isInScrubMode = true
+        testPanCallsSegmentLocator(withLocation: CGPoint(x: scrubBar.minPanDistance, y: 1))
     }
 
     func testPanChangesSelection1() { testPanChangesSelection(withSegmentIndex: 1) }
@@ -513,27 +513,27 @@ class SlidingSegmentedControlTests: XCTestCase {
     func testPanChangesSelection(withSegmentIndex segmentIndex: Int, file: StaticString = #file, line: UInt = #line) {
         // Arrange
         let segmentLocatorStub = SegmentLocatorStub(indexOfSegment: segmentIndex)
-        slidingSegmentedControl.segmentLocator = segmentLocatorStub
-        slidingSegmentedControl.startTouchLocation = .zero
-        let panTouch = TouchStub(location: CGPoint(x: slidingSegmentedControl.minPanDistance, y: 0), view: slidingSegmentedControl)
+        scrubBar.segmentLocator = segmentLocatorStub
+        scrubBar.startTouchLocation = .zero
+        let panTouch = TouchStub(location: CGPoint(x: scrubBar.minPanDistance, y: 0), view: scrubBar)
 
         // Act
-        _ = slidingSegmentedControl.continueTracking(panTouch, with: nil)
+        _ = scrubBar.continueTracking(panTouch, with: nil)
 
         // Assert
-        XCTAssertEqual(slidingSegmentedControl.selectedSegment, segmentIndex, file: file, line: line)
+        XCTAssertEqual(scrubBar.selectedSegment, segmentIndex, file: file, line: line)
     }
 
     // MARK: End tracking
 
     func testIsInScrubModeIsFalseAfterEndTracking() {
-        slidingSegmentedControl.isInScrubMode = true
-        slidingSegmentedControl.endTracking(nil, with: nil)
-        XCTAssertFalse(slidingSegmentedControl.isInScrubMode)
+        scrubBar.isInScrubMode = true
+        scrubBar.endTracking(nil, with: nil)
+        XCTAssertFalse(scrubBar.isInScrubMode)
     }
 
     func testEndTrackingWithNilTouch() {
-        slidingSegmentedControl.endTracking(nil, with: nil)
+        scrubBar.endTracking(nil, with: nil)
     }
 
     // MARK: Change active segment with a tap
@@ -544,11 +544,11 @@ class SlidingSegmentedControlTests: XCTestCase {
     func testTapCallsSegmentLocator(withLocation location: CGPoint, file: StaticString = #file, line: UInt = #line) {
         // Arrange
         let segmentLocatorMock = SegmentLocatorMock()
-        slidingSegmentedControl.segmentLocator = segmentLocatorMock
-        let endTouch = TouchStub(location: location, view: slidingSegmentedControl)
+        scrubBar.segmentLocator = segmentLocatorMock
+        let endTouch = TouchStub(location: location, view: scrubBar)
 
         // Act
-        slidingSegmentedControl.endTracking(endTouch, with: nil)
+        scrubBar.endTracking(endTouch, with: nil)
 
         // Assert
         XCTAssertEqual(segmentLocatorMock.xCoordinates, [endTouch.location.x], file: file, line: line)
@@ -560,21 +560,21 @@ class SlidingSegmentedControlTests: XCTestCase {
     func testTapChangesSelection(withSegmentIndex segmentIndex: Int, file: StaticString = #file, line: UInt = #line) {
         // Arrange
         let segmentLocatorStub = SegmentLocatorStub(indexOfSegment: segmentIndex)
-        slidingSegmentedControl.segmentLocator = segmentLocatorStub
+        scrubBar.segmentLocator = segmentLocatorStub
 
         // Act
-        slidingSegmentedControl.endTracking(TouchStub(location: .zero, view: slidingSegmentedControl), with: nil)
+        scrubBar.endTracking(TouchStub(location: .zero, view: scrubBar), with: nil)
 
         // Assert
-        XCTAssertEqual(slidingSegmentedControl.selectedSegment, segmentIndex, file: file, line: line)
+        XCTAssertEqual(scrubBar.selectedSegment, segmentIndex, file: file, line: line)
     }
 
     // MARK: Cancel tracking
 
     func testIsInScrubModeIsFalseAfterCancelTracking() {
-        slidingSegmentedControl.isInScrubMode = true
-        slidingSegmentedControl.cancelTracking(with: nil)
-        XCTAssertFalse(slidingSegmentedControl.isInScrubMode)
+        scrubBar.isInScrubMode = true
+        scrubBar.cancelTracking(with: nil)
+        XCTAssertFalse(scrubBar.isInScrubMode)
     }
 
 }
