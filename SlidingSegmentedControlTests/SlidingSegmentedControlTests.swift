@@ -266,8 +266,8 @@ class SlidingSegmentedControlTests: XCTestCase {
         slidingSegmentedControl.selectedSegment = 1
 
         // Assert
-        let expectedParams = AnimatingMock.EquatableParams(duration: animationDuration, delay: 0, dampingRatio: 1, velocity: 0, options: [])
-        XCTAssertEqual(AnimatingMock.capturedEquatableParamsArray, [expectedParams], file: file, line: line)
+        let expectedParams = AnimatingMock.ConfigurationParams(duration: animationDuration, delay: 0, dampingRatio: 1, velocity: 0, options: [])
+        XCTAssertEqual(AnimatingMock.capturedConfigurationParams, [expectedParams], file: file, line: line)
     }
 
     func testSelectionViewXAfterSelectedSegmentAnimation1() { testSelectionViewXAfterSelectedSegmentAnimation(withSelectedSegment: 1, numberOfSegments: 3) }
@@ -285,7 +285,7 @@ class SlidingSegmentedControlTests: XCTestCase {
 
         // Act
         slidingSegmentedControl.selectedSegment = selectedSegment
-        AnimatingMock.capturedAnimationsArray[0]()
+        AnimatingMock.capturedAnimations.first?()
 
         // Assert
         XCTAssertEqual(initialSelectionViewCenterX, 0, file: file, line: line)
@@ -305,8 +305,8 @@ class SlidingSegmentedControlTests: XCTestCase {
         slidingSegmentedControl.isInScrubMode = true
 
         // Assert
-        let expectedParams = AnimatingMock.EquatableParams(duration: animationDuration, delay: 0, dampingRatio: 1, velocity: 0, options: [])
-        XCTAssertEqual(AnimatingMock.capturedEquatableParamsArray, [expectedParams], file: file, line: line)
+        let expectedParams = AnimatingMock.ConfigurationParams(duration: animationDuration, delay: 0, dampingRatio: 1, velocity: 0, options: [])
+        XCTAssertEqual(AnimatingMock.capturedConfigurationParams, [expectedParams], file: file, line: line)
     }
 
     func testSelectionViewWidthAfterScrubModeAnimation1() { testSelectionViewWidthAfterScrubModeAnimation(withFrameWidth: 100) }
@@ -321,7 +321,7 @@ class SlidingSegmentedControlTests: XCTestCase {
 
         // Act
         slidingSegmentedControl.isInScrubMode = true
-        AnimatingMock.capturedAnimationsArray[0]()
+        AnimatingMock.capturedAnimations.first?()
 
         // Assert
         XCTAssertEqual(initialSelectionViewWidth, 0, file: file, line: line)
@@ -642,7 +642,7 @@ struct SegmentLocatorStub: SegmentLocator {
 
 class AnimatingMock: Animating {
 
-    struct EquatableParams: Equatable {
+    struct ConfigurationParams: Equatable {
         let duration: TimeInterval
         let delay: TimeInterval
         let dampingRatio: CGFloat
@@ -650,26 +650,22 @@ class AnimatingMock: Animating {
         let options: UIViewAnimationOptions
     }
 
-    static var capturedEquatableParamsArray: [EquatableParams] = []
-    static var capturedAnimationsArray: [() -> Void] = []
+    static var capturedConfigurationParams: [ConfigurationParams] = []
+    static var capturedAnimations: [() -> Void] = []
 
     static func reset() {
-        capturedEquatableParamsArray = []
-        capturedAnimationsArray = []
+        capturedConfigurationParams = []
+        capturedAnimations = []
     }
 
     static func animate(withDuration duration: TimeInterval, delay: TimeInterval, usingSpringWithDamping dampingRatio: CGFloat, initialSpringVelocity velocity: CGFloat, options: UIViewAnimationOptions, animations: @escaping () -> Void, completion: ((Bool) -> Swift.Void)?) {
-        let params = EquatableParams(duration: duration, delay: delay, dampingRatio: dampingRatio, velocity: velocity, options: options)
-        capturedEquatableParamsArray.append(params)
-        capturedAnimationsArray.append(animations)
+        let params = ConfigurationParams(duration: duration, delay: delay, dampingRatio: dampingRatio, velocity: velocity, options: options)
+        capturedConfigurationParams.append(params)
+        capturedAnimations.append(animations)
     }
 
 }
 
-func == (lhs: AnimatingMock.EquatableParams, rhs: AnimatingMock.EquatableParams) -> Bool {
-    return lhs.duration == rhs.duration &&
-        lhs.delay == rhs.delay &&
-        lhs.dampingRatio == rhs.dampingRatio &&
-        lhs.velocity == rhs.velocity &&
-        lhs.options == rhs.options
+func == (lhs: AnimatingMock.ConfigurationParams, rhs: AnimatingMock.ConfigurationParams) -> Bool {
+    return String(describing: lhs) == String(describing: rhs)
 }
