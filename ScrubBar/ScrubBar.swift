@@ -125,12 +125,12 @@ public class ScrubBar: UIControl {
     // MARK: Continue tracking
 
     public override func continueTracking(_ touch: UITouch, with event: UIEvent?) -> Bool {
-        guard let touchStartLocation = startTouchLocation else {
+        guard let startTouchLocation = startTouchLocation else {
             // don't do fatal error, because we can't ensure UIKit always calls beginTracking (though it probably does)
             return false
         }
         let location = touch.location(in: self)
-        let panDistance = abs(location.x - touchStartLocation.x)
+        let panDistance = abs(location.x - startTouchLocation.x)
         if (!isInScrubMode && panDistance >= minPanDistance) {
             isInScrubMode = true
         }
