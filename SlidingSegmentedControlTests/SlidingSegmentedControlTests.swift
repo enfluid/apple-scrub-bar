@@ -213,7 +213,6 @@ class SlidingSegmentedControlTests: XCTestCase {
 
     func testSelectionViewCenterXConstraintGetsRemoved() {
         let constraint = slidingSegmentedControl.selectionView.centerXAnchor.constraint(equalTo: slidingSegmentedControl.imageViews[0].centerXAnchor)
-        slidingSegmentedControl.selectedSegment = 0
         slidingSegmentedControl.selectedSegment = 1
         XCTAssertNotConstraint(constraint, inView: slidingSegmentedControl)
     }
@@ -225,8 +224,13 @@ class SlidingSegmentedControlTests: XCTestCase {
     }
 
     func testSelectionViewCenterXConstraintInScrubMode2() {
+        // Arrange
         slidingSegmentedControl.isInScrubMode = true
+
+        // Act
         slidingSegmentedControl.selectedSegment = 0
+
+        // Assert
         let constraint = slidingSegmentedControl.selectionView.centerXAnchor.constraint(equalTo: slidingSegmentedControl.imageViews[0].centerXAnchor)
         XCTAssertNotConstraint(constraint, inView: slidingSegmentedControl)
     }
@@ -253,10 +257,15 @@ class SlidingSegmentedControlTests: XCTestCase {
     func testSelectionViewSelectedSegmentAnimationParams2() { testSelectionViewSelectedSegmentAnimationParams(withAnimationDuration: 2.5) }
 
     func testSelectionViewSelectedSegmentAnimationParams(withAnimationDuration animationDuration: TimeInterval, file: StaticString = #file, line: UInt = #line) {
+        // Arrange
         AnimatingMock.reset()
         slidingSegmentedControl.animating = AnimatingMock.self
         slidingSegmentedControl.animationDuration = animationDuration
+
+        // Act
         slidingSegmentedControl.selectedSegment = 1
+
+        // Assert
         let expectedParams = AnimatingMock.EquatableParams(duration: animationDuration, delay: 0, dampingRatio: 1, velocity: 0, options: [])
         XCTAssertEqual(AnimatingMock.capturedEquatableParamsArray, [expectedParams], file: file, line: line)
     }
@@ -265,15 +274,21 @@ class SlidingSegmentedControlTests: XCTestCase {
     func testSelectionViewXAfterSelectedSegmentAnimation2() { testSelectionViewXAfterSelectedSegmentAnimation(withSelectedSegment: 2, numberOfSegments: 5) }
 
     func testSelectionViewXAfterSelectedSegmentAnimation(withSelectedSegment selectedSegment: Int, numberOfSegments: Int, file: StaticString = #file, line: UInt = #line) {
+        // Arrange
         AnimatingMock.reset()
         let imageWidth = 40
         let expectedCenterX = CGFloat(imageWidth * selectedSegment + imageWidth / 2)
         let slidingSegmentedControl = SlidingSegmentedControl(images: Array(repeating: UIImage(), count: numberOfSegments))
         slidingSegmentedControl.frame = CGRect(x: 0, y: 0, width: imageWidth * numberOfSegments, height: 30)
         slidingSegmentedControl.animating = AnimatingMock.self
+        let initialSelectionViewCenterX = slidingSegmentedControl.selectionView.center.x
+
+        // Act
         slidingSegmentedControl.selectedSegment = selectedSegment
-        XCTAssertEqual(slidingSegmentedControl.selectionView.center.x, 0, file: file, line: line)
         AnimatingMock.capturedAnimationsArray[0]()
+
+        // Assert
+        XCTAssertEqual(initialSelectionViewCenterX, 0, file: file, line: line)
         XCTAssertEqual(slidingSegmentedControl.selectionView.center.x, expectedCenterX, file: file, line: line)
     }
 
@@ -281,10 +296,15 @@ class SlidingSegmentedControlTests: XCTestCase {
     func testSelectionViewScrubModeAnimationParams2() { testSelectionViewScrubModeAnimationParams(withAnimationDuration: 2.5) }
 
     func testSelectionViewScrubModeAnimationParams(withAnimationDuration animationDuration: TimeInterval, file: StaticString = #file, line: UInt = #line) {
+        // Arrange
         AnimatingMock.reset()
         slidingSegmentedControl.animating = AnimatingMock.self
         slidingSegmentedControl.animationDuration = animationDuration
+
+        // Act
         slidingSegmentedControl.isInScrubMode = true
+
+        // Assert
         let expectedParams = AnimatingMock.EquatableParams(duration: animationDuration, delay: 0, dampingRatio: 1, velocity: 0, options: [])
         XCTAssertEqual(AnimatingMock.capturedEquatableParamsArray, [expectedParams], file: file, line: line)
     }
@@ -293,12 +313,18 @@ class SlidingSegmentedControlTests: XCTestCase {
     func testSelectionViewWidthAfterScrubModeAnimation2() { testSelectionViewWidthAfterScrubModeAnimation(withFrameWidth: 200) }
 
     func testSelectionViewWidthAfterScrubModeAnimation(withFrameWidth width: CGFloat, file: StaticString = #file, line: UInt = #line) {
+        // Arrange
         AnimatingMock.reset()
         slidingSegmentedControl.frame = CGRect(x: 0, y: 0, width: width, height: 30)
         slidingSegmentedControl.animating = AnimatingMock.self
+        let initialSelectionViewWidth = slidingSegmentedControl.selectionView.frame.width
+
+        // Act
         slidingSegmentedControl.isInScrubMode = true
-        XCTAssertEqual(slidingSegmentedControl.selectionView.frame.width, 0, file: file, line: line)
         AnimatingMock.capturedAnimationsArray[0]()
+
+        // Assert
+        XCTAssertEqual(initialSelectionViewWidth, 0, file: file, line: line)
         XCTAssertEqual(slidingSegmentedControl.selectionView.frame.width, width, file: file, line: line)
     }
 
@@ -357,10 +383,15 @@ class SlidingSegmentedControlTests: XCTestCase {
     func testBeginTrackingCreatesSegmentLocator2() { testBeginTrackingCreatesSegmentLocator(withNumberOfSegments: 2, boundsWidth: 200) }
 
     func testBeginTrackingCreatesSegmentLocator(withNumberOfSegments numberOfSegments: Int, boundsWidth: CGFloat, file: StaticString = #file, line: UInt = #line) {
+        // Arrange
         let slidingSegmentedControl = SlidingSegmentedControl(images: Array(repeating: UIImage(), count: numberOfSegments))
         slidingSegmentedControl.bounds = CGRect(x: 0, y: 0, width: boundsWidth, height: 0)
         slidingSegmentedControl.SegmentLocatorType = SegmentLocatorMock.self
+
+        // Act
         _ = slidingSegmentedControl.beginTracking(UITouch(), with: nil)
+
+        // Assert
         let segmentLocatorMock = slidingSegmentedControl.segmentLocator as! SegmentLocatorMock
         XCTAssertEqual(segmentLocatorMock.boundsWidth, boundsWidth, file: file, line: line)
         XCTAssertEqual(segmentLocatorMock.numberOfSegments, numberOfSegments, file: file, line: line)
@@ -400,17 +431,27 @@ class SlidingSegmentedControlTests: XCTestCase {
     }
 
     func testIsInScrubModeWithPan(from point1: CGPoint, to point2: CGPoint, expected expectedIsInScrubMode: Bool, file: StaticString = #file, line: UInt = #line) {
+        // Arrange
         slidingSegmentedControl.bounds = CGRect(x: 0, y: 0, width: 100, height: 0)
+
+        // Act
         _ = slidingSegmentedControl.beginTracking(TouchStub(location: point1, view: slidingSegmentedControl), with: nil)
         _ = slidingSegmentedControl.continueTracking(TouchStub(location: point2, view: slidingSegmentedControl), with: nil)
+
+        // Assert
         XCTAssertEqual(slidingSegmentedControl.isInScrubMode, expectedIsInScrubMode, file: file, line: line)
     }
 
     func testScrubModeStays() {
+        // Arrange
         slidingSegmentedControl.bounds = CGRect(x: 0, y: 0, width: 100, height: 0)
+
+        // Act
         _ = slidingSegmentedControl.beginTracking(TouchStub(location: .zero, view: slidingSegmentedControl), with: nil)
         slidingSegmentedControl.isInScrubMode = true
         _ = slidingSegmentedControl.continueTracking(TouchStub(location: .zero, view: slidingSegmentedControl), with: nil)
+
+        // Assert
         XCTAssertTrue(slidingSegmentedControl.isInScrubMode)
     }
 
@@ -425,11 +466,16 @@ class SlidingSegmentedControlTests: XCTestCase {
     }
 
     func testPanCallsSegmentLocator(withLocation location: CGPoint, file: StaticString = #file, line: UInt = #line) {
+        // Arrange
         let segmentLocatorMock = SegmentLocatorMock()
         slidingSegmentedControl.segmentLocator = segmentLocatorMock
         slidingSegmentedControl.startTouchLocation = .zero
         let touchStub = TouchStub(location: location, view: slidingSegmentedControl)
+
+        // Act
         _ = slidingSegmentedControl.continueTracking(touchStub, with: nil)
+
+        // Assert
         XCTAssertEqual(segmentLocatorMock.xCoordinates, [touchStub.location.x], file: file, line: line)
     }
 
@@ -443,11 +489,16 @@ class SlidingSegmentedControlTests: XCTestCase {
     }
 
     func testPanDoesNotCallSegmentLocator(withXDistance xDistance: CGFloat, file: StaticString = #file, line: UInt = #line) {
+        // Arrange
         let segmentLocatorMock = SegmentLocatorMock()
         slidingSegmentedControl.segmentLocator = segmentLocatorMock
         slidingSegmentedControl.startTouchLocation = .zero
         let touchStub = TouchStub(location: CGPoint(x: xDistance, y: 0), view: slidingSegmentedControl)
+
+        // Act
         _ = slidingSegmentedControl.continueTracking(touchStub, with: nil)
+
+        // Assert
         XCTAssertEqual(segmentLocatorMock.xCoordinates, [], file: file, line: line)
     }
 
@@ -460,11 +511,16 @@ class SlidingSegmentedControlTests: XCTestCase {
     func testPanChangesSelection2() { testPanChangesSelection(withSegmentIndex: 2) }
 
     func testPanChangesSelection(withSegmentIndex segmentIndex: Int, file: StaticString = #file, line: UInt = #line) {
+        // Arrange
         let segmentLocatorStub = SegmentLocatorStub(indexOfSegment: segmentIndex)
         slidingSegmentedControl.segmentLocator = segmentLocatorStub
         slidingSegmentedControl.startTouchLocation = .zero
         let panTouch = TouchStub(location: CGPoint(x: slidingSegmentedControl.minPanDistance, y: 0), view: slidingSegmentedControl)
+
+        // Act
         _ = slidingSegmentedControl.continueTracking(panTouch, with: nil)
+
+        // Assert
         XCTAssertEqual(slidingSegmentedControl.selectedSegment, segmentIndex, file: file, line: line)
     }
 
@@ -486,10 +542,15 @@ class SlidingSegmentedControlTests: XCTestCase {
     func testTapCallsSegmentLocator2() { testTapCallsSegmentLocator(withLocation: CGPoint(x: 0, y: 1)) }
 
     func testTapCallsSegmentLocator(withLocation location: CGPoint, file: StaticString = #file, line: UInt = #line) {
+        // Arrange
         let segmentLocatorMock = SegmentLocatorMock()
         slidingSegmentedControl.segmentLocator = segmentLocatorMock
         let endTouch = TouchStub(location: location, view: slidingSegmentedControl)
+
+        // Act
         slidingSegmentedControl.endTracking(endTouch, with: nil)
+
+        // Assert
         XCTAssertEqual(segmentLocatorMock.xCoordinates, [endTouch.location.x], file: file, line: line)
     }
 
@@ -497,9 +558,14 @@ class SlidingSegmentedControlTests: XCTestCase {
     func testTapChangesSelection2() { testTapChangesSelection(withSegmentIndex: 2) }
 
     func testTapChangesSelection(withSegmentIndex segmentIndex: Int, file: StaticString = #file, line: UInt = #line) {
+        // Arrange
         let segmentLocatorStub = SegmentLocatorStub(indexOfSegment: segmentIndex)
         slidingSegmentedControl.segmentLocator = segmentLocatorStub
+
+        // Act
         slidingSegmentedControl.endTracking(TouchStub(location: .zero, view: slidingSegmentedControl), with: nil)
+
+        // Assert
         XCTAssertEqual(slidingSegmentedControl.selectedSegment, segmentIndex, file: file, line: line)
     }
 
