@@ -4,20 +4,16 @@ public class ScrubBar: UIControl {
 
     // MARK: Initialization
 
-    convenience public init(items: [ScrubBarItem]) {
-        self.init(images: items.map { $0.image })
+    public init(items: [ScrubBarItem]) {
         self.items = items
-    }
-
-    public init(images: [UIImage]) {
-        imageViews = images.map { UIImageView(image: $0) }
+        imageViews = items.map { UIImageView(image: $0.image) }
         super.init(frame: .zero)
         configureImageViews()
         configureStackView()
         configureSelectionView()
     }
 
-    var items: [ScrubBarItem] = []
+    let items: [ScrubBarItem]
 
     let imageViews: [UIImageView]
 

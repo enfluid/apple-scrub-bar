@@ -3,7 +3,7 @@ import XCTest
 
 final class ScrubBarTests: XCTestCase {
 
-    lazy var scrubBar = ScrubBar(images: Array(repeating: UIImage(), count: 3))
+    lazy var scrubBar = ScrubBar(items: Array(repeating: ScrubBarItem(accessibilityLabel: "", image: UIImage()), count: 3))
 
     // MARK: Main
 
@@ -89,64 +89,54 @@ final class ScrubBarTests: XCTestCase {
     }
 
     func testImageViewCount1() {
-        let scrubBar = ScrubBar(images: [UIImage()])
-        XCTAssertEqual(scrubBar.imageViews.count, 1)
-    }
-
-    func testImageViewCount1_() {
-        let scrubBar = ScrubBar(items: [ScrubBarItem(accessibilityLabel: "", image: UIImage())])
+        let scrubBar = ScrubBar(items: [.empty()])
         XCTAssertEqual(scrubBar.imageViews.count, 1)
     }
 
     func testImageViewCount2() {
-        let scrubBar = ScrubBar(images: [UIImage(), UIImage()])
-        XCTAssertEqual(scrubBar.imageViews.count, 2)
-    }
-
-    func testImageViewCount2_() {
-        let scrubBar = ScrubBar(items: [ScrubBarItem(accessibilityLabel: "", image: UIImage()), ScrubBarItem(accessibilityLabel: "", image: UIImage())])
+        let scrubBar = ScrubBar(items: [.empty(), .empty()])
         XCTAssertEqual(scrubBar.imageViews.count, 2)
     }
 
     func testImageViewsImage1() {
-        let image = UIImage()
-        let scrubBar = ScrubBar(images: [image, UIImage()])
-        XCTAssertEqual(scrubBar.imageViews.first?.image, image)
+        let item = ScrubBarItem.empty()
+        let scrubBar = ScrubBar(items: [item, .empty()])
+        XCTAssertEqual(scrubBar.imageViews.first?.image, item.image)
     }
 
     func testImageViewsImage2() {
-        let image = UIImage()
-        let scrubBar = ScrubBar(images: [UIImage(), image])
-        XCTAssertEqual(scrubBar.imageViews.last?.image, image)
+        let item = ScrubBarItem.empty()
+        let scrubBar = ScrubBar(items: [.empty(), item])
+        XCTAssertEqual(scrubBar.imageViews.last?.image, item.image)
     }
 
     func testImageViewsContentMode1() {
-        let scrubBar = ScrubBar(images: [UIImage(), UIImage()])
+        let scrubBar = ScrubBar(items: [.empty(), .empty()])
         XCTAssertEqual(scrubBar.imageViews.first?.contentMode, .center)
     }
 
     func testImageViewsContentMode2() {
-        let scrubBar = ScrubBar(images: [UIImage(), UIImage()])
+        let scrubBar = ScrubBar(items: [.empty(), .empty()])
         XCTAssertEqual(scrubBar.imageViews.last?.contentMode, .center)
     }
 
     func testImageViewsIsAccessibilityElement1() {
-        let scrubBar = ScrubBar(images: [UIImage(), UIImage()])
+        let scrubBar = ScrubBar(items: [.empty(), .empty()])
         XCTAssertTrue(scrubBar.imageViews.first?.isAccessibilityElement)
     }
 
     func testImageViewsIsAccessibilityElement2() {
-        let scrubBar = ScrubBar(images: [UIImage(), UIImage()])
+        let scrubBar = ScrubBar(items: [.empty(), .empty()])
         XCTAssertTrue(scrubBar.imageViews.last?.isAccessibilityElement)
     }
 
     func testImageViewsAccessibilityTraits1() {
-        let scrubBar = ScrubBar(images: [UIImage(), UIImage()])
+        let scrubBar = ScrubBar(items: [.empty(), .empty()])
         XCTAssertEqual(scrubBar.imageViews.first?.accessibilityTraits, UIAccessibilityTraitButton)
     }
 
     func testImageViewsAccessibilityTraits2() {
-        let scrubBar = ScrubBar(images: [UIImage(), UIImage()])
+        let scrubBar = ScrubBar(items: [.empty(), .empty()])
         XCTAssertEqual(scrubBar.imageViews.last?.accessibilityTraits, UIAccessibilityTraitButton)
     }
 
@@ -304,7 +294,7 @@ final class ScrubBarTests: XCTestCase {
         AnimatingMock.reset()
         let imageWidth = 40
         let expectedCenterX = CGFloat(imageWidth * selectedItemIndex + imageWidth / 2)
-        let scrubBar = ScrubBar(images: Array(repeating: UIImage(), count: numberOfSegments))
+        let scrubBar = ScrubBar(items: Array(repeating: .empty(), count: numberOfSegments))
         scrubBar.frame = CGRect(x: 0, y: 0, width: imageWidth * numberOfSegments, height: 30)
         scrubBar.animating = AnimatingMock.self
         let initialSelectionViewCenterX = scrubBar.selectionView.center.x
@@ -410,7 +400,7 @@ final class ScrubBarTests: XCTestCase {
 
     func testBeginTrackingCreatesItemLocator(withNumberOfSegments numberOfSegments: Int, boundsWidth: CGFloat, file: StaticString = #file, line: UInt = #line) {
         // Arrange
-        let scrubBar = ScrubBar(images: Array(repeating: UIImage(), count: numberOfSegments))
+        let scrubBar = ScrubBar(items: Array(repeating: .empty(), count: numberOfSegments))
         scrubBar.bounds = CGRect(x: 0, y: 0, width: boundsWidth, height: 0)
         scrubBar.ItemLocatorType = ItemLocatorMock.self
 
@@ -697,6 +687,14 @@ func == (lhs: AnimatingMock.AnimationConfiguration, rhs: AnimatingMock.Animation
 }
 
 extension ScrubBarItem: Equatable {}
+
+extension ScrubBarItem {
+
+    static func empty() -> ScrubBarItem {
+        return ScrubBarItem(accessibilityLabel: "", image: UIImage())
+    }
+
+}
 
 public func == (lhs: ScrubBarItem, rhs: ScrubBarItem) -> Bool {
     return String(describing: lhs) == String(describing: rhs)
