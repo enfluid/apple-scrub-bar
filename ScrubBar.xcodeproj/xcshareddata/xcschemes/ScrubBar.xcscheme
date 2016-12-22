@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "0FC168831DB5B2200090CB3A"
-               BuildableName = "SlidingSegmentedControl.framework"
-               BlueprintName = "SlidingSegmentedControl"
-               ReferencedContainer = "container:SlidingSegmentedControl.xcodeproj">
+               BuildableName = "ScrubBar.framework"
+               BlueprintName = "ScrubBar"
+               ReferencedContainer = "container:ScrubBar.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -34,9 +34,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "0FC1688C1DB5B2200090CB3A"
-               BuildableName = "SlidingSegmentedControlTests.xctest"
-               BlueprintName = "SlidingSegmentedControlTests"
-               ReferencedContainer = "container:SlidingSegmentedControl.xcodeproj">
+               BuildableName = "ScrubBarTests.xctest"
+               BlueprintName = "ScrubBarTests"
+               ReferencedContainer = "container:ScrubBar.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -44,9 +44,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "0FC168831DB5B2200090CB3A"
-            BuildableName = "SlidingSegmentedControl.framework"
-            BlueprintName = "SlidingSegmentedControl"
-            ReferencedContainer = "container:SlidingSegmentedControl.xcodeproj">
+            BuildableName = "ScrubBar.framework"
+            BlueprintName = "ScrubBar"
+            ReferencedContainer = "container:ScrubBar.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -66,9 +66,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "0FC168831DB5B2200090CB3A"
-            BuildableName = "SlidingSegmentedControl.framework"
-            BlueprintName = "SlidingSegmentedControl"
-            ReferencedContainer = "container:SlidingSegmentedControl.xcodeproj">
+            BuildableName = "ScrubBar.framework"
+            BlueprintName = "ScrubBar"
+            ReferencedContainer = "container:ScrubBar.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -84,9 +84,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "0FC168831DB5B2200090CB3A"
-            BuildableName = "SlidingSegmentedControl.framework"
-            BlueprintName = "SlidingSegmentedControl"
-            ReferencedContainer = "container:SlidingSegmentedControl.xcodeproj">
+            BuildableName = "ScrubBar.framework"
+            BlueprintName = "ScrubBar"
+            ReferencedContainer = "container:ScrubBar.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
    </ProfileAction>
