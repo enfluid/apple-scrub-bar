@@ -16,7 +16,7 @@ public class ScrubBar: UIControl {
         configureSelectionView()
     }
 
-    let items: [ScrubBarItem]
+    public let items: [ScrubBarItem]
 
     let imageViews: [UIImageView]
 
