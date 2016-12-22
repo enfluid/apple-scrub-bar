@@ -24,6 +24,22 @@ final class ScrubBarTests: XCTestCase {
         XCTAssertEqual(scrubBar.subviews, [scrubBar.selectionView, scrubBar.stackView])
     }
 
+//    func testInitWithNoItems() {
+//
+//    }
+
+    // MARK: Items
+
+    func testItemsType() {
+        XCTAssertTrue(scrubBar.items as Any is [ScrubBarItem])
+    }
+
+    func testItemsInit() {
+        let items = [ScrubBarItem(accessibilityLabel: "", image: UIImage())]
+        let scrubBar = ScrubBar(items: items)
+        XCTAssertEqual(scrubBar.items, items)
+    }
+
     // MARK: Stack view
 
     func testStackViewType() {
@@ -77,8 +93,18 @@ final class ScrubBarTests: XCTestCase {
         XCTAssertEqual(scrubBar.imageViews.count, 1)
     }
 
+    func testImageViewCount1_() {
+        let scrubBar = ScrubBar(items: [ScrubBarItem(accessibilityLabel: "", image: UIImage())])
+        XCTAssertEqual(scrubBar.imageViews.count, 1)
+    }
+
     func testImageViewCount2() {
         let scrubBar = ScrubBar(images: [UIImage(), UIImage()])
+        XCTAssertEqual(scrubBar.imageViews.count, 2)
+    }
+
+    func testImageViewCount2_() {
+        let scrubBar = ScrubBar(items: [ScrubBarItem(accessibilityLabel: "", image: UIImage()), ScrubBarItem(accessibilityLabel: "", image: UIImage())])
         XCTAssertEqual(scrubBar.imageViews.count, 2)
     }
 
@@ -667,5 +693,11 @@ class AnimatingMock: Animating {
 }
 
 func == (lhs: AnimatingMock.AnimationConfiguration, rhs: AnimatingMock.AnimationConfiguration) -> Bool {
+    return String(describing: lhs) == String(describing: rhs)
+}
+
+extension ScrubBarItem: Equatable {}
+
+public func == (lhs: ScrubBarItem, rhs: ScrubBarItem) -> Bool {
     return String(describing: lhs) == String(describing: rhs)
 }

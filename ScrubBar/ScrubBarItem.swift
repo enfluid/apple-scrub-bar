@@ -1,6 +1,6 @@
 import UIKit
 
-final class ScrubBarItem {
+public final class ScrubBarItem {
 
     init(accessibilityLabel: String, image: UIImage) {
         self.accessibilityLabel = accessibilityLabel
