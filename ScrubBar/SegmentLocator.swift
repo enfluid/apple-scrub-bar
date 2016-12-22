@@ -1,9 +1,9 @@
-protocol SegmentLocator {
+protocol ItemLocator {
     init?(numberOfSegments: Int, boundsWidth: CGFloat)
     func indexOfSegment(forX x: CGFloat) -> Int
 }
 
-struct DefaultSegmentLocator: SegmentLocator {
+struct DefaultItemLocator: ItemLocator {
 
     let numberOfSegments: Int
     let boundsWidth: CGFloat

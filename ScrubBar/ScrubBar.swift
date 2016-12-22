@@ -26,7 +26,7 @@ public class ScrubBar: UIControl {
         return nil
     }
 
-    public var selectedSegment = 0 {
+    public var selectedItemIndex = 0 {
         didSet {
             updateSelectionViewCenterXConstraint()
             animating.animate(withDuration: animationDuration, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: [], animations: {
@@ -97,7 +97,7 @@ public class ScrubBar: UIControl {
     private var selectionViewCenterXConstraint: NSLayoutConstraint?
 
     private var selectedImageView: UIImageView {
-        return imageViews[selectedSegment]
+        return imageViews[selectedItemIndex]
     }
 
     private func updateSelectionViewWidthConstraint() {
@@ -113,14 +113,14 @@ public class ScrubBar: UIControl {
 
     public override func beginTracking(_ touch: UITouch, with event: UIEvent?) -> Bool {
         startTouchLocation = touch.location(in: self)
-        segmentLocator = SegmentLocatorType.init(numberOfSegments: imageViews.count, boundsWidth: bounds.width)
+        itemLocator = ItemLocatorType.init(numberOfSegments: imageViews.count, boundsWidth: bounds.width)
         return true
     }
 
     var startTouchLocation: CGPoint?
 
-    var segmentLocator: SegmentLocator?
-    lazy var SegmentLocatorType: SegmentLocator.Type = DefaultSegmentLocator.self
+    var itemLocator: ItemLocator?
+    lazy var ItemLocatorType: ItemLocator.Type = DefaultItemLocator.self
 
     // MARK: Continue tracking
 
@@ -135,7 +135,7 @@ public class ScrubBar: UIControl {
             isInScrubMode = true
         }
         if isInScrubMode {
-            selectedSegment = segmentLocator!.indexOfSegment(forX: location.x)
+            selectedItemIndex = itemLocator!.indexOfSegment(forX: location.x)
         }
 
         return true
@@ -163,7 +163,7 @@ public class ScrubBar: UIControl {
 
         guard let touch = touch else { return }
 
-        selectedSegment = segmentLocator!.indexOfSegment(forX: touch.location(in: self).x)
+        selectedItemIndex = itemLocator!.indexOfSegment(forX: touch.location(in: self).x)
     }
 
     // MARK: Cancel tracking
