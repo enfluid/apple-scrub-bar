@@ -267,7 +267,7 @@ class SlidingSegmentedControlTests: XCTestCase {
 
         // Assert
         let expectedParams = AnimatingMock.ConfigurationParams(duration: animationDuration, delay: 0, dampingRatio: 1, velocity: 0, options: [])
-        XCTAssertEqual(AnimatingMock.capturedConfigurationParams, [expectedParams], file: file, line: line)
+        XCTAssertEqual(AnimatingMock.capturedConfiguration, [expectedParams], file: file, line: line)
     }
 
     func testSelectionViewXAfterSelectedSegmentAnimation1() { testSelectionViewXAfterSelectedSegmentAnimation(withSelectedSegment: 1, numberOfSegments: 3) }
@@ -306,7 +306,7 @@ class SlidingSegmentedControlTests: XCTestCase {
 
         // Assert
         let expectedParams = AnimatingMock.ConfigurationParams(duration: animationDuration, delay: 0, dampingRatio: 1, velocity: 0, options: [])
-        XCTAssertEqual(AnimatingMock.capturedConfigurationParams, [expectedParams], file: file, line: line)
+        XCTAssertEqual(AnimatingMock.capturedConfiguration, [expectedParams], file: file, line: line)
     }
 
     func testSelectionViewWidthAfterScrubModeAnimation1() { testSelectionViewWidthAfterScrubModeAnimation(withFrameWidth: 100) }
@@ -650,17 +650,17 @@ class AnimatingMock: Animating {
         let options: UIViewAnimationOptions
     }
 
-    static var capturedConfigurationParams: [ConfigurationParams] = []
+    static var capturedConfiguration: [ConfigurationParams] = []
     static var capturedAnimations: [() -> Void] = []
 
     static func reset() {
-        capturedConfigurationParams = []
+        capturedConfiguration = []
         capturedAnimations = []
     }
 
     static func animate(withDuration duration: TimeInterval, delay: TimeInterval, usingSpringWithDamping dampingRatio: CGFloat, initialSpringVelocity velocity: CGFloat, options: UIViewAnimationOptions, animations: @escaping () -> Void, completion: ((Bool) -> Swift.Void)?) {
         let params = ConfigurationParams(duration: duration, delay: delay, dampingRatio: dampingRatio, velocity: velocity, options: options)
-        capturedConfigurationParams.append(params)
+        capturedConfiguration.append(params)
         capturedAnimations.append(animations)
     }
 
