@@ -4,10 +4,13 @@ public class ScrubBar: UIControl {
 
     // MARK: Initialization
 
-    public init(items: [ScrubBarItem]) {
+    public init?(items: [ScrubBarItem]) {
+        guard items.count > 0 else { return nil }
+
         self.items = items
         imageViews = items.map { UIImageView(image: $0.image) }
         super.init(frame: .zero)
+
         configureImageViews()
         configureStackView()
         configureSelectionView()

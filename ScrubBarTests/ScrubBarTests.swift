@@ -3,7 +3,7 @@ import XCTest
 
 final class ScrubBarTests: XCTestCase {
 
-    lazy var scrubBar = ScrubBar(items: Array(repeating: ScrubBarItem(accessibilityLabel: "", image: UIImage()), count: 3))
+    lazy var scrubBar = ScrubBar(items: Array(repeating: .empty(), count: 3))!
 
     // MARK: Main
 
@@ -24,9 +24,9 @@ final class ScrubBarTests: XCTestCase {
         XCTAssertEqual(scrubBar.subviews, [scrubBar.selectionView, scrubBar.stackView])
     }
 
-//    func testInitWithNoItems() {
-//
-//    }
+    func testInitWithZeroItems() {
+        XCTAssertNil(ScrubBar(items: []))
+    }
 
     // MARK: Items
 
@@ -37,7 +37,7 @@ final class ScrubBarTests: XCTestCase {
     func testItemsInit() {
         let items = [ScrubBarItem(accessibilityLabel: "", image: UIImage())]
         let scrubBar = ScrubBar(items: items)
-        XCTAssertEqual(scrubBar.items, items)
+        XCTAssertEqual(scrubBar?.items ?? [], items)
     }
 
     // MARK: Stack view
@@ -90,54 +90,54 @@ final class ScrubBarTests: XCTestCase {
 
     func testImageViewCount1() {
         let scrubBar = ScrubBar(items: [.empty()])
-        XCTAssertEqual(scrubBar.imageViews.count, 1)
+        XCTAssertEqual(scrubBar?.imageViews.count, 1)
     }
 
     func testImageViewCount2() {
         let scrubBar = ScrubBar(items: [.empty(), .empty()])
-        XCTAssertEqual(scrubBar.imageViews.count, 2)
+        XCTAssertEqual(scrubBar?.imageViews.count, 2)
     }
 
     func testImageViewsImage1() {
         let item = ScrubBarItem.empty()
         let scrubBar = ScrubBar(items: [item, .empty()])
-        XCTAssertEqual(scrubBar.imageViews.first?.image, item.image)
+        XCTAssertEqual(scrubBar?.imageViews.first?.image, item.image)
     }
 
     func testImageViewsImage2() {
         let item = ScrubBarItem.empty()
         let scrubBar = ScrubBar(items: [.empty(), item])
-        XCTAssertEqual(scrubBar.imageViews.last?.image, item.image)
+        XCTAssertEqual(scrubBar?.imageViews.last?.image, item.image)
     }
 
     func testImageViewsContentMode1() {
         let scrubBar = ScrubBar(items: [.empty(), .empty()])
-        XCTAssertEqual(scrubBar.imageViews.first?.contentMode, .center)
+        XCTAssertEqual(scrubBar?.imageViews.first?.contentMode, .center)
     }
 
     func testImageViewsContentMode2() {
         let scrubBar = ScrubBar(items: [.empty(), .empty()])
-        XCTAssertEqual(scrubBar.imageViews.last?.contentMode, .center)
+        XCTAssertEqual(scrubBar?.imageViews.last?.contentMode, .center)
     }
 
     func testImageViewsIsAccessibilityElement1() {
         let scrubBar = ScrubBar(items: [.empty(), .empty()])
-        XCTAssertTrue(scrubBar.imageViews.first?.isAccessibilityElement)
+        XCTAssertTrue(scrubBar?.imageViews.first?.isAccessibilityElement)
     }
 
     func testImageViewsIsAccessibilityElement2() {
         let scrubBar = ScrubBar(items: [.empty(), .empty()])
-        XCTAssertTrue(scrubBar.imageViews.last?.isAccessibilityElement)
+        XCTAssertTrue(scrubBar?.imageViews.last?.isAccessibilityElement)
     }
 
     func testImageViewsAccessibilityTraits1() {
         let scrubBar = ScrubBar(items: [.empty(), .empty()])
-        XCTAssertEqual(scrubBar.imageViews.first?.accessibilityTraits, UIAccessibilityTraitButton)
+        XCTAssertEqual(scrubBar?.imageViews.first?.accessibilityTraits, UIAccessibilityTraitButton)
     }
 
     func testImageViewsAccessibilityTraits2() {
         let scrubBar = ScrubBar(items: [.empty(), .empty()])
-        XCTAssertEqual(scrubBar.imageViews.last?.accessibilityTraits, UIAccessibilityTraitButton)
+        XCTAssertEqual(scrubBar?.imageViews.last?.accessibilityTraits, UIAccessibilityTraitButton)
     }
 
     // MARK: Selected segment
@@ -295,17 +295,17 @@ final class ScrubBarTests: XCTestCase {
         let imageWidth = 40
         let expectedCenterX = CGFloat(imageWidth * selectedItemIndex + imageWidth / 2)
         let scrubBar = ScrubBar(items: Array(repeating: .empty(), count: numberOfSegments))
-        scrubBar.frame = CGRect(x: 0, y: 0, width: imageWidth * numberOfSegments, height: 30)
-        scrubBar.animating = AnimatingMock.self
-        let initialSelectionViewCenterX = scrubBar.selectionView.center.x
+        scrubBar?.frame = CGRect(x: 0, y: 0, width: imageWidth * numberOfSegments, height: 30)
+        scrubBar?.animating = AnimatingMock.self
+        let initialSelectionViewCenterX = scrubBar?.selectionView.center.x
 
         // Act
-        scrubBar.selectedItemIndex = selectedItemIndex
+        scrubBar?.selectedItemIndex = selectedItemIndex
         AnimatingMock.capturedAnimations.first?()
 
         // Assert
         XCTAssertEqual(initialSelectionViewCenterX, 0, file: file, line: line)
-        XCTAssertEqual(scrubBar.selectionView.center.x, expectedCenterX, file: file, line: line)
+        XCTAssertEqual(scrubBar?.selectionView.center.x, expectedCenterX, file: file, line: line)
     }
 
     func testSelectionViewScrubModeAnimationParams1() { testSelectionViewScrubModeAnimationParams(withAnimationDuration: 1) }
@@ -401,14 +401,14 @@ final class ScrubBarTests: XCTestCase {
     func testBeginTrackingCreatesItemLocator(withNumberOfSegments numberOfSegments: Int, boundsWidth: CGFloat, file: StaticString = #file, line: UInt = #line) {
         // Arrange
         let scrubBar = ScrubBar(items: Array(repeating: .empty(), count: numberOfSegments))
-        scrubBar.bounds = CGRect(x: 0, y: 0, width: boundsWidth, height: 0)
-        scrubBar.ItemLocatorType = ItemLocatorMock.self
+        scrubBar?.bounds = CGRect(x: 0, y: 0, width: boundsWidth, height: 0)
+        scrubBar?.ItemLocatorType = ItemLocatorMock.self
 
         // Act
-        _ = scrubBar.beginTracking(UITouch(), with: nil)
+        _ = scrubBar?.beginTracking(UITouch(), with: nil)
 
         // Assert
-        let itemLocatorMock = scrubBar.itemLocator as! ItemLocatorMock
+        let itemLocatorMock = scrubBar?.itemLocator as! ItemLocatorMock
         XCTAssertEqual(itemLocatorMock.boundsWidth, boundsWidth, file: file, line: line)
         XCTAssertEqual(itemLocatorMock.numberOfSegments, numberOfSegments, file: file, line: line)
     }
