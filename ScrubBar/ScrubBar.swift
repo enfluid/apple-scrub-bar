@@ -2,7 +2,7 @@ import UIKit
 
 protocol ScrubBarDelegate: class {
 
-    func scrubBar(_ scrubBar: ScrubBar, didChangeSelectedItemIndex itemIndex: Int)
+    func scrubBar(_ scrubBar: ScrubBar, didSelectItemAt selectedIndex: Int)
 
 }
 
@@ -38,11 +38,11 @@ public class ScrubBar: UIControl {
         return nil
     }
 
-    public var selectedItemIndex = 0 {
+    public var selectedIndex = 0 {
         didSet {
-            guard selectedItemIndex != oldValue else { return }
+            guard selectedIndex != oldValue else { return }
 
-            delegate?.scrubBar(self, didChangeSelectedItemIndex: selectedItemIndex)
+            delegate?.scrubBar(self, didSelectItemAt: selectedIndex)
             updateSelectionViewCenterXConstraint()
             animating.animate(withDuration: animationDuration, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: [], animations: {
                 self.layoutIfNeeded()
@@ -112,7 +112,7 @@ public class ScrubBar: UIControl {
     private var selectionViewCenterXConstraint: NSLayoutConstraint?
 
     private var selectedImageView: UIImageView {
-        return imageViews[selectedItemIndex]
+        return imageViews[selectedIndex]
     }
 
     private func updateSelectionViewWidthConstraint() {
@@ -150,7 +150,7 @@ public class ScrubBar: UIControl {
             isInScrubMode = true
         }
         if isInScrubMode {
-            selectedItemIndex = itemLocator!.indexOfSegment(forX: location.x)
+            selectedIndex = itemLocator!.indexOfSegment(forX: location.x)
         }
 
         return true
@@ -178,7 +178,7 @@ public class ScrubBar: UIControl {
 
         guard let touch = touch else { return }
 
-        selectedItemIndex = itemLocator!.indexOfSegment(forX: touch.location(in: self).x)
+        selectedIndex = itemLocator!.indexOfSegment(forX: touch.location(in: self).x)
     }
 
     // MARK: Cancel tracking

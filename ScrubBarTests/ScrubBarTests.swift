@@ -143,11 +143,11 @@ final class ScrubBarTests: XCTestCase {
     // MARK: Selected segment
 
     func testSelectedSegmentType() {
-        XCTAssert(scrubBar.selectedItemIndex as Any is Int)
+        XCTAssert(scrubBar.selectedIndex as Any is Int)
     }
 
     func testSelectedSegmentDefault() {
-        XCTAssertEqual(scrubBar.selectedItemIndex, 0)
+        XCTAssertEqual(scrubBar.selectedIndex, 0)
     }
 
     // MARK: Selection view
@@ -221,15 +221,15 @@ final class ScrubBarTests: XCTestCase {
     func testSelectionViewCenterXConstraint1() { testSelectionViewCenterXConstraint(withSelectedSegment: 1) }
     func testSelectionViewCenterXConstraint2() { testSelectionViewCenterXConstraint(withSelectedSegment: 2) }
 
-    func testSelectionViewCenterXConstraint(withSelectedSegment selectedItemIndex: Int, file: StaticString = #file, line: UInt = #line) {
-        scrubBar.selectedItemIndex = selectedItemIndex
-        let expectedConstraint = scrubBar.selectionView.centerXAnchor.constraint(equalTo: scrubBar.imageViews[selectedItemIndex].centerXAnchor)
+    func testSelectionViewCenterXConstraint(withSelectedSegment selectedIndex: Int, file: StaticString = #file, line: UInt = #line) {
+        scrubBar.selectedIndex = selectedIndex
+        let expectedConstraint = scrubBar.selectionView.centerXAnchor.constraint(equalTo: scrubBar.imageViews[selectedIndex].centerXAnchor)
         XCTAssertConstraint(expectedConstraint, inView: scrubBar, file: file, line: line)
     }
 
     func testSelectionViewCenterXConstraintGetsRemoved() {
         let constraint = scrubBar.selectionView.centerXAnchor.constraint(equalTo: scrubBar.imageViews[0].centerXAnchor)
-        scrubBar.selectedItemIndex = 1
+        scrubBar.selectedIndex = 1
         XCTAssertNotConstraint(constraint, inView: scrubBar)
     }
 
@@ -244,7 +244,7 @@ final class ScrubBarTests: XCTestCase {
         scrubBar.isInScrubMode = true
 
         // Act
-        scrubBar.selectedItemIndex = 0
+        scrubBar.selectedIndex = 0
 
         // Assert
         let constraint = scrubBar.selectionView.centerXAnchor.constraint(equalTo: scrubBar.imageViews[0].centerXAnchor)
@@ -279,7 +279,7 @@ final class ScrubBarTests: XCTestCase {
         scrubBar.animationDuration = animationDuration
 
         // Act
-        scrubBar.selectedItemIndex = 1
+        scrubBar.selectedIndex = 1
 
         // Assert
         let expectedAnimationConfiguration = AnimatingMock.AnimationConfiguration(duration: animationDuration, delay: 0, dampingRatio: 1, velocity: 0, options: [])
@@ -289,18 +289,18 @@ final class ScrubBarTests: XCTestCase {
     func testSelectionViewXAfterSelectedSegmentAnimation1() { testSelectionViewXAfterSelectedSegmentAnimation(withSelectedSegment: 1, numberOfSegments: 3) }
     func testSelectionViewXAfterSelectedSegmentAnimation2() { testSelectionViewXAfterSelectedSegmentAnimation(withSelectedSegment: 2, numberOfSegments: 5) }
 
-    func testSelectionViewXAfterSelectedSegmentAnimation(withSelectedSegment selectedItemIndex: Int, numberOfSegments: Int, file: StaticString = #file, line: UInt = #line) {
+    func testSelectionViewXAfterSelectedSegmentAnimation(withSelectedSegment selectedIndex: Int, numberOfSegments: Int, file: StaticString = #file, line: UInt = #line) {
         // Arrange
         AnimatingMock.reset()
         let imageWidth = 40
-        let expectedCenterX = CGFloat(imageWidth * selectedItemIndex + imageWidth / 2)
+        let expectedCenterX = CGFloat(imageWidth * selectedIndex + imageWidth / 2)
         let scrubBar = ScrubBar(items: Array(repeating: .empty(), count: numberOfSegments))
         scrubBar?.frame = CGRect(x: 0, y: 0, width: imageWidth * numberOfSegments, height: 30)
         scrubBar?.animating = AnimatingMock.self
         let initialSelectionViewCenterX = scrubBar?.selectionView.center.x
 
         // Act
-        scrubBar?.selectedItemIndex = selectedItemIndex
+        scrubBar?.selectedIndex = selectedIndex
         AnimatingMock.capturedAnimations.first?()
 
         // Assert
@@ -537,7 +537,7 @@ final class ScrubBarTests: XCTestCase {
         _ = scrubBar.continueTracking(panTouch, with: nil)
 
         // Assert
-        XCTAssertEqual(scrubBar.selectedItemIndex, segmentIndex, file: file, line: line)
+        XCTAssertEqual(scrubBar.selectedIndex, segmentIndex, file: file, line: line)
     }
 
     // MARK: End tracking
@@ -582,7 +582,7 @@ final class ScrubBarTests: XCTestCase {
         scrubBar.endTracking(TouchStub(location: .zero, view: scrubBar), with: nil)
 
         // Assert
-        XCTAssertEqual(scrubBar.selectedItemIndex, segmentIndex, file: file, line: line)
+        XCTAssertEqual(scrubBar.selectedIndex, segmentIndex, file: file, line: line)
     }
 
     // MARK: Cancel tracking
@@ -609,7 +609,7 @@ final class ScrubBarTests: XCTestCase {
     func testDelegateIsCalledWithSelf() {
         let delegateMock = ScrubBarDelegateMock()
         scrubBar.delegate = delegateMock
-        scrubBar.selectedItemIndex = 1
+        scrubBar.selectedIndex = 1
         XCTAssertEqual(delegateMock.capturedScrubBars, [scrubBar])
     }
 
@@ -619,8 +619,8 @@ final class ScrubBarTests: XCTestCase {
     func testDelegateIsCalledWithSelectedItemIndex(withItemIndex itemIndex: Int, file: StaticString = #file, line: UInt = #line) {
         let delegateMock = ScrubBarDelegateMock()
         scrubBar.delegate = delegateMock
-        scrubBar.selectedItemIndex = itemIndex
-        XCTAssertEqual(delegateMock.capturedItemIndexes, [itemIndex], file: file, line: line)
+        scrubBar.selectedIndex = itemIndex
+        XCTAssertEqual(delegateMock.capturedIndexes, [itemIndex], file: file, line: line)
     }
 
     func testDelegateIsCalledOnlyOnChange1() { testDelegateIsCalledOnlyOnChange(withItemIndex: 0) }
@@ -629,10 +629,10 @@ final class ScrubBarTests: XCTestCase {
     func testDelegateIsCalledOnlyOnChange(withItemIndex itemIndex: Int, file: StaticString = #file, line: UInt = #line) {
         let delegateMock = ScrubBarDelegateMock()
         let scrubBar = ScrubBar(items: [.empty(), .empty(), .empty()])!
-        scrubBar.selectedItemIndex = itemIndex
+        scrubBar.selectedIndex = itemIndex
         scrubBar.delegate = delegateMock
-        scrubBar.selectedItemIndex = itemIndex
-        XCTAssertEqual(delegateMock.capturedItemIndexes, [], file: file, line: line)
+        scrubBar.selectedIndex = itemIndex
+        XCTAssertEqual(delegateMock.capturedIndexes, [], file: file, line: line)
     }
 
 }
@@ -745,11 +745,11 @@ public func == (lhs: ScrubBarItem, rhs: ScrubBarItem) -> Bool {
 final class ScrubBarDelegateMock: ScrubBarDelegate {
 
     var capturedScrubBars: [ScrubBar] = []
-    var capturedItemIndexes: [Int] = []
+    var capturedIndexes: [Int] = []
 
-    func scrubBar(_ scrubBar: ScrubBar, didChangeSelectedItemIndex itemIndex: Int) {
+    func scrubBar(_ scrubBar: ScrubBar, didSelectItemAt selectedIndex: Int) {
         capturedScrubBars.append(scrubBar)
-        capturedItemIndexes.append(itemIndex)
+        capturedIndexes.append(selectedIndex)
     }
 
 }
