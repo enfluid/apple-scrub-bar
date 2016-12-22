@@ -1,7 +1,7 @@
 import XCTest
 @testable import ScrubBar
 
-class ScrubBarTests: XCTestCase {
+final class ScrubBarTests: XCTestCase {
 
     lazy var scrubBar = ScrubBar(images: Array(repeating: UIImage(), count: 3))
 

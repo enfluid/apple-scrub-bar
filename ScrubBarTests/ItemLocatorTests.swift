@@ -1,7 +1,7 @@
 import XCTest
 @testable import ScrubBar
 
-class DefaultItemLocatorTests: XCTestCase {
+final class DefaultItemLocatorTests: XCTestCase {
     
     lazy var itemLocator = DefaultItemLocator(numberOfSegments: 10, boundsWidth: 100)!
 
