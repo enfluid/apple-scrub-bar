@@ -1,5 +1,11 @@
 import UIKit
 
+protocol ScrubBarDelegate: class {
+
+    func scrubBar(_ scrubBar: ScrubBar, didChangeSelectedItemIndex itemIndex: Int)
+
+}
+
 public class ScrubBar: UIControl {
 
     // MARK: Initialization
@@ -34,6 +40,9 @@ public class ScrubBar: UIControl {
 
     public var selectedItemIndex = 0 {
         didSet {
+            guard selectedItemIndex != oldValue else { return }
+
+            delegate?.scrubBar(self, didChangeSelectedItemIndex: selectedItemIndex)
             updateSelectionViewCenterXConstraint()
             animating.animate(withDuration: animationDuration, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: [], animations: {
                 self.layoutIfNeeded()
@@ -183,6 +192,10 @@ public class ScrubBar: UIControl {
     var animating: Animating.Type = UIView.self
 
     var animationDuration: TimeInterval = 0.35
+
+    // MARK: Delegate
+
+    weak var delegate: ScrubBarDelegate?
 
 }
 

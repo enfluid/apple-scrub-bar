@@ -593,6 +593,48 @@ final class ScrubBarTests: XCTestCase {
         XCTAssertFalse(scrubBar.isInScrubMode)
     }
 
+    // MARK: Delegate
+
+    func testDelegateType() {
+        XCTAssertTrue(scrubBar.delegate as Any? is ScrubBarDelegate?)
+    }
+
+    func testDelegateIsWeak() {
+        var delegateMock: ScrubBarDelegate? = ScrubBarDelegateMock()
+        scrubBar.delegate = delegateMock
+        delegateMock = nil
+        XCTAssertNil(scrubBar.delegate)
+    }
+
+    func testDelegateIsCalledWithSelf() {
+        let delegateMock = ScrubBarDelegateMock()
+        scrubBar.delegate = delegateMock
+        scrubBar.selectedItemIndex = 1
+        XCTAssertEqual(delegateMock.capturedScrubBars, [scrubBar])
+    }
+
+    func testDelegateIsCalledWithSelectedItemIndex1() { testDelegateIsCalledWithSelectedItemIndex(withItemIndex: 1) }
+    func testDelegateIsCalledWithSelectedItemIndex2() { testDelegateIsCalledWithSelectedItemIndex(withItemIndex: 2) }
+
+    func testDelegateIsCalledWithSelectedItemIndex(withItemIndex itemIndex: Int, file: StaticString = #file, line: UInt = #line) {
+        let delegateMock = ScrubBarDelegateMock()
+        scrubBar.delegate = delegateMock
+        scrubBar.selectedItemIndex = itemIndex
+        XCTAssertEqual(delegateMock.capturedItemIndexes, [itemIndex], file: file, line: line)
+    }
+
+    func testDelegateIsCalledOnlyOnChange1() { testDelegateIsCalledOnlyOnChange(withItemIndex: 0) }
+    func testDelegateIsCalledOnlyOnChange2() { testDelegateIsCalledOnlyOnChange(withItemIndex: 1) }
+
+    func testDelegateIsCalledOnlyOnChange(withItemIndex itemIndex: Int, file: StaticString = #file, line: UInt = #line) {
+        let delegateMock = ScrubBarDelegateMock()
+        let scrubBar = ScrubBar(items: [.empty(), .empty(), .empty()])!
+        scrubBar.selectedItemIndex = itemIndex
+        scrubBar.delegate = delegateMock
+        scrubBar.selectedItemIndex = itemIndex
+        XCTAssertEqual(delegateMock.capturedItemIndexes, [], file: file, line: line)
+    }
+
 }
 
 class TouchStub: UITouch {
@@ -698,4 +740,16 @@ extension ScrubBarItem {
 
 public func == (lhs: ScrubBarItem, rhs: ScrubBarItem) -> Bool {
     return String(describing: lhs) == String(describing: rhs)
+}
+
+final class ScrubBarDelegateMock: ScrubBarDelegate {
+
+    var capturedScrubBars: [ScrubBar] = []
+    var capturedItemIndexes: [Int] = []
+
+    func scrubBar(_ scrubBar: ScrubBar, didChangeSelectedItemIndex itemIndex: Int) {
+        capturedScrubBars.append(scrubBar)
+        capturedItemIndexes.append(itemIndex)
+    }
+
 }
