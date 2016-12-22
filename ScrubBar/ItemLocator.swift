@@ -1,6 +1,8 @@
 protocol ItemLocator {
+
     init?(numberOfSegments: Int, boundsWidth: CGFloat)
     func indexOfSegment(forX x: CGFloat) -> Int
+
 }
 
 struct DefaultItemLocator: ItemLocator {

@@ -180,9 +180,10 @@ public class ScrubBar: UIControl {
 
 }
 
-
 protocol Animating {
+
     static func animate(withDuration duration: TimeInterval, delay: TimeInterval, usingSpringWithDamping dampingRatio: CGFloat, initialSpringVelocity velocity: CGFloat, options: UIViewAnimationOptions, animations: @escaping () -> Swift.Void, completion: ((Bool) -> Swift.Void)?)
+
 }
 
 extension UIView: Animating {}
