@@ -160,10 +160,6 @@ final class ScrubBarTests: XCTestCase {
         XCTAssertFalse(scrubBar.selectionView.isUserInteractionEnabled)
     }
 
-    func testSelectionViewBackgroundColor() {
-        XCTAssertEqual(scrubBar.selectionView.backgroundColor, .white)
-    }
-
     func testSelectionViewIgnoresAutoresizingMask() {
         XCTAssertFalse(scrubBar.selectionView.translatesAutoresizingMaskIntoConstraints)
     }
@@ -249,6 +245,28 @@ final class ScrubBarTests: XCTestCase {
         // Assert
         let constraint = scrubBar.selectionView.centerXAnchor.constraint(equalTo: scrubBar.imageViews[0].centerXAnchor)
         XCTAssertNotConstraint(constraint, inView: scrubBar)
+    }
+
+    // MARK: Selection background color
+
+    func testSelectionBackgroundColorType() {
+        XCTAssertTrue(scrubBar.selectionBackgroundColor as Any is UIColor)
+    }
+
+    func testSelectionBackgroundSolorDefault() {
+        XCTAssertEqual(scrubBar.selectionBackgroundColor, .white)
+    }
+
+    func testSelectionViewDefaultBackgroundColor() {
+        XCTAssertEqual(scrubBar.selectionView.backgroundColor, .white)
+    }
+
+    func testSelectionBackgroundColorSet1() { testSelectionBackgroundColorSet(withColor: .blue) }
+    func testSelectionBackgroundColorSet2() { testSelectionBackgroundColorSet(withColor: .black) }
+
+    func testSelectionBackgroundColorSet(withColor color: UIColor, file: StaticString = #file, line: UInt = #line) {
+        scrubBar.selectionBackgroundColor = color
+        XCTAssertEqual(scrubBar.selectionView.backgroundColor, color, file: file, line: line)
     }
 
     // MARK: Animate selection change

@@ -124,6 +124,14 @@ public class ScrubBar: UIControl {
 
     private var selectionViewWidthConstraint: NSLayoutConstraint?
 
+    // MARK: Selection background color
+
+    public var selectionBackgroundColor = UIColor.white {
+        didSet {
+            selectionView.backgroundColor = selectionBackgroundColor
+        }
+    }
+
     // MARK: Begin tracking
 
     public override func beginTracking(_ touch: UITouch, with event: UIEvent?) -> Bool {
