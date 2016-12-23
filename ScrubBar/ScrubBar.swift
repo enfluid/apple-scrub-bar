@@ -1,6 +1,6 @@
 import UIKit
 
-protocol ScrubBarDelegate: class {
+public protocol ScrubBarDelegate: class {
 
     func scrubBar(_ scrubBar: ScrubBar, didSelectItemAt selectedIndex: Int)
 
