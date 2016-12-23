@@ -27,10 +27,11 @@ public class ScrubBar: UIControl {
     let imageViews: [UIImageView]
 
     private func configureImageViews() {
-        imageViews.forEach {
-            $0.contentMode = .center
-            $0.isAccessibilityElement = true
-            $0.accessibilityTraits = UIAccessibilityTraitButton
+        imageViews.enumerated().forEach { (index, element) in
+            element.contentMode = .center
+            element.isAccessibilityElement = true
+            element.accessibilityTraits = UIAccessibilityTraitButton
+            element.accessibilityLabel = items[index].accessibilityLabel
         }
     }
 

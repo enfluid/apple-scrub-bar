@@ -35,7 +35,7 @@ final class ScrubBarTests: XCTestCase {
     }
 
     func testItemsInit() {
-        let items = [ScrubBarItem(accessibilityLabel: "", image: UIImage())]
+        let items: [ScrubBarItem] = [.empty(), .empty()]
         let scrubBar = ScrubBar(items: items)
         XCTAssertEqual(scrubBar?.items ?? [], items)
     }
@@ -139,6 +139,25 @@ final class ScrubBarTests: XCTestCase {
         let scrubBar = ScrubBar(items: [.empty(), .empty()])
         XCTAssertEqual(scrubBar?.imageViews.last?.accessibilityTraits, UIAccessibilityTraitButton)
     }
+
+    func testImageViewsFirstAccessibilityLabel1() { testImageViewsFirstAccessibilityLabel("Abc") }
+    func testImageViewsFirstAccessibilityLabel2() { testImageViewsFirstAccessibilityLabel("Xyz") }
+
+    func testImageViewsFirstAccessibilityLabel(_ accessibilityLabel: String, file: StaticString = #file, line: UInt = #line) {
+        let item = ScrubBarItem(accessibilityLabel: accessibilityLabel, image: UIImage())
+        let scrubBar = ScrubBar(items: [item, .empty()])
+        XCTAssertEqual(scrubBar?.imageViews.first?.accessibilityLabel, accessibilityLabel, file: file, line: line)
+    }
+
+    func testImageViewsLastAccessibilityLabel1() { testImageViewsLastAccessibilityLabel("Abc") }
+    func testImageViewsLastAccessibilityLabel2() { testImageViewsLastAccessibilityLabel("Xyz") }
+
+    func testImageViewsLastAccessibilityLabel(_ accessibilityLabel: String, file: StaticString = #file, line: UInt = #line) {
+        let item = ScrubBarItem(accessibilityLabel: accessibilityLabel, image: UIImage())
+        let scrubBar = ScrubBar(items: [.empty(), item])
+        XCTAssertEqual(scrubBar?.imageViews.last?.accessibilityLabel, accessibilityLabel, file: file, line: line)
+    }
+
 
     // MARK: Selected segment
 
