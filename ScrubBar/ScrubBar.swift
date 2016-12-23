@@ -195,7 +195,7 @@ public class ScrubBar: UIControl {
 
     // MARK: Delegate
 
-    weak var delegate: ScrubBarDelegate?
+    public weak var delegate: ScrubBarDelegate?
 
 }
 
