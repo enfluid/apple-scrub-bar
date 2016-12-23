@@ -2,12 +2,12 @@ import UIKit
 
 public final class ScrubBarItem {
 
-    init(accessibilityLabel: String, image: UIImage) {
+    public init(accessibilityLabel: String, image: UIImage) {
         self.accessibilityLabel = accessibilityLabel
         self.image = image
     }
 
-    let accessibilityLabel: String
-    let image: UIImage
+    public let accessibilityLabel: String
+    public let image: UIImage
 
 }
