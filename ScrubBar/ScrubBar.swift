@@ -137,7 +137,7 @@ public class ScrubBar: UIControl {
 
     public override func beginTracking(_ touch: UITouch, with event: UIEvent?) -> Bool {
         startTouchLocation = touch.location(in: self)
-        itemLocator = ItemLocatorType.init(numberOfSegments: imageViews.count, boundsWidth: bounds.width)
+        itemLocator = ItemLocatorType.init(numberOfItems: imageViews.count, boundsWidth: bounds.width)
         return true
     }
 
@@ -159,7 +159,7 @@ public class ScrubBar: UIControl {
             isInScrubMode = true
         }
         if isInScrubMode {
-            selectedIndex = itemLocator!.indexOfSegment(forX: location.x)
+            selectedIndex = itemLocator!.indexOfItem(forX: location.x)
         }
 
         return true
@@ -187,7 +187,7 @@ public class ScrubBar: UIControl {
 
         guard let touch = touch else { return }
 
-        selectedIndex = itemLocator!.indexOfSegment(forX: touch.location(in: self).x)
+        selectedIndex = itemLocator!.indexOfItem(forX: touch.location(in: self).x)
     }
 
     // MARK: Cancel tracking

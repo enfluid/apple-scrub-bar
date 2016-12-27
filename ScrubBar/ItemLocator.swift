@@ -1,25 +1,25 @@
 protocol ItemLocator {
 
-    init?(numberOfSegments: Int, boundsWidth: CGFloat)
-    func indexOfSegment(forX x: CGFloat) -> Int
+    init?(numberOfItems: Int, boundsWidth: CGFloat)
+    func indexOfItem(forX x: CGFloat) -> Int
 
 }
 
 struct DefaultItemLocator: ItemLocator {
 
-    let numberOfSegments: Int
+    let numberOfItems: Int
     let boundsWidth: CGFloat
 
-    init?(numberOfSegments: Int, boundsWidth: CGFloat) {
-        guard numberOfSegments > 0, boundsWidth > 0 else { return nil }
+    init?(numberOfItems: Int, boundsWidth: CGFloat) {
+        guard numberOfItems > 0, boundsWidth > 0 else { return nil }
 
-        self.numberOfSegments = numberOfSegments
+        self.numberOfItems = numberOfItems
         self.boundsWidth = boundsWidth
     }
 
-    func indexOfSegment(forX x: CGFloat) -> Int {
-        let segmentWidth = boundsWidth / CGFloat(numberOfSegments)
-        return max(0, min(numberOfSegments - 1, Int(x / segmentWidth)))
+    func indexOfItem(forX x: CGFloat) -> Int {
+        let itemWidth = boundsWidth / CGFloat(numberOfItems)
+        return max(0, min(numberOfItems - 1, Int(x / itemWidth)))
     }
 
 }
