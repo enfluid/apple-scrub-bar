@@ -87,7 +87,7 @@ public class ScrubBar: UIControl {
         insertSubview(selectionView, belowSubview: stackView)
         selectionView.isUserInteractionEnabled = false
         selectionView.layer.masksToBounds = true
-        selectionView.backgroundColor = .white
+        selectionView.backgroundColor = selectionBackgroundColor
         selectionView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate(selectionViewStaticConstraints)
         updateSelectionViewCenterXConstraint()
