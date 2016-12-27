@@ -32,6 +32,7 @@ public class ScrubBar: UIControl {
             element.isAccessibilityElement = true
             element.accessibilityTraits = UIAccessibilityTraitButton
             element.accessibilityLabel = items[index].accessibilityLabel
+            element.tintColor = itemTintColor
         }
     }
 
@@ -130,6 +131,14 @@ public class ScrubBar: UIControl {
     public var selectionBackgroundColor = UIColor.white {
         didSet {
             selectionView.backgroundColor = selectionBackgroundColor
+        }
+    }
+
+    // MARK: Item tint color
+
+    public var itemTintColor: UIColor = .gray {
+        didSet {
+            imageViews.forEach { $0.tintColor = itemTintColor }
         }
     }
 

@@ -287,6 +287,34 @@ final class ScrubBarTests: XCTestCase {
         XCTAssertEqual(scrubBar.selectionView.backgroundColor, color, file: file, line: line)
     }
 
+    // MARK: Item tint color
+
+    func testItemTintColorType() {
+        XCTAssertTrue(scrubBar.itemTintColor as Any is UIColor)
+    }
+
+    func testItemTintColorDefault() {
+        XCTAssertEqual(scrubBar.itemTintColor, .gray)
+    }
+
+    func testImageViewsDefaultTintColor() {
+        let scrubBar = ScrubBar(items: [.empty(), .empty(), .empty()])!
+        XCTAssertEqual(scrubBar.imageViews[safe: 0]?.tintColor, scrubBar.itemTintColor)
+        XCTAssertEqual(scrubBar.imageViews[safe: 1]?.tintColor, scrubBar.itemTintColor)
+        XCTAssertEqual(scrubBar.imageViews[safe: 2]?.tintColor, scrubBar.itemTintColor)
+    }
+
+    func testItemTintColorSet1() { testItemTintColorSet(withColor: .red) }
+    func testItemTintColorSet2() { testItemTintColorSet(withColor: .black) }
+
+    func testItemTintColorSet(withColor color: UIColor, file: StaticString = #file, line: UInt = #line) {
+        let scrubBar = ScrubBar(items: [.empty(), .empty(), .empty()])
+        scrubBar?.itemTintColor = color
+        XCTAssertEqual(scrubBar?.imageViews[safe: 0]?.tintColor, color, file: file, line: line)
+        XCTAssertEqual(scrubBar?.imageViews[safe: 1]?.tintColor, color, file: file, line: line)
+        XCTAssertEqual(scrubBar?.imageViews[safe: 2]?.tintColor, color, file: file, line: line)
+    }
+
     // MARK: Animate selection change
 
     func testAnimatingType() {
