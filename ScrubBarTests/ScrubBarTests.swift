@@ -276,7 +276,7 @@ final class ScrubBarTests: XCTestCase {
     }
 
     func testSelectionViewDefaultBackgroundColor() {
-        XCTAssertEqual(scrubBar.selectionView.backgroundColor, .white)
+        XCTAssertEqual(scrubBar.selectionView.backgroundColor, scrubBar.selectionBackgroundColor)
     }
 
     func testSelectionBackgroundColorSet1() { testSelectionBackgroundColorSet(withColor: .blue) }
