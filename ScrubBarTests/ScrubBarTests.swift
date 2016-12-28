@@ -299,6 +299,7 @@ final class ScrubBarTests: XCTestCase {
 
     func testImageViewsDefaultTintColor() {
         let scrubBar = ScrubBar(items: [.empty(), .empty(), .empty()])!
+        scrubBar.selectedIndex = 0
         XCTAssertEqual(scrubBar.imageViews[safe: 1]?.tintColor, scrubBar.itemTintColor)
         XCTAssertEqual(scrubBar.imageViews[safe: 2]?.tintColor, scrubBar.itemTintColor)
     }
@@ -307,7 +308,14 @@ final class ScrubBarTests: XCTestCase {
     func testItemTintColorSet2() { testItemTintColorSet(with: .black) }
 
     func testItemTintColorSet(with color: UIColor, file: StaticString = #file, line: UInt = #line) {
+        // Arrange
+        let scrubBar = ScrubBar(items: [.empty(), .empty(), .empty()])!
+        scrubBar.selectedIndex = 0
+
+        // Act
         scrubBar.itemTintColor = color
+
+        // Assert
         XCTAssertEqual(scrubBar.imageViews[safe: 1]?.tintColor, color, file: file, line: line)
         XCTAssertEqual(scrubBar.imageViews[safe: 2]?.tintColor, color, file: file, line: line)
     }
