@@ -130,14 +130,22 @@ final class ScrubBarTests: XCTestCase {
         XCTAssertTrue(scrubBar?.imageViews.last?.isAccessibilityElement)
     }
 
-    func testImageViewsAccessibilityTraits1() {
-        let scrubBar = ScrubBar(items: [.empty(), .empty()])
-        XCTAssertEqual(scrubBar?.imageViews.first?.accessibilityTraits, UIAccessibilityTraitButton)
+    func testImageViewsInitialAccessibilityTraits() {
+        let scrubBar = ScrubBar(items: [.empty(), .empty(), .empty()])!
+        XCTAssertEqual(scrubBar.imageViews[safe: 0]?.accessibilityTraits, UIAccessibilityTraitButton | UIAccessibilityTraitSelected)
+        XCTAssertEqual(scrubBar.imageViews[safe: 1]?.accessibilityTraits, UIAccessibilityTraitButton)
+        XCTAssertEqual(scrubBar.imageViews[safe: 2]?.accessibilityTraits, UIAccessibilityTraitButton)
     }
 
-    func testImageViewsAccessibilityTraits2() {
-        let scrubBar = ScrubBar(items: [.empty(), .empty()])
-        XCTAssertEqual(scrubBar?.imageViews.last?.accessibilityTraits, UIAccessibilityTraitButton)
+    func testImageViewsAccessibilityTraitsOnSelectedIndexChange1() { testImageViewsAccessibilityTraitsOnSelectedIndexChange(withOldSelectedIndex: 0, newSelectedIndex: 1) }
+    func testImageViewsAccessibilityTraitsOnSelectedIndexChange2() { testImageViewsAccessibilityTraitsOnSelectedIndexChange(withOldSelectedIndex: 1, newSelectedIndex: 2) }
+
+    func testImageViewsAccessibilityTraitsOnSelectedIndexChange(withOldSelectedIndex oldSelectedIndex: Int, newSelectedIndex: Int, file: StaticString = #file, line: UInt = #line) {
+        let scrubBar = ScrubBar(items: [.empty(), .empty(), .empty()])!
+        scrubBar.selectedIndex = oldSelectedIndex
+        scrubBar.selectedIndex = newSelectedIndex
+        XCTAssertEqual(scrubBar.imageViews[safe: oldSelectedIndex]?.accessibilityTraits, UIAccessibilityTraitButton, file: file, line: line)
+        XCTAssertEqual(scrubBar.imageViews[safe: newSelectedIndex]?.accessibilityTraits, UIAccessibilityTraitButton | UIAccessibilityTraitSelected, file: file, line: line)
     }
 
     func testImageViewsFirstAccessibilityLabel1() { testImageViewsFirstAccessibilityLabel("Abc") }

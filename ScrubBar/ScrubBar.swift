@@ -30,7 +30,7 @@ public class ScrubBar: UIControl {
         imageViews.enumerated().forEach { (index, element) in
             element.contentMode = .center
             element.isAccessibilityElement = true
-            element.accessibilityTraits = UIAccessibilityTraitButton
+            element.accessibilityTraits = index == selectedIndex ? UIAccessibilityTraitButton | UIAccessibilityTraitSelected : UIAccessibilityTraitButton
             element.accessibilityLabel = items[index].accessibilityLabel
             element.tintColor = itemTintColor
         }
@@ -54,6 +54,9 @@ public class ScrubBar: UIControl {
 
             imageViews[selectedIndex].tintColor = selectedItemTintColor
             imageViews[oldValue].tintColor = itemTintColor
+
+            imageViews[oldValue].accessibilityTraits = UIAccessibilityTraitButton
+            imageViews[selectedIndex].accessibilityTraits = UIAccessibilityTraitButton | UIAccessibilityTraitSelected
         }
     }
 
