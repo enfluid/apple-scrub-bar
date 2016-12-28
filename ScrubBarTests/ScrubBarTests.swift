@@ -299,20 +299,69 @@ final class ScrubBarTests: XCTestCase {
 
     func testImageViewsDefaultTintColor() {
         let scrubBar = ScrubBar(items: [.empty(), .empty(), .empty()])!
-        XCTAssertEqual(scrubBar.imageViews[safe: 0]?.tintColor, scrubBar.itemTintColor)
         XCTAssertEqual(scrubBar.imageViews[safe: 1]?.tintColor, scrubBar.itemTintColor)
         XCTAssertEqual(scrubBar.imageViews[safe: 2]?.tintColor, scrubBar.itemTintColor)
     }
 
-    func testItemTintColorSet1() { testItemTintColorSet(withColor: .red) }
-    func testItemTintColorSet2() { testItemTintColorSet(withColor: .black) }
+    func testItemTintColorSet1() { testItemTintColorSet(with: .red) }
+    func testItemTintColorSet2() { testItemTintColorSet(with: .black) }
 
-    func testItemTintColorSet(withColor color: UIColor, file: StaticString = #file, line: UInt = #line) {
-        let scrubBar = ScrubBar(items: [.empty(), .empty(), .empty()])
-        scrubBar?.itemTintColor = color
-        XCTAssertEqual(scrubBar?.imageViews[safe: 0]?.tintColor, color, file: file, line: line)
-        XCTAssertEqual(scrubBar?.imageViews[safe: 1]?.tintColor, color, file: file, line: line)
-        XCTAssertEqual(scrubBar?.imageViews[safe: 2]?.tintColor, color, file: file, line: line)
+    func testItemTintColorSet(with color: UIColor, file: StaticString = #file, line: UInt = #line) {
+        scrubBar.itemTintColor = color
+        XCTAssertEqual(scrubBar.imageViews[safe: 1]?.tintColor, color, file: file, line: line)
+        XCTAssertEqual(scrubBar.imageViews[safe: 2]?.tintColor, color, file: file, line: line)
+    }
+
+    // MARK: Selected item tint color
+
+    func testSelectedItemTintColorType() {
+        XCTAssertTrue(scrubBar.selectedItemTintColor as Any is UIColor)
+    }
+
+    func testSelectedItemTintColorDefault() {
+        XCTAssertEqual(scrubBar.selectedItemTintColor, .darkGray)
+    }
+
+    func testSelectedItemImageViewDefaultTintColor() {
+        XCTAssertEqual(scrubBar.imageViews.first?.tintColor, scrubBar.selectedItemTintColor)
+    }
+
+    func testSelectedItemTintColorSet1() { testSelectedItemTintColorSet(with: .red, selectedIndex: 0) }
+    func testSelectedItemTintColorSet2() { testSelectedItemTintColorSet(with: .green, selectedIndex: 1) }
+
+    func testSelectedItemTintColorSet(with color: UIColor, selectedIndex: Int, file: StaticString = #file, line: UInt = #line) {
+        scrubBar.selectedIndex = selectedIndex
+        scrubBar.selectedItemTintColor = color
+        XCTAssertEqual(scrubBar.imageViews[safe: selectedIndex]?.tintColor, color, file: file, line: line)
+    }
+
+    func testSelectedItemTintColorSetOnSelectedIndexChange1() { testSelectedItemTintColorSetOnSelectedIndexChange(with: .red, selectedIndex: 1) }
+    func testSelectedItemTintColorSetOnSelectedIndexChange2() { testSelectedItemTintColorSetOnSelectedIndexChange(with: .green, selectedIndex: 2) }
+
+    func testSelectedItemTintColorSetOnSelectedIndexChange(with color: UIColor, selectedIndex: Int, file: StaticString = #file, line: UInt = #line) {
+        scrubBar.selectedItemTintColor = color
+        scrubBar.selectedIndex = selectedIndex
+        XCTAssertEqual(scrubBar.imageViews[safe: selectedIndex]?.tintColor, scrubBar.selectedItemTintColor, file: file, line: line)
+    }
+
+    func testSelectedItemTintColorUnsetOnSelectedIndexChange1() { testSelectedItemTintColorUnsetOnSelectedIndexChange(withNewSelectedIndex: 1, oldSelectedIndex: 0, itemTintColor: .red) }
+    func testSelectedItemTintColorUnsetOnSelectedIndexChange2() { testSelectedItemTintColorUnsetOnSelectedIndexChange(withNewSelectedIndex: 2, oldSelectedIndex: 1, itemTintColor: .blue) }
+
+    func testSelectedItemTintColorUnsetOnSelectedIndexChange(withNewSelectedIndex newSelectedIndex: Int, oldSelectedIndex: Int, itemTintColor: UIColor, file: StaticString = #file, line: UInt = #line) {
+        scrubBar.itemTintColor = itemTintColor
+        scrubBar.selectedIndex = oldSelectedIndex
+        scrubBar.selectedIndex = newSelectedIndex
+        XCTAssertEqual(scrubBar.imageViews[safe: oldSelectedIndex]?.tintColor, scrubBar.itemTintColor, file: file, line: line)
+    }
+
+    func testSelectedItemTintColorKeptOnItemTintColorChange1() { testSelectedItemTintColorKeptOnItemTintColorChange(withSelectedIndex: 0, selectedItemTintColor: .black) }
+    func testSelectedItemTintColorKeptOnItemTintColorChange2() { testSelectedItemTintColorKeptOnItemTintColorChange(withSelectedIndex: 1, selectedItemTintColor: .blue) }
+
+    func testSelectedItemTintColorKeptOnItemTintColorChange(withSelectedIndex selectedIndex: Int, selectedItemTintColor: UIColor, file: StaticString = #file, line: UInt = #line) {
+        scrubBar.selectedIndex = selectedIndex
+        scrubBar.selectedItemTintColor = selectedItemTintColor
+        scrubBar.itemTintColor = .red
+        XCTAssertEqual(scrubBar.imageViews[safe: selectedIndex]?.tintColor, scrubBar.selectedItemTintColor, file: file, line: line)
     }
 
     // MARK: Animate selection change

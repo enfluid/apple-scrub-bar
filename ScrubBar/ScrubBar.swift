@@ -34,6 +34,7 @@ public class ScrubBar: UIControl {
             element.accessibilityLabel = items[index].accessibilityLabel
             element.tintColor = itemTintColor
         }
+        selectedImageView.tintColor = selectedItemTintColor
     }
 
     required public init?(coder: NSCoder) {
@@ -50,6 +51,9 @@ public class ScrubBar: UIControl {
                 self.layoutIfNeeded()
             },
             completion: nil)
+
+            imageViews[selectedIndex].tintColor = selectedItemTintColor
+            imageViews[oldValue].tintColor = itemTintColor
         }
     }
 
@@ -139,6 +143,15 @@ public class ScrubBar: UIControl {
     public var itemTintColor: UIColor = .gray {
         didSet {
             imageViews.forEach { $0.tintColor = itemTintColor }
+            selectedImageView.tintColor = selectedItemTintColor
+        }
+    }
+
+    // MARK: Selected item tint color
+
+    public var selectedItemTintColor = UIColor.darkGray {
+        didSet {
+            selectedImageView.tintColor = selectedItemTintColor
         }
     }
 
