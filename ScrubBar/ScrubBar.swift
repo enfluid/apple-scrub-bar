@@ -1,38 +1,63 @@
 import UIKit
 
+public protocol ScrubBarDelegate: class {
+
+    func scrubBar(_ scrubBar: ScrubBar, didSelectItemAt selectedIndex: Int)
+
+}
+
 public class ScrubBar: UIControl {
 
     // MARK: Initialization
 
-    public init(images: [UIImage]) {
-        imageViews = images.map { UIImageView(image: $0) }
+    public init?(items: [ScrubBarItem]) {
+        guard items.count > 0 else { return nil }
+
+        self.items = items
+        imageViews = items.map { UIImageView(image: $0.image) }
         super.init(frame: .zero)
+
         configureImageViews()
         configureStackView()
         configureSelectionView()
     }
 
+    public let items: [ScrubBarItem]
+
     let imageViews: [UIImageView]
 
     private func configureImageViews() {
-        imageViews.forEach {
-            $0.contentMode = .center
-            $0.isAccessibilityElement = true
-            $0.accessibilityTraits = UIAccessibilityTraitButton
+        imageViews.enumerated().forEach { index, element in
+            element.contentMode = .center
+            element.isAccessibilityElement = true
+            element.accessibilityTraits = index == selectedIndex ? UIAccessibilityTraitButton | UIAccessibilityTraitSelected : UIAccessibilityTraitButton
+            element.accessibilityLabel = items[index].accessibilityLabel
+            element.tintColor = itemTintColor
         }
+        selectedImageView.tintColor = selectedItemTintColor
     }
 
     required public init?(coder: NSCoder) {
         return nil
     }
 
-    public var selectedSegment = 0 {
+    public var selectedIndex = 0 {
         didSet {
+            guard selectedIndex != oldValue else { return }
+
             updateSelectionViewCenterXConstraint()
             animating.animate(withDuration: animationDuration, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: [], animations: {
                 self.layoutIfNeeded()
             },
             completion: nil)
+
+            imageViews[selectedIndex].tintColor = selectedItemTintColor
+            imageViews[oldValue].tintColor = itemTintColor
+
+            imageViews[oldValue].accessibilityTraits = UIAccessibilityTraitButton
+            imageViews[selectedIndex].accessibilityTraits = UIAccessibilityTraitButton | UIAccessibilityTraitSelected
+
+            delegate?.scrubBar(self, didSelectItemAt: selectedIndex)
         }
     }
 
@@ -71,7 +96,7 @@ public class ScrubBar: UIControl {
         insertSubview(selectionView, belowSubview: stackView)
         selectionView.isUserInteractionEnabled = false
         selectionView.layer.masksToBounds = true
-        selectionView.backgroundColor = .white
+        selectionView.backgroundColor = selectionBackgroundColor
         selectionView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate(selectionViewStaticConstraints)
         updateSelectionViewCenterXConstraint()
@@ -97,7 +122,7 @@ public class ScrubBar: UIControl {
     private var selectionViewCenterXConstraint: NSLayoutConstraint?
 
     private var selectedImageView: UIImageView {
-        return imageViews[selectedSegment]
+        return imageViews[selectedIndex]
     }
 
     private func updateSelectionViewWidthConstraint() {
@@ -109,33 +134,58 @@ public class ScrubBar: UIControl {
 
     private var selectionViewWidthConstraint: NSLayoutConstraint?
 
+    // MARK: Selection background color
+
+    public var selectionBackgroundColor = UIColor.white {
+        didSet {
+            selectionView.backgroundColor = selectionBackgroundColor
+        }
+    }
+
+    // MARK: Item tint color
+
+    public var itemTintColor = UIColor.gray {
+        didSet {
+            imageViews.forEach { $0.tintColor = itemTintColor }
+            selectedImageView.tintColor = selectedItemTintColor
+        }
+    }
+
+    // MARK: Selected item tint color
+
+    public var selectedItemTintColor = UIColor.darkGray {
+        didSet {
+            selectedImageView.tintColor = selectedItemTintColor
+        }
+    }
+
     // MARK: Begin tracking
 
     public override func beginTracking(_ touch: UITouch, with event: UIEvent?) -> Bool {
         startTouchLocation = touch.location(in: self)
-        segmentLocator = SegmentLocatorType.init(numberOfSegments: imageViews.count, boundsWidth: bounds.width)
+        itemLocator = ItemLocatorType.init(numberOfItems: imageViews.count, boundsWidth: bounds.width)
         return true
     }
 
     var startTouchLocation: CGPoint?
 
-    var segmentLocator: SegmentLocator?
-    lazy var SegmentLocatorType: SegmentLocator.Type = DefaultSegmentLocator.self
+    var itemLocator: ItemLocator?
+    lazy var ItemLocatorType: ItemLocator.Type = DefaultItemLocator.self
 
     // MARK: Continue tracking
 
     public override func continueTracking(_ touch: UITouch, with event: UIEvent?) -> Bool {
-        guard let touchStartLocation = startTouchLocation else {
+        guard let startTouchLocation = startTouchLocation else {
             // don't do fatal error, because we can't ensure UIKit always calls beginTracking (though it probably does)
             return false
         }
         let location = touch.location(in: self)
-        let panDistance = abs(location.x - touchStartLocation.x)
-        if (!isInScrubMode && panDistance >= minPanDistance) {
+        let panDistance = abs(location.x - startTouchLocation.x)
+        if !isInScrubMode && panDistance >= minPanDistance {
             isInScrubMode = true
         }
         if isInScrubMode {
-            selectedSegment = segmentLocator!.indexOfSegment(forX: location.x)
+            selectedIndex = itemLocator!.indexOfItem(forX: location.x)
         }
 
         return true
@@ -163,7 +213,7 @@ public class ScrubBar: UIControl {
 
         guard let touch = touch else { return }
 
-        selectedSegment = segmentLocator!.indexOfSegment(forX: touch.location(in: self).x)
+        selectedIndex = itemLocator!.indexOfItem(forX: touch.location(in: self).x)
     }
 
     // MARK: Cancel tracking
@@ -178,11 +228,16 @@ public class ScrubBar: UIControl {
 
     var animationDuration: TimeInterval = 0.35
 
+    // MARK: Delegate
+
+    public weak var delegate: ScrubBarDelegate?
+
 }
 
-
 protocol Animating {
+
     static func animate(withDuration duration: TimeInterval, delay: TimeInterval, usingSpringWithDamping dampingRatio: CGFloat, initialSpringVelocity velocity: CGFloat, options: UIViewAnimationOptions, animations: @escaping () -> Swift.Void, completion: ((Bool) -> Swift.Void)?)
+
 }
 
 extension UIView: Animating {}

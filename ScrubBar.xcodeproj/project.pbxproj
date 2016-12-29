@@ -13,9 +13,12 @@
 		0FC1689F1DB5B3510090CB3A /* ScrubBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FC1689E1DB5B3510090CB3A /* ScrubBar.swift */; };
 		0FC168A11DB5B4C50090CB3A /* NSCoder+Empty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FC168A01DB5B4C50090CB3A /* NSCoder+Empty.swift */; };
 		0FC168A31DB5BDAE0090CB3A /* XCTAssert+LayoutConstraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FC168A21DB5BDAE0090CB3A /* XCTAssert+LayoutConstraint.swift */; };
+		81473B7B1E12AD550021C9C6 /* Collection+SafeSubscript.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81473B7A1E12AD550021C9C6 /* Collection+SafeSubscript.swift */; };
+		81581CE01E0BE763008F7D1E /* ScrubBarItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81581CDF1E0BE763008F7D1E /* ScrubBarItem.swift */; };
+		81581CE21E0BE8A7008F7D1E /* ScrubBarItemTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81581CE11E0BE8A7008F7D1E /* ScrubBarItemTests.swift */; };
 		81B922B91E040DD7000BA42F /* XCTAssertTrue+OptionalBool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81B922B81E040DD7000BA42F /* XCTAssertTrue+OptionalBool.swift */; };
-		81C9D7B71DDA0574003E884D /* SegmentLocator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81C9D7B61DDA0574003E884D /* SegmentLocator.swift */; };
-		81C9D7B91DDC5D91003E884D /* SegmentLocatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81C9D7B81DDC5D91003E884D /* SegmentLocatorTests.swift */; };
+		81C9D7B71DDA0574003E884D /* ItemLocator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81C9D7B61DDA0574003E884D /* ItemLocator.swift */; };
+		81C9D7B91DDC5D91003E884D /* ItemLocatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81C9D7B81DDC5D91003E884D /* ItemLocatorTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -38,9 +41,12 @@
 		0FC1689E1DB5B3510090CB3A /* ScrubBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScrubBar.swift; sourceTree = "<group>"; };
 		0FC168A01DB5B4C50090CB3A /* NSCoder+Empty.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSCoder+Empty.swift"; sourceTree = "<group>"; };
 		0FC168A21DB5BDAE0090CB3A /* XCTAssert+LayoutConstraint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "XCTAssert+LayoutConstraint.swift"; sourceTree = "<group>"; };
+		81473B7A1E12AD550021C9C6 /* Collection+SafeSubscript.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Collection+SafeSubscript.swift"; sourceTree = "<group>"; };
+		81581CDF1E0BE763008F7D1E /* ScrubBarItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScrubBarItem.swift; sourceTree = "<group>"; };
+		81581CE11E0BE8A7008F7D1E /* ScrubBarItemTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScrubBarItemTests.swift; sourceTree = "<group>"; };
 		81B922B81E040DD7000BA42F /* XCTAssertTrue+OptionalBool.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "XCTAssertTrue+OptionalBool.swift"; sourceTree = "<group>"; };
-		81C9D7B61DDA0574003E884D /* SegmentLocator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SegmentLocator.swift; sourceTree = "<group>"; };
-		81C9D7B81DDC5D91003E884D /* SegmentLocatorTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SegmentLocatorTests.swift; sourceTree = "<group>"; };
+		81C9D7B61DDA0574003E884D /* ItemLocator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemLocator.swift; sourceTree = "<group>"; };
+		81C9D7B81DDC5D91003E884D /* ItemLocatorTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemLocatorTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -85,7 +91,8 @@
 			children = (
 				0FC168871DB5B2200090CB3A /* ScrubBar.h */,
 				0FC1689E1DB5B3510090CB3A /* ScrubBar.swift */,
-				81C9D7B61DDA0574003E884D /* SegmentLocator.swift */,
+				81581CDF1E0BE763008F7D1E /* ScrubBarItem.swift */,
+				81C9D7B61DDA0574003E884D /* ItemLocator.swift */,
 				0FC168881DB5B2200090CB3A /* Info.plist */,
 			);
 			path = ScrubBar;
@@ -95,10 +102,12 @@
 			isa = PBXGroup;
 			children = (
 				0FC168921DB5B2200090CB3A /* ScrubBarTests.swift */,
-				81C9D7B81DDC5D91003E884D /* SegmentLocatorTests.swift */,
+				81C9D7B81DDC5D91003E884D /* ItemLocatorTests.swift */,
+				81581CE11E0BE8A7008F7D1E /* ScrubBarItemTests.swift */,
 				0FC168A01DB5B4C50090CB3A /* NSCoder+Empty.swift */,
 				81B922B81E040DD7000BA42F /* XCTAssertTrue+OptionalBool.swift */,
 				0FC168A21DB5BDAE0090CB3A /* XCTAssert+LayoutConstraint.swift */,
+				81473B7A1E12AD550021C9C6 /* Collection+SafeSubscript.swift */,
 				0FC168941DB5B2200090CB3A /* Info.plist */,
 			);
 			path = ScrubBarTests;
@@ -215,8 +224,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				81581CE01E0BE763008F7D1E /* ScrubBarItem.swift in Sources */,
 				0FC1689F1DB5B3510090CB3A /* ScrubBar.swift in Sources */,
-				81C9D7B71DDA0574003E884D /* SegmentLocator.swift in Sources */,
+				81C9D7B71DDA0574003E884D /* ItemLocator.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -226,8 +236,10 @@
 			files = (
 				0FC168A31DB5BDAE0090CB3A /* XCTAssert+LayoutConstraint.swift in Sources */,
 				0FC168A11DB5B4C50090CB3A /* NSCoder+Empty.swift in Sources */,
-				81C9D7B91DDC5D91003E884D /* SegmentLocatorTests.swift in Sources */,
+				81C9D7B91DDC5D91003E884D /* ItemLocatorTests.swift in Sources */,
+				81473B7B1E12AD550021C9C6 /* Collection+SafeSubscript.swift in Sources */,
 				0FC168931DB5B2200090CB3A /* ScrubBarTests.swift in Sources */,
+				81581CE21E0BE8A7008F7D1E /* ScrubBarItemTests.swift in Sources */,
 				81B922B91E040DD7000BA42F /* XCTAssertTrue+OptionalBool.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
