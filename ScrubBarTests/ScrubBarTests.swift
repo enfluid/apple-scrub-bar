@@ -857,7 +857,6 @@ func == (lhs: AnimatingMock.AnimationConfiguration, rhs: AnimatingMock.Animation
     return String(describing: lhs) == String(describing: rhs)
 }
 
-extension ScrubBarItem: Equatable {}
 
 extension ScrubBarItem {
 
@@ -867,8 +866,10 @@ extension ScrubBarItem {
 
 }
 
+extension ScrubBarItem: Equatable {}
+
 public func == (lhs: ScrubBarItem, rhs: ScrubBarItem) -> Bool {
-    return String(describing: lhs) == String(describing: rhs)
+    return lhs.accessibilityLabel == rhs.accessibilityLabel && lhs.image == rhs.image
 }
 
 final class ScrubBarDelegateMock: ScrubBarDelegate {
