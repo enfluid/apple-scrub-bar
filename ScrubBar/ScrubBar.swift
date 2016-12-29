@@ -45,7 +45,6 @@ public class ScrubBar: UIControl {
         didSet {
             guard selectedIndex != oldValue else { return }
 
-            delegate?.scrubBar(self, didSelectItemAt: selectedIndex)
             updateSelectionViewCenterXConstraint()
             animating.animate(withDuration: animationDuration, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: [], animations: {
                 self.layoutIfNeeded()
@@ -57,6 +56,8 @@ public class ScrubBar: UIControl {
 
             imageViews[oldValue].accessibilityTraits = UIAccessibilityTraitButton
             imageViews[selectedIndex].accessibilityTraits = UIAccessibilityTraitButton | UIAccessibilityTraitSelected
+
+            delegate?.scrubBar(self, didSelectItemAt: selectedIndex)
         }
     }
 
