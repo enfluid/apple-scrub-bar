@@ -27,7 +27,7 @@ public class ScrubBar: UIControl {
     let imageViews: [UIImageView]
 
     private func configureImageViews() {
-        imageViews.enumerated().forEach { (index, element) in
+        imageViews.enumerated().forEach { index, element in
             element.contentMode = .center
             element.isAccessibilityElement = true
             element.accessibilityTraits = index == selectedIndex ? UIAccessibilityTraitButton | UIAccessibilityTraitSelected : UIAccessibilityTraitButton
@@ -143,7 +143,7 @@ public class ScrubBar: UIControl {
 
     // MARK: Item tint color
 
-    public var itemTintColor: UIColor = .gray {
+    public var itemTintColor = UIColor.gray {
         didSet {
             imageViews.forEach { $0.tintColor = itemTintColor }
             selectedImageView.tintColor = selectedItemTintColor
@@ -180,7 +180,7 @@ public class ScrubBar: UIControl {
         }
         let location = touch.location(in: self)
         let panDistance = abs(location.x - startTouchLocation.x)
-        if (!isInScrubMode && panDistance >= minPanDistance) {
+        if !isInScrubMode && panDistance >= minPanDistance {
             isInScrubMode = true
         }
         if isInScrubMode {
