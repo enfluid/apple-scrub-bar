@@ -179,13 +179,13 @@ public class ScrubBar: UIControl {
             isInScrubMode = true
         }
         if isInScrubMode {
-            updateSelectedIndex(location)
+            updateSelectedIndexForTouchLocation(location)
         }
 
         return true
     }
 
-    lazy var updateSelectedIndex: (CGPoint) -> Void = { location in
+    lazy var updateSelectedIndexForTouchLocation: (CGPoint) -> Void = { location in
         let previousSelectedIndex = self.selectedIndex
         let newSelectedIndex = self.itemLocator!.indexOfItem(forX: location.x)
         guard previousSelectedIndex != newSelectedIndex else { return }
@@ -228,7 +228,7 @@ public class ScrubBar: UIControl {
 
         guard let touch = touch else { return }
 
-        updateSelectedIndex(touch.location(in: self))
+        updateSelectedIndexForTouchLocation(touch.location(in: self))
     }
 
     // MARK: Cancel tracking
