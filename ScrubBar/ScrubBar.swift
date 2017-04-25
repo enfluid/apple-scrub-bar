@@ -56,8 +56,6 @@ public class ScrubBar: UIControl {
 
             imageViews[oldValue].accessibilityTraits = UIAccessibilityTraitButton
             imageViews[selectedIndex].accessibilityTraits = UIAccessibilityTraitButton | UIAccessibilityTraitSelected
-
-            delegate?.scrubBar(self, didSelectItemAt: selectedIndex)
         }
     }
 
@@ -185,10 +183,18 @@ public class ScrubBar: UIControl {
             isInScrubMode = true
         }
         if isInScrubMode {
-            selectedIndex = itemLocator!.indexOfItem(forX: location.x)
+            updateSelectedIndex(forLocation: location)
         }
 
         return true
+    }
+
+    func updateSelectedIndex(forLocation location: CGPoint) {
+        let previousSelectedIndex = selectedIndex
+        selectedIndex = itemLocator!.indexOfItem(forX: location.x)
+        if previousSelectedIndex != selectedIndex {
+            delegate?.scrubBar(self, didSelectItemAt: selectedIndex)
+        }
     }
 
     var isInScrubMode = false {
@@ -213,7 +219,7 @@ public class ScrubBar: UIControl {
 
         guard let touch = touch else { return }
 
-        selectedIndex = itemLocator!.indexOfItem(forX: touch.location(in: self).x)
+        updateSelectedIndex(forLocation: touch.location(in: self))
     }
 
     // MARK: Cancel tracking

@@ -735,33 +735,54 @@ final class ScrubBarTests: XCTestCase {
         XCTAssertNil(scrubBar.delegate)
     }
 
-    func testDelegateIsCalledWithSelf() {
+    func testDelegateIsCalledWhileScrubbing1() { testDelegateIsCalledWhileScrubbing(withSelectedIndex: 1) }
+    func testDelegateIsCalledWhileScrubbing2() { testDelegateIsCalledWhileScrubbing(withSelectedIndex: 2) }
+
+    func testDelegateIsCalledWhileScrubbing(withSelectedIndex selectedIndex: Int, file: StaticString = #file, line: UInt = #line) {
         let delegateMock = ScrubBarDelegateMock()
         scrubBar.delegate = delegateMock
+        scrubBar.isInScrubMode = true
+        scrubBar.itemLocator = ItemLocatorStub(indexOfItem: selectedIndex)
+        scrubBar.startTouchLocation = .zero
+        scrubBar.selectedIndex = 0
+        _ = scrubBar.continueTracking(TouchStub(location: .zero, view: scrubBar), with: nil)
+        XCTAssertEqual(delegateMock.capturedScrubBars, [scrubBar], file: file, line: line)
+        XCTAssertEqual(delegateMock.capturedIndexes, [selectedIndex], file: file, line: line)
+    }
+
+    func testDelegateIsNotCalledWhileScrubbingIfSelectedIndexDoesNotChange() {
+        let delegateMock = ScrubBarDelegateMock()
+        scrubBar.delegate = delegateMock
+        scrubBar.isInScrubMode = true
+        scrubBar.itemLocator = ItemLocatorStub(indexOfItem: 1)
+        scrubBar.startTouchLocation = .zero
         scrubBar.selectedIndex = 1
-        XCTAssertEqual(delegateMock.capturedScrubBars, [scrubBar])
+        _ = scrubBar.continueTracking(TouchStub(location: .zero, view: scrubBar), with: nil)
+        XCTAssertEqual(delegateMock.capturedScrubBars, [])
+        XCTAssertEqual(delegateMock.capturedIndexes, [])
     }
 
-    func testDelegateIsCalledWithSelectedItemIndex1() { testDelegateIsCalledWithSelectedItemIndex(withItemIndex: 1) }
-    func testDelegateIsCalledWithSelectedItemIndex2() { testDelegateIsCalledWithSelectedItemIndex(withItemIndex: 2) }
+    func testDelegateIsCalledWhenTouchEnds1() { testDelegateIsCalledWhenTouchEnds(withSelectedIndex: 1) }
+    func testDelegateIsCalledWhenTouchEnds2() { testDelegateIsCalledWhenTouchEnds(withSelectedIndex: 2) }
 
-    func testDelegateIsCalledWithSelectedItemIndex(withItemIndex itemIndex: Int, file: StaticString = #file, line: UInt = #line) {
+    func testDelegateIsCalledWhenTouchEnds(withSelectedIndex selectedIndex: Int, file: StaticString = #file, line: UInt = #line) {
         let delegateMock = ScrubBarDelegateMock()
         scrubBar.delegate = delegateMock
-        scrubBar.selectedIndex = itemIndex
-        XCTAssertEqual(delegateMock.capturedIndexes, [itemIndex], file: file, line: line)
+        scrubBar.itemLocator = ItemLocatorStub(indexOfItem: selectedIndex)
+        scrubBar.selectedIndex = 0
+        scrubBar.endTracking(TouchStub(location: .zero, view: scrubBar), with: nil)
+        XCTAssertEqual(delegateMock.capturedScrubBars, [scrubBar], file: file, line: line)
+        XCTAssertEqual(delegateMock.capturedIndexes, [selectedIndex], file: file, line: line)
     }
 
-    func testDelegateIsCalledOnlyOnChange1() { testDelegateIsCalledOnlyOnChange(withItemIndex: 0) }
-    func testDelegateIsCalledOnlyOnChange2() { testDelegateIsCalledOnlyOnChange(withItemIndex: 1) }
-
-    func testDelegateIsCalledOnlyOnChange(withItemIndex itemIndex: Int, file: StaticString = #file, line: UInt = #line) {
+    func testDelegateIsNotCalledWhenTouchEndsIfSelectedIndexDoesNotChange() {
         let delegateMock = ScrubBarDelegateMock()
-        let scrubBar = ScrubBar(items: [.empty(), .empty(), .empty()])!
-        scrubBar.selectedIndex = itemIndex
         scrubBar.delegate = delegateMock
-        scrubBar.selectedIndex = itemIndex
-        XCTAssertEqual(delegateMock.capturedIndexes, [], file: file, line: line)
+        scrubBar.itemLocator = ItemLocatorStub(indexOfItem: 1)
+        scrubBar.selectedIndex = 1
+        scrubBar.endTracking(TouchStub(location: .zero, view: scrubBar), with: nil)
+        XCTAssertEqual(delegateMock.capturedScrubBars, [])
+        XCTAssertEqual(delegateMock.capturedIndexes, [])
     }
 
 }
