@@ -778,7 +778,7 @@ class TouchStub: UITouch {
 
     override func location(in view: UIView?) -> CGPoint {
         guard view == self.touchView else {
-            XCTFail("View is not equal to \(self.view)")
+            XCTFail("View is not equal to \(String(describing: self.view))")
             return .zero
         }
         return location
