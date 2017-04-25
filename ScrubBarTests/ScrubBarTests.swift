@@ -406,13 +406,28 @@ final class ScrubBarTests: XCTestCase {
         AnimatingMock.reset()
         scrubBar.animating = AnimatingMock.self
         scrubBar.animationDuration = animationDuration
+        scrubBar.itemLocator = ItemLocatorStub(indexOfItem: 1)
 
         // Act
-        scrubBar.selectedIndex = 1
+        scrubBar.updateSelectedIndex(.zero)
 
         // Assert
         let expectedAnimationConfiguration = AnimatingMock.AnimationConfiguration(duration: animationDuration, delay: 0, dampingRatio: 1, velocity: 0, options: [])
         XCTAssertEqual(AnimatingMock.capturedAnimationConfigurations, [expectedAnimationConfiguration], file: file, line: line)
+    }
+
+    func testSelectionViewSelectedIndexAnimationDoesNotRunIfSelectedIndexDoesNotChange() {
+        // Arrange
+        AnimatingMock.reset()
+        scrubBar.animating = AnimatingMock.self
+        scrubBar.itemLocator = ItemLocatorStub(indexOfItem: 1)
+        scrubBar.selectedIndex = 1
+
+        // Act
+        scrubBar.updateSelectedIndex(.zero)
+
+        // Assert
+        XCTAssertEqual(AnimatingMock.capturedAnimationConfigurations, [])
     }
 
     func testSelectionViewXAfterSelectedIndexAnimation1() { testSelectionViewXAfterSelectedIndexAnimation(withSelectedIndex: 1, numberOfItems: 3) }
@@ -427,9 +442,10 @@ final class ScrubBarTests: XCTestCase {
         scrubBar?.frame = CGRect(x: 0, y: 0, width: imageWidth * numberOfItems, height: 30)
         scrubBar?.animating = AnimatingMock.self
         let initialSelectionViewCenterX = scrubBar?.selectionView.center.x
+        scrubBar?.itemLocator = ItemLocatorStub(indexOfItem: selectedIndex)
 
         // Act
-        scrubBar?.selectedIndex = selectedIndex
+        scrubBar?.updateSelectedIndex(.zero)
         AnimatingMock.capturedAnimations.first?()
 
         // Assert
@@ -735,54 +751,51 @@ final class ScrubBarTests: XCTestCase {
         XCTAssertNil(scrubBar.delegate)
     }
 
-    func testDelegateIsCalledWhileScrubbing1() { testDelegateIsCalledWhileScrubbing(withSelectedIndex: 1) }
-    func testDelegateIsCalledWhileScrubbing2() { testDelegateIsCalledWhileScrubbing(withSelectedIndex: 2) }
+    func testDelegateIsCalledWhenUpdatingSelectedIndex1() { testDelegateIsCalledWhenUpdatingSelectedIndex(withSelectedIndex: 1) }
+    func testDelegateIsCalledWhenUpdatingSelectedIndex2() { testDelegateIsCalledWhenUpdatingSelectedIndex(withSelectedIndex: 2) }
 
-    func testDelegateIsCalledWhileScrubbing(withSelectedIndex selectedIndex: Int, file: StaticString = #file, line: UInt = #line) {
+    func testDelegateIsCalledWhenUpdatingSelectedIndex(withSelectedIndex selectedIndex: Int, file: StaticString = #file, line: UInt = #line) {
         let delegateMock = ScrubBarDelegateMock()
         scrubBar.delegate = delegateMock
-        scrubBar.isInScrubMode = true
         scrubBar.itemLocator = ItemLocatorStub(indexOfItem: selectedIndex)
-        scrubBar.startTouchLocation = .zero
-        scrubBar.selectedIndex = 0
-        _ = scrubBar.continueTracking(TouchStub(location: .zero, view: scrubBar), with: nil)
+        scrubBar.updateSelectedIndex(.zero)
         XCTAssertEqual(delegateMock.capturedScrubBars, [scrubBar], file: file, line: line)
         XCTAssertEqual(delegateMock.capturedIndexes, [selectedIndex], file: file, line: line)
     }
 
-    func testDelegateIsNotCalledWhileScrubbingIfSelectedIndexDoesNotChange() {
+    func testDelegateIsNotCalledWhenUpdatingSelectedIndexWithTheSameValue() {
         let delegateMock = ScrubBarDelegateMock()
         scrubBar.delegate = delegateMock
+        scrubBar.itemLocator = ItemLocatorStub(indexOfItem: 1)
+        scrubBar.selectedIndex = 1
+        scrubBar.updateSelectedIndex(.zero)
+        XCTAssertEqual(delegateMock.capturedScrubBars, [])
+        XCTAssertEqual(delegateMock.capturedIndexes, [])
+    }
+
+    // MARK: Updating selected index
+
+    func testUpdateSelectedIndexIsCalledWhileScrubbing() {
+        let expectCallUpdateSelectedIndex = expectation(description: "updateSelectedIndex is called")
+        scrubBar.updateSelectedIndex = { location in
+            expectCallUpdateSelectedIndex.fulfill()
+        }
         scrubBar.isInScrubMode = true
-        scrubBar.itemLocator = ItemLocatorStub(indexOfItem: 1)
         scrubBar.startTouchLocation = .zero
-        scrubBar.selectedIndex = 1
         _ = scrubBar.continueTracking(TouchStub(location: .zero, view: scrubBar), with: nil)
-        XCTAssertEqual(delegateMock.capturedScrubBars, [])
-        XCTAssertEqual(delegateMock.capturedIndexes, [])
+        wait(for: [expectCallUpdateSelectedIndex], timeout: 0)
     }
 
-    func testDelegateIsCalledWhenTouchEnds1() { testDelegateIsCalledWhenTouchEnds(withSelectedIndex: 1) }
-    func testDelegateIsCalledWhenTouchEnds2() { testDelegateIsCalledWhenTouchEnds(withSelectedIndex: 2) }
-
-    func testDelegateIsCalledWhenTouchEnds(withSelectedIndex selectedIndex: Int, file: StaticString = #file, line: UInt = #line) {
-        let delegateMock = ScrubBarDelegateMock()
-        scrubBar.delegate = delegateMock
-        scrubBar.itemLocator = ItemLocatorStub(indexOfItem: selectedIndex)
-        scrubBar.selectedIndex = 0
-        scrubBar.endTracking(TouchStub(location: .zero, view: scrubBar), with: nil)
-        XCTAssertEqual(delegateMock.capturedScrubBars, [scrubBar], file: file, line: line)
-        XCTAssertEqual(delegateMock.capturedIndexes, [selectedIndex], file: file, line: line)
-    }
-
-    func testDelegateIsNotCalledWhenTouchEndsIfSelectedIndexDoesNotChange() {
+    func testUpdateSelectedIndexIsCalledWhenTouchEnds() {
+        let expectCallUpdateSelectedIndex = expectation(description: "updateSelectedIndex is called")
+        scrubBar.updateSelectedIndex = { location in
+            expectCallUpdateSelectedIndex.fulfill()
+        }
         let delegateMock = ScrubBarDelegateMock()
         scrubBar.delegate = delegateMock
         scrubBar.itemLocator = ItemLocatorStub(indexOfItem: 1)
-        scrubBar.selectedIndex = 1
         scrubBar.endTracking(TouchStub(location: .zero, view: scrubBar), with: nil)
-        XCTAssertEqual(delegateMock.capturedScrubBars, [])
-        XCTAssertEqual(delegateMock.capturedIndexes, [])
+        wait(for: [expectCallUpdateSelectedIndex], timeout: 0)
     }
 
 }

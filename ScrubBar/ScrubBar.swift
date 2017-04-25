@@ -46,10 +46,6 @@ public class ScrubBar: UIControl {
             guard selectedIndex != oldValue else { return }
 
             updateSelectionViewCenterXConstraint()
-            animating.animate(withDuration: animationDuration, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: [], animations: {
-                self.layoutIfNeeded()
-            },
-            completion: nil)
 
             imageViews[selectedIndex].tintColor = selectedItemTintColor
             imageViews[oldValue].tintColor = itemTintColor
@@ -183,18 +179,31 @@ public class ScrubBar: UIControl {
             isInScrubMode = true
         }
         if isInScrubMode {
-            updateSelectedIndex(forLocation: location)
+            updateSelectedIndex(location)
         }
 
         return true
     }
 
-    func updateSelectedIndex(forLocation location: CGPoint) {
-        let previousSelectedIndex = selectedIndex
-        selectedIndex = itemLocator!.indexOfItem(forX: location.x)
-        if previousSelectedIndex != selectedIndex {
-            delegate?.scrubBar(self, didSelectItemAt: selectedIndex)
-        }
+    lazy var updateSelectedIndex: (CGPoint) -> Void = { location in
+        let previousSelectedIndex = self.selectedIndex
+        let newSelectedIndex = self.itemLocator!.indexOfItem(forX: location.x)
+        guard previousSelectedIndex != newSelectedIndex else { return }
+
+        self.selectedIndex = newSelectedIndex
+        self.delegate?.scrubBar(self, didSelectItemAt: newSelectedIndex)
+        self.animating.animate(
+            withDuration: self.animationDuration,
+            delay: 0,
+            usingSpringWithDamping: 1,
+            initialSpringVelocity: 0,
+            options: [],
+            animations:
+            {
+                self.layoutIfNeeded()
+            },
+            completion: nil
+        )
     }
 
     var isInScrubMode = false {
@@ -219,7 +228,7 @@ public class ScrubBar: UIControl {
 
         guard let touch = touch else { return }
 
-        updateSelectedIndex(forLocation: touch.location(in: self))
+        updateSelectedIndex(touch.location(in: self))
     }
 
     // MARK: Cancel tracking
