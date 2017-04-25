@@ -775,7 +775,7 @@ final class ScrubBarTests: XCTestCase {
 
     // MARK: Updating selected index
 
-    func testupdateSelectedIndexForTouchLocationIsCalledWhileScrubbing() {
+    func testUpdateSelectedIndexForTouchLocationIsCalledWhileScrubbing() {
         let expectCallupdateSelectedIndexForTouchLocation = expectation(description: "updateSelectedIndexForTouchLocation is called")
         scrubBar.updateSelectedIndexForTouchLocation = { location in
             expectCallupdateSelectedIndexForTouchLocation.fulfill()
@@ -786,7 +786,7 @@ final class ScrubBarTests: XCTestCase {
         wait(for: [expectCallupdateSelectedIndexForTouchLocation], timeout: 0)
     }
 
-    func testupdateSelectedIndexForTouchLocationIsCalledWhenTouchEnds() {
+    func testUpdateSelectedIndexForTouchLocationIsCalledWhenTouchEnds() {
         let expectCallupdateSelectedIndexForTouchLocation = expectation(description: "updateSelectedIndexForTouchLocation is called")
         scrubBar.updateSelectedIndexForTouchLocation = { location in
             expectCallupdateSelectedIndexForTouchLocation.fulfill()
