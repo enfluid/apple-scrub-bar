@@ -46,18 +46,12 @@ public class ScrubBar: UIControl {
             guard selectedIndex != oldValue else { return }
 
             updateSelectionViewCenterXConstraint()
-            animating.animate(withDuration: animationDuration, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: [], animations: {
-                self.layoutIfNeeded()
-            },
-            completion: nil)
 
             imageViews[selectedIndex].tintColor = selectedItemTintColor
             imageViews[oldValue].tintColor = itemTintColor
 
             imageViews[oldValue].accessibilityTraits = UIAccessibilityTraitButton
             imageViews[selectedIndex].accessibilityTraits = UIAccessibilityTraitButton | UIAccessibilityTraitSelected
-
-            delegate?.scrubBar(self, didSelectItemAt: selectedIndex)
         }
     }
 
@@ -185,10 +179,31 @@ public class ScrubBar: UIControl {
             isInScrubMode = true
         }
         if isInScrubMode {
-            selectedIndex = itemLocator!.indexOfItem(forX: location.x)
+            updateSelectedIndexForTouchLocation(location)
         }
 
         return true
+    }
+
+    lazy var updateSelectedIndexForTouchLocation: (CGPoint) -> Void = { location in
+        let previousSelectedIndex = self.selectedIndex
+        let newSelectedIndex = self.itemLocator!.indexOfItem(forX: location.x)
+        guard previousSelectedIndex != newSelectedIndex else { return }
+
+        self.selectedIndex = newSelectedIndex
+        self.delegate?.scrubBar(self, didSelectItemAt: newSelectedIndex)
+        self.animating.animate(
+            withDuration: self.animationDuration,
+            delay: 0,
+            usingSpringWithDamping: 1,
+            initialSpringVelocity: 0,
+            options: [],
+            animations:
+            {
+                self.layoutIfNeeded()
+            },
+            completion: nil
+        )
     }
 
     var isInScrubMode = false {
@@ -213,7 +228,7 @@ public class ScrubBar: UIControl {
 
         guard let touch = touch else { return }
 
-        selectedIndex = itemLocator!.indexOfItem(forX: touch.location(in: self).x)
+        updateSelectedIndexForTouchLocation(touch.location(in: self))
     }
 
     // MARK: Cancel tracking

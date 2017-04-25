@@ -406,13 +406,28 @@ final class ScrubBarTests: XCTestCase {
         AnimatingMock.reset()
         scrubBar.animating = AnimatingMock.self
         scrubBar.animationDuration = animationDuration
+        scrubBar.itemLocator = ItemLocatorStub(indexOfItem: 1)
 
         // Act
-        scrubBar.selectedIndex = 1
+        scrubBar.updateSelectedIndexForTouchLocation(.zero)
 
         // Assert
         let expectedAnimationConfiguration = AnimatingMock.AnimationConfiguration(duration: animationDuration, delay: 0, dampingRatio: 1, velocity: 0, options: [])
         XCTAssertEqual(AnimatingMock.capturedAnimationConfigurations, [expectedAnimationConfiguration], file: file, line: line)
+    }
+
+    func testSelectionViewSelectedIndexAnimationDoesNotRunIfSelectedIndexDoesNotChange() {
+        // Arrange
+        AnimatingMock.reset()
+        scrubBar.animating = AnimatingMock.self
+        scrubBar.itemLocator = ItemLocatorStub(indexOfItem: 1)
+        scrubBar.selectedIndex = 1
+
+        // Act
+        scrubBar.updateSelectedIndexForTouchLocation(.zero)
+
+        // Assert
+        XCTAssertEqual(AnimatingMock.capturedAnimationConfigurations, [])
     }
 
     func testSelectionViewXAfterSelectedIndexAnimation1() { testSelectionViewXAfterSelectedIndexAnimation(withSelectedIndex: 1, numberOfItems: 3) }
@@ -427,9 +442,10 @@ final class ScrubBarTests: XCTestCase {
         scrubBar?.frame = CGRect(x: 0, y: 0, width: imageWidth * numberOfItems, height: 30)
         scrubBar?.animating = AnimatingMock.self
         let initialSelectionViewCenterX = scrubBar?.selectionView.center.x
+        scrubBar?.itemLocator = ItemLocatorStub(indexOfItem: selectedIndex)
 
         // Act
-        scrubBar?.selectedIndex = selectedIndex
+        scrubBar?.updateSelectedIndexForTouchLocation(.zero)
         AnimatingMock.capturedAnimations.first?()
 
         // Assert
@@ -735,33 +751,51 @@ final class ScrubBarTests: XCTestCase {
         XCTAssertNil(scrubBar.delegate)
     }
 
-    func testDelegateIsCalledWithSelf() {
+    func testDelegateIsCalledWhenUpdatingSelectedIndex1() { testDelegateIsCalledWhenUpdatingSelectedIndex(withSelectedIndex: 1) }
+    func testDelegateIsCalledWhenUpdatingSelectedIndex2() { testDelegateIsCalledWhenUpdatingSelectedIndex(withSelectedIndex: 2) }
+
+    func testDelegateIsCalledWhenUpdatingSelectedIndex(withSelectedIndex selectedIndex: Int, file: StaticString = #file, line: UInt = #line) {
         let delegateMock = ScrubBarDelegateMock()
         scrubBar.delegate = delegateMock
+        scrubBar.itemLocator = ItemLocatorStub(indexOfItem: selectedIndex)
+        scrubBar.updateSelectedIndexForTouchLocation(.zero)
+        XCTAssertEqual(delegateMock.capturedScrubBars, [scrubBar], file: file, line: line)
+        XCTAssertEqual(delegateMock.capturedIndexes, [selectedIndex], file: file, line: line)
+    }
+
+    func testDelegateIsNotCalledWhenUpdatingSelectedIndexWithTheSameValue() {
+        let delegateMock = ScrubBarDelegateMock()
+        scrubBar.delegate = delegateMock
+        scrubBar.itemLocator = ItemLocatorStub(indexOfItem: 1)
         scrubBar.selectedIndex = 1
-        XCTAssertEqual(delegateMock.capturedScrubBars, [scrubBar])
+        scrubBar.updateSelectedIndexForTouchLocation(.zero)
+        XCTAssertEqual(delegateMock.capturedScrubBars, [])
+        XCTAssertEqual(delegateMock.capturedIndexes, [])
     }
 
-    func testDelegateIsCalledWithSelectedItemIndex1() { testDelegateIsCalledWithSelectedItemIndex(withItemIndex: 1) }
-    func testDelegateIsCalledWithSelectedItemIndex2() { testDelegateIsCalledWithSelectedItemIndex(withItemIndex: 2) }
+    // MARK: Updating selected index
 
-    func testDelegateIsCalledWithSelectedItemIndex(withItemIndex itemIndex: Int, file: StaticString = #file, line: UInt = #line) {
-        let delegateMock = ScrubBarDelegateMock()
-        scrubBar.delegate = delegateMock
-        scrubBar.selectedIndex = itemIndex
-        XCTAssertEqual(delegateMock.capturedIndexes, [itemIndex], file: file, line: line)
+    func testUpdateSelectedIndexForTouchLocationIsCalledWhileScrubbing() {
+        let expectCallupdateSelectedIndexForTouchLocation = expectation(description: "updateSelectedIndexForTouchLocation is called")
+        scrubBar.updateSelectedIndexForTouchLocation = { location in
+            expectCallupdateSelectedIndexForTouchLocation.fulfill()
+        }
+        scrubBar.isInScrubMode = true
+        scrubBar.startTouchLocation = .zero
+        _ = scrubBar.continueTracking(TouchStub(location: .zero, view: scrubBar), with: nil)
+        wait(for: [expectCallupdateSelectedIndexForTouchLocation], timeout: 0)
     }
 
-    func testDelegateIsCalledOnlyOnChange1() { testDelegateIsCalledOnlyOnChange(withItemIndex: 0) }
-    func testDelegateIsCalledOnlyOnChange2() { testDelegateIsCalledOnlyOnChange(withItemIndex: 1) }
-
-    func testDelegateIsCalledOnlyOnChange(withItemIndex itemIndex: Int, file: StaticString = #file, line: UInt = #line) {
+    func testUpdateSelectedIndexForTouchLocationIsCalledWhenTouchEnds() {
+        let expectCallupdateSelectedIndexForTouchLocation = expectation(description: "updateSelectedIndexForTouchLocation is called")
+        scrubBar.updateSelectedIndexForTouchLocation = { location in
+            expectCallupdateSelectedIndexForTouchLocation.fulfill()
+        }
         let delegateMock = ScrubBarDelegateMock()
-        let scrubBar = ScrubBar(items: [.empty(), .empty(), .empty()])!
-        scrubBar.selectedIndex = itemIndex
         scrubBar.delegate = delegateMock
-        scrubBar.selectedIndex = itemIndex
-        XCTAssertEqual(delegateMock.capturedIndexes, [], file: file, line: line)
+        scrubBar.itemLocator = ItemLocatorStub(indexOfItem: 1)
+        scrubBar.endTracking(TouchStub(location: .zero, view: scrubBar), with: nil)
+        wait(for: [expectCallupdateSelectedIndexForTouchLocation], timeout: 0)
     }
 
 }
@@ -778,7 +812,7 @@ class TouchStub: UITouch {
 
     override func location(in view: UIView?) -> CGPoint {
         guard view == self.touchView else {
-            XCTFail("View is not equal to \(self.view)")
+            XCTFail("View is not equal to \(String(describing: self.view))")
             return .zero
         }
         return location
