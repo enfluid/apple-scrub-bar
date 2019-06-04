@@ -132,9 +132,9 @@ final class ScrubBarTests: XCTestCase {
 
     func testImageViewsInitialAccessibilityTraits() {
         let scrubBar = ScrubBar(items: [.empty(), .empty(), .empty()])!
-        XCTAssertEqual(scrubBar.imageViews[safe: 0]?.accessibilityTraits, UIAccessibilityTraits(rawValue: UIAccessibilityTraits.button.rawValue | UIAccessibilityTraits.selected.rawValue))
-        XCTAssertEqual(scrubBar.imageViews[safe: 1]?.accessibilityTraits, UIAccessibilityTraits.button)
-        XCTAssertEqual(scrubBar.imageViews[safe: 2]?.accessibilityTraits, UIAccessibilityTraits.button)
+        XCTAssertEqual(scrubBar.imageViews[safe: 0]?.accessibilityTraits, UIAccessibilityTraitButton | UIAccessibilityTraitSelected)
+        XCTAssertEqual(scrubBar.imageViews[safe: 1]?.accessibilityTraits, UIAccessibilityTraitButton)
+        XCTAssertEqual(scrubBar.imageViews[safe: 2]?.accessibilityTraits, UIAccessibilityTraitButton)
     }
 
     func testImageViewsAccessibilityTraitsOnSelectedIndexChange1() { testImageViewsAccessibilityTraitsOnSelectedIndexChange(withOldSelectedIndex: 0, newSelectedIndex: 1) }
@@ -144,8 +144,8 @@ final class ScrubBarTests: XCTestCase {
         let scrubBar = ScrubBar(items: [.empty(), .empty(), .empty()])!
         scrubBar.selectedIndex = oldSelectedIndex
         scrubBar.selectedIndex = newSelectedIndex
-        XCTAssertEqual(scrubBar.imageViews[safe: oldSelectedIndex]?.accessibilityTraits, UIAccessibilityTraits.button, file: file, line: line)
-        XCTAssertEqual(scrubBar.imageViews[safe: newSelectedIndex]?.accessibilityTraits, UIAccessibilityTraits(rawValue: UIAccessibilityTraits.button.rawValue | UIAccessibilityTraits.selected.rawValue), file: file, line: line)
+        XCTAssertEqual(scrubBar.imageViews[safe: oldSelectedIndex]?.accessibilityTraits, UIAccessibilityTraitButton, file: file, line: line)
+        XCTAssertEqual(scrubBar.imageViews[safe: newSelectedIndex]?.accessibilityTraits, UIAccessibilityTraitButton | UIAccessibilityTraitSelected, file: file, line: line)
     }
 
     func testImageViewsFirstAccessibilityLabel1() { testImageViewsFirstAccessibilityLabel("Abc") }
@@ -868,7 +868,7 @@ class AnimatingMock: Animating {
         let delay: TimeInterval
         let dampingRatio: CGFloat
         let velocity: CGFloat
-        let options: UIView.AnimationOptions
+        let options: UIViewAnimationOptions
     }
 
     static var capturedAnimationConfigurations: [AnimationConfiguration] = []
@@ -879,7 +879,7 @@ class AnimatingMock: Animating {
         capturedAnimations = []
     }
 
-    static func animate(withDuration duration: TimeInterval, delay: TimeInterval, usingSpringWithDamping dampingRatio: CGFloat, initialSpringVelocity velocity: CGFloat, options: UIView.AnimationOptions, animations: @escaping () -> Void, completion: ((Bool) -> Swift.Void)?) {
+    static func animate(withDuration duration: TimeInterval, delay: TimeInterval, usingSpringWithDamping dampingRatio: CGFloat, initialSpringVelocity velocity: CGFloat, options: UIViewAnimationOptions, animations: @escaping () -> Void, completion: ((Bool) -> Swift.Void)?) {
         let params = AnimationConfiguration(duration: duration, delay: delay, dampingRatio: dampingRatio, velocity: velocity, options: options)
         capturedAnimationConfigurations.append(params)
         capturedAnimations.append(animations)
