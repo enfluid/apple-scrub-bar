@@ -30,7 +30,7 @@ public class ScrubBar: UIControl {
         imageViews.enumerated().forEach { index, element in
             element.contentMode = .center
             element.isAccessibilityElement = true
-            element.accessibilityTraits = index == selectedIndex ? UIAccessibilityTraitButton | UIAccessibilityTraitSelected : UIAccessibilityTraitButton
+            element.accessibilityTraits = index == selectedIndex ? UIAccessibilityTraits(rawValue: UIAccessibilityTraits.button.rawValue | UIAccessibilityTraits.selected.rawValue) : UIAccessibilityTraits.button
             element.accessibilityLabel = items[index].accessibilityLabel
             element.tintColor = itemTintColor
         }
@@ -50,8 +50,8 @@ public class ScrubBar: UIControl {
             imageViews[selectedIndex].tintColor = selectedItemTintColor
             imageViews[oldValue].tintColor = itemTintColor
 
-            imageViews[oldValue].accessibilityTraits = UIAccessibilityTraitButton
-            imageViews[selectedIndex].accessibilityTraits = UIAccessibilityTraitButton | UIAccessibilityTraitSelected
+            imageViews[oldValue].accessibilityTraits = UIAccessibilityTraits.button
+            imageViews[selectedIndex].accessibilityTraits = UIAccessibilityTraits(rawValue: UIAccessibilityTraits.button.rawValue | UIAccessibilityTraits.selected.rawValue)
         }
     }
 
@@ -251,7 +251,7 @@ public class ScrubBar: UIControl {
 
 protocol Animating {
 
-    static func animate(withDuration duration: TimeInterval, delay: TimeInterval, usingSpringWithDamping dampingRatio: CGFloat, initialSpringVelocity velocity: CGFloat, options: UIViewAnimationOptions, animations: @escaping () -> Swift.Void, completion: ((Bool) -> Swift.Void)?)
+    static func animate(withDuration duration: TimeInterval, delay: TimeInterval, usingSpringWithDamping dampingRatio: CGFloat, initialSpringVelocity velocity: CGFloat, options: UIView.AnimationOptions, animations: @escaping () -> Swift.Void, completion: ((Bool) -> Swift.Void)?)
 
 }
 
